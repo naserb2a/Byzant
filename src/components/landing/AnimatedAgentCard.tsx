@@ -148,6 +148,7 @@ export default function AnimatedAgentCard() {
     <motion.div
       animate={cardControls}
       initial={{ opacity: 0, y: 16 }}
+      className="agent-card-inner"
       style={{
         width: 420,
         background: "#0d1420",

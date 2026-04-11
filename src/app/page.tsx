@@ -744,10 +744,13 @@ export default function HomePage() {
           /* Hero */
           .hero-grid { padding: 64px 20px 36px !important; gap: 24px !important; }
           .hero-h1 { font-size: 36px !important; line-height: 1.05 !important; }
-          .hero-h2 { font-size: 30px !important; line-height: 1.05 !important; margin-bottom: 16px !important; }
-          .hero-body { font-size: 14px !important; line-height: 1.6 !important; margin-bottom: 20px !important; }
-          .hero-trust { gap: 6px !important; margin-top: 10px !important; flex-wrap: nowrap !important; }
-          .hero-trust > span { font-size: 9px !important; gap: 6px !important; }
+          .hero-h2 { font-size: 30px !important; line-height: 1.05 !important; margin-bottom: 20px !important; }
+          .hero-body { font-size: 14px !important; line-height: 1.6 !important; margin-bottom: 24px !important; }
+          .hero-trust { gap: 8px !important; margin-top: 12px !important; flex-wrap: nowrap !important; justify-content: center !important; }
+          .hero-tag { color: #7a8aab !important; font-size: 11px !important; gap: 8px !important; }
+          /* Agent card on mobile */
+          .agent-card-wrap { display: flex !important; width: 100% !important; margin-top: 24px !important; }
+          .agent-card-inner { width: 100% !important; max-width: 100% !important; }
           /* Quote */
           .quote-section { padding: 1.5rem 1.5rem !important; }
           /* Stats */
@@ -964,7 +967,7 @@ export default function HomePage() {
               style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 20, flexWrap: "wrap" }}
             >
               {["MCP Protocol Native", "Human-in-the-loop", "Emotionless Execution"].map((t, i) => (
-                <span key={t} style={{ display: "flex", alignItems: "center", gap: i === 0 ? 0 : 16, fontFamily: MONO, fontSize: 10, color: "#4d9fff", letterSpacing: "0.06em" }}>
+                <span key={t} className="hero-tag" style={{ display: "flex", alignItems: "center", gap: i === 0 ? 0 : 16, fontFamily: MONO, fontSize: 10, color: "#4d9fff", letterSpacing: "0.06em" }}>
                   {i > 0 && <span style={{ color: "#2e3d5a" }}>·</span>}
                   {t}
                 </span>
