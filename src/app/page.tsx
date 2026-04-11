@@ -223,6 +223,7 @@ function QuoteSection() {
       `}</style>
       <div
         ref={ref}
+        className="quote-section"
         style={{
           background: "#080c12",
           padding: "6rem 2rem",
@@ -361,7 +362,7 @@ function BentoGrid() {
   });
 
   return (
-    <section style={{ background: "#080c12", padding: "120px 0" }}>
+    <section className="bento-section" style={{ background: "#080c12", padding: "120px 0" }}>
       <div ref={ref} style={{ maxWidth: 1080, margin: "0 auto", padding: "0 2rem" }}>
         {/* Eyebrow */}
         <motion.div
@@ -391,7 +392,7 @@ function BentoGrid() {
         </motion.h2>
 
         {/* Row 1: 60/40 */}
-        <div style={{ display: "grid", gridTemplateColumns: "60fr 40fr", gap: 16, marginBottom: 16 }}>
+        <div className="bento-row1" style={{ display: "grid", gridTemplateColumns: "60fr 40fr", gap: 16, marginBottom: 16 }}>
           {/* Card 1 */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -440,7 +441,7 @@ function BentoGrid() {
         </div>
 
         {/* Row 2: three equal */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+        <div className="bento-row2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
           {/* Card 3 */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -554,7 +555,7 @@ function MarketplacePreview() {
         </motion.p>
 
         {/* Module cards row */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 32 }}>
+        <div className="preview-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 32 }}>
           {PREVIEW_MODULES.map((m, i) => (
             <motion.div
               key={m.name}
@@ -699,6 +700,7 @@ export default function HomePage() {
   const [submitted2, setSubmitted2] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setHeroVisible(true), 100);
@@ -731,11 +733,27 @@ export default function HomePage() {
           .agent-card-wrap { display: none !important; }
         }
         @media (max-width: 768px) {
+          /* Nav */
+          .nav-desktop { display: none !important; }
+          .nav-hamburger { display: flex !important; }
+          .nav-inner { padding: 0 20px !important; }
+          /* Hero */
+          .hero-grid { padding: 96px 20px 60px !important; gap: 40px !important; }
+          .hero-h1 { font-size: 36px !important; }
+          .hero-h2 { font-size: 36px !important; }
+          /* Quote */
+          .quote-section { padding: 3rem 1.5rem !important; }
+          /* Bento */
+          .bento-section { padding: 80px 0 !important; }
           .bento-row1 { grid-template-columns: 1fr !important; }
           .bento-row2 { grid-template-columns: 1fr !important; }
-          .preview-grid { grid-template-columns: 1fr 1fr !important; }
+          /* Marketplace */
+          .preview-grid { grid-template-columns: 1fr !important; }
+          /* Agent sequence */
+          .agent-seq-row { flex-direction: column !important; }
+          .agent-seq-connector { display: none !important; }
+          /* Stats */
           .stats-row { gap: 0 !important; }
-          .hero-h1 { font-size: 48px !important; }
         }
       `}</style>
 
@@ -745,45 +763,105 @@ export default function HomePage() {
       {/* ── NAV ─────────────────────────────────────────────────── */}
       <nav style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
-        height: 64, display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "0 48px",
-        background: scrolled ? "rgba(8,12,18,0.92)" : "transparent",
+        background: scrolled || menuOpen ? "rgba(8,12,18,0.96)" : "transparent",
         borderBottom: scrolled ? "0.5px solid rgba(99,157,255,0.1)" : "0.5px solid transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
+        backdropFilter: scrolled || menuOpen ? "blur(20px)" : "none",
+        WebkitBackdropFilter: scrolled || menuOpen ? "blur(20px)" : "none",
         transition: "background 0.3s ease, border-color 0.3s ease",
       }}>
-        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "baseline", letterSpacing: 0 }}>
-          <span style={{ color: "#4d9fff", fontWeight: 500, fontSize: 15, letterSpacing: "0.06em", fontFamily: MONO, textTransform: "uppercase" }}>B2A</span>
-          <span style={{ color: "#eef2ff", fontWeight: 500, fontSize: 15, letterSpacing: "0.06em", fontFamily: MONO }}>capital</span>
-        </Link>
+        {/* Main nav row */}
+        <div className="nav-inner" style={{
+          height: 64, display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "0 48px",
+        }}>
+          <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "baseline", letterSpacing: 0 }}>
+            <span style={{ color: "#4d9fff", fontWeight: 500, fontSize: 15, letterSpacing: "0.06em", fontFamily: MONO, textTransform: "uppercase" }}>B2A</span>
+            <span style={{ color: "#eef2ff", fontWeight: 500, fontSize: 15, letterSpacing: "0.06em", fontFamily: MONO }}>capital</span>
+          </Link>
 
-        <div className="nav-links" style={{ display: "flex", gap: 36 }}>
-          {[
-            { label: "Marketplace", href: "#marketplace" },
-            { label: "How it Works", href: "#how-it-works" },
-          ].map(l => (
-            <Link key={l.href} href={l.href} className="nav-link"
-              style={{ color: "#7a8aab", fontSize: 14, textDecoration: "none", transition: "color 0.15s", fontFamily: SANS }}>
-              {l.label}
+          {/* Desktop nav links */}
+          <div className="nav-desktop" style={{ display: "flex", gap: 36 }}>
+            {[
+              { label: "Marketplace", href: "#marketplace" },
+              { label: "How it Works", href: "#how-it-works" },
+            ].map(l => (
+              <Link key={l.href} href={l.href} className="nav-link"
+                style={{ color: "#7a8aab", fontSize: 14, textDecoration: "none", transition: "color 0.15s", fontFamily: SANS }}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop auth buttons */}
+          <div className="nav-desktop" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <Link href="/auth/login"
+              style={{ color: "#7a8aab", fontSize: 13, textDecoration: "none", padding: "7px 18px", border: "0.5px solid rgba(99,157,255,0.15)", borderRadius: 10, fontFamily: SANS, transition: "border-color 0.15s, color 0.15s" }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(99,157,255,0.35)"; e.currentTarget.style.color = "#eef2ff"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(99,157,255,0.15)"; e.currentTarget.style.color = "#7a8aab"; }}>
+              Sign In
             </Link>
-          ))}
+            <Link href="/auth/signup"
+              style={{ background: "#4d9fff", color: "#fff", fontSize: 13, fontWeight: 600, textDecoration: "none", padding: "7px 20px", borderRadius: 10, fontFamily: SANS, transition: "background 0.15s" }}
+              onMouseEnter={e => (e.currentTarget.style.background = "#6eb8ff")}
+              onMouseLeave={e => (e.currentTarget.style.background = "#4d9fff")}>
+              Join Waitlist
+            </Link>
+          </div>
+
+          {/* Mobile hamburger */}
+          <button
+            className="nav-hamburger"
+            onClick={() => setMenuOpen(o => !o)}
+            style={{
+              display: "none", alignItems: "center", justifyContent: "center",
+              background: "transparent", border: "none", cursor: "pointer",
+              padding: 8, color: "#eef2ff",
+            }}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? (
+              <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
+                <path d="M4 4l12 12M16 4L4 16" stroke="#eef2ff" strokeWidth={1.5} strokeLinecap="round" />
+              </svg>
+            ) : (
+              <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
+                <path d="M3 5h14M3 10h14M3 15h14" stroke="#eef2ff" strokeWidth={1.5} strokeLinecap="round" />
+              </svg>
+            )}
+          </button>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <Link href="/auth/login"
-            style={{ color: "#7a8aab", fontSize: 13, textDecoration: "none", padding: "7px 18px", border: "0.5px solid rgba(99,157,255,0.15)", borderRadius: 10, fontFamily: SANS, transition: "border-color 0.15s, color 0.15s" }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(99,157,255,0.35)"; e.currentTarget.style.color = "#eef2ff"; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(99,157,255,0.15)"; e.currentTarget.style.color = "#7a8aab"; }}>
-            Sign In
-          </Link>
-          <Link href="/auth/signup"
-            style={{ background: "#4d9fff", color: "#fff", fontSize: 13, fontWeight: 600, textDecoration: "none", padding: "7px 20px", borderRadius: 10, fontFamily: SANS, transition: "background 0.15s" }}
-            onMouseEnter={e => (e.currentTarget.style.background = "#6eb8ff")}
-            onMouseLeave={e => (e.currentTarget.style.background = "#4d9fff")}>
-            Join Waitlist
-          </Link>
-        </div>
+        {/* Mobile dropdown menu */}
+        {menuOpen && (
+          <div style={{
+            borderTop: "0.5px solid rgba(99,157,255,0.1)",
+            padding: "20px",
+            display: "flex", flexDirection: "column", gap: 4,
+          }}>
+            {[
+              { label: "Marketplace", href: "#marketplace" },
+              { label: "How it Works", href: "#how-it-works" },
+            ].map(l => (
+              <Link key={l.href} href={l.href}
+                onClick={() => setMenuOpen(false)}
+                style={{ color: "#7a8aab", fontSize: 15, textDecoration: "none", fontFamily: SANS, padding: "10px 0", borderBottom: "0.5px solid rgba(99,157,255,0.06)" }}>
+                {l.label}
+              </Link>
+            ))}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 16 }}>
+              <Link href="/auth/login"
+                onClick={() => setMenuOpen(false)}
+                style={{ color: "#eef2ff", fontSize: 14, textDecoration: "none", padding: "10px 16px", border: "0.5px solid rgba(99,157,255,0.2)", borderRadius: 10, fontFamily: SANS, textAlign: "center" }}>
+                Sign In
+              </Link>
+              <Link href="/auth/signup"
+                onClick={() => setMenuOpen(false)}
+                style={{ background: "#4d9fff", color: "#fff", fontSize: 14, fontWeight: 600, textDecoration: "none", padding: "10px 16px", borderRadius: 10, fontFamily: SANS, textAlign: "center" }}>
+                Join Waitlist
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* ── HERO ────────────────────────────────────────────────── */}
@@ -824,6 +902,7 @@ export default function HomePage() {
               The market never sleeps.
             </motion.h1>
             <motion.h2
+              className="hero-h2"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: heroVisible ? 1 : 0, y: heroVisible ? 0 : 30 }}
               transition={{ duration: 0.7, delay: 0.28, ease: "easeOut" }}

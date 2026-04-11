@@ -76,7 +76,7 @@ function StepCard({
 
 function Connector() {
   return (
-    <div style={{ width: 40, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+    <div className="agent-seq-connector" style={{ width: 40, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
       <div style={{ width: "100%", height: 1, background: "rgba(99,157,255,0.2)" }} />
       <motion.div
         animate={{ x: [-16, 16, -16] }}
@@ -104,6 +104,13 @@ export default function AgentSequence() {
         width: "100%",
       }}
     >
+      <style>{`
+        @media (max-width: 768px) {
+          .agent-seq-row { flex-direction: column !important; }
+          .agent-seq-connector { display: none !important; }
+          .agent-seq-row > * { width: 100% !important; flex: none !important; }
+        }
+      `}</style>
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 2rem" }}>
 
         {/* Header */}
@@ -146,7 +153,7 @@ export default function AgentSequence() {
         </div>
 
         {/* Step cards */}
-        <div style={{ display: "flex", alignItems: "stretch", gap: 0 }}>
+        <div className="agent-seq-row" style={{ display: "flex", alignItems: "stretch", gap: 0 }}>
 
           {/* Step 0 — MCP Connected */}
           <StepCard
