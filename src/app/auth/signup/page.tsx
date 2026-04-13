@@ -91,7 +91,7 @@ export default function SignupPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" style={{ textDecoration: "none" }}>
-            <span style={{ color: "#99E1D9", fontFamily: "var(--font-geist-sans)", fontWeight: 700, letterSpacing: 0 }}>Byzant</span>
+            <span style={{ color: "#99E1D9", fontFamily: "var(--font-geist-sans)", fontWeight: 700, letterSpacing: 0, WebkitTextStroke: "0.5px rgba(255,255,255,0.4)" }}>Byzant</span>
           </Link>
           <h1
             className="mt-7 mb-1.5 font-bold tracking-tight"
