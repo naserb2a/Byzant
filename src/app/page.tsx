@@ -797,7 +797,7 @@ export default function HomePage() {
           padding: "0 48px",
         }}>
           <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "baseline", letterSpacing: 0 }}>
-            <span style={{ color: "#99E1D9", fontWeight: 700, fontSize: 21, fontFamily: "var(--font-geist-sans)", letterSpacing: 0, WebkitTextStroke: "1px rgba(255,255,255,0.6)", textShadow: "0 0 8px rgba(153,225,217,0.4), 0 0 20px rgba(153,225,217,0.15)" }}>Byzant</span>
+            <span style={{ color: "#99E1D9", fontWeight: 700, fontSize: 21, fontFamily: "var(--font-geist-sans)", letterSpacing: 0, WebkitTextStroke: "0.8px white" }}>Byzant</span>
           </Link>
 
           {/* Desktop nav links */}
@@ -1042,7 +1042,7 @@ export default function HomePage() {
         }}>
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "baseline" }}>
-            <span style={{ color: "#99E1D9", fontWeight: 700, fontSize: 18, fontFamily: "var(--font-geist-sans)", letterSpacing: 0, WebkitTextStroke: "1px rgba(255,255,255,0.6)", textShadow: "0 0 8px rgba(153,225,217,0.4), 0 0 20px rgba(153,225,217,0.15)" }}>Byzant</span>
+            <span style={{ color: "#99E1D9", fontWeight: 700, fontSize: 18, fontFamily: "var(--font-geist-sans)", letterSpacing: 0, WebkitTextStroke: "0.8px white" }}>Byzant</span>
           </Link>
 
           {/* Copyright */}

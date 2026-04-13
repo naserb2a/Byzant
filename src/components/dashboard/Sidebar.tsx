@@ -98,7 +98,7 @@ export default function Sidebar() {
             </svg>
           </div>
           <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 500, letterSpacing: 0 }}>
-            <span style={{ color: "#99E1D9", fontFamily: "var(--font-geist-sans)", fontWeight: 700, letterSpacing: 0, WebkitTextStroke: "1px rgba(255,255,255,0.6)", textShadow: "0 0 8px rgba(153,225,217,0.4), 0 0 20px rgba(153,225,217,0.15)" }}>Byzant</span>
+            <span style={{ color: "#99E1D9", fontFamily: "var(--font-geist-sans)", fontWeight: 700, letterSpacing: 0, WebkitTextStroke: "0.8px white" }}>Byzant</span>
           </span>
         </Link>
       </div>
