@@ -336,7 +336,7 @@ function ProtocolSVG() {
       {/* Labels */}
       <text x={40} y={92} textAnchor="middle" fill="rgba(153,225,217,0.4)" fontSize={7} fontFamily="var(--font-geist-mono)">AGENT</text>
       <text x={100} y={92} textAnchor="middle" fill="rgba(153,225,217,0.4)" fontSize={7} fontFamily="var(--font-geist-mono)">MCP</text>
-      <text x={140} y={92} textAnchor="middle" fill="#99E1D9" fontSize={7} fontFamily="var(--font-geist-mono)">BYZANT</text>
+      <text x={140} y={92} textAnchor="middle" fill="#99E1D9" fontSize={7} fontFamily="var(--font-geist-mono)">Byzant</text>
       <text x={180} y={92} textAnchor="middle" fill="rgba(153,225,217,0.4)" fontSize={7} fontFamily="var(--font-geist-mono)">DATA</text>
       <text x={240} y={92} textAnchor="middle" fill="rgba(153,225,217,0.4)" fontSize={7} fontFamily="var(--font-geist-mono)">EXEC</text>
       {/* Vertical ticks */}
@@ -797,7 +797,7 @@ export default function HomePage() {
           padding: "0 48px",
         }}>
           <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "baseline", letterSpacing: 0 }}>
-            <span style={{ color: "#99E1D9", fontWeight: 500, fontSize: 15, letterSpacing: "0.06em", fontFamily: MONO, textTransform: "uppercase" }}>Byzant</span>
+            <span style={{ color: "#99E1D9", fontWeight: 700, fontSize: 15, fontFamily: "var(--font-playfair)", letterSpacing: 0 }}>Byzant</span>
           </Link>
 
           {/* Desktop nav links */}
@@ -1042,7 +1042,7 @@ export default function HomePage() {
         }}>
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "baseline" }}>
-            <span style={{ color: "#99E1D9", fontWeight: 700, fontSize: 18, fontFamily: SANS }}>Byzant</span>
+            <span style={{ color: "#99E1D9", fontWeight: 700, fontSize: 18, fontFamily: "var(--font-playfair)", letterSpacing: 0 }}>Byzant</span>
           </Link>
 
           {/* Copyright */}

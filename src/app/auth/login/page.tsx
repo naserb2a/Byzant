@@ -48,8 +48,8 @@ export default function LoginPage() {
       <div className="w-full max-w-sm relative z-10">
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" style={{ textDecoration: "none", fontFamily: "var(--font-geist-mono)", fontWeight: 500 }}>
-            <span style={{ color: "#99E1D9", letterSpacing: "0.06em", textTransform: "uppercase" }}>Byzant</span>
+          <Link href="/" style={{ textDecoration: "none" }}>
+            <span style={{ color: "#99E1D9", fontFamily: "var(--font-playfair)", fontWeight: 700, letterSpacing: 0 }}>Byzant</span>
           </Link>
           <h1
             className="mt-7 mb-1.5 font-bold tracking-tight"
