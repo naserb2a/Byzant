@@ -10,11 +10,11 @@ const SANS = "var(--font-geist-sans)";
 
 const ROWS = [
   { label: "SIGNAL",        value: "Bullish +0.82",      vc: "#3dd68c" },
-  { label: "ENTRY",         value: "$118.40",             vc: "#eef2ff" },
-  { label: "STOP LOSS",     value: "$113.20",             vc: "#eef2ff" },
+  { label: "ENTRY",         value: "$118.40",             vc: "#F5F5F5" },
+  { label: "STOP LOSS",     value: "$113.20",             vc: "#F5F5F5" },
   { label: "RISK / REWARD", value: "1 : 3.2",             vc: "#3dd68c" },
-  { label: "DATA SOURCES",  value: "Polygon · Benzinga",  vc: "#4d9fff" },
-  { label: "EMOTION",       value: "None detected",       vc: "#7a8aab" },
+  { label: "DATA SOURCES",  value: "Polygon · Benzinga",  vc: "#99E1D9" },
+  { label: "EMOTION",       value: "None detected",       vc: "#666666" },
 ];
 
 const BAR_HEIGHTS = [30, 40, 35, 50, 45, 55, 48, 60, 52, 70, 80, 90];
@@ -48,7 +48,7 @@ export default function AnimatedAgentCard() {
   const [barsVisible,  setBarsVisible]  = useState(false);
   const [ringTrigger,  setRingTrigger]  = useState(false);
   const [approved,     setApproved]     = useState(false);
-  const [cardBorder,   setCardBorder]   = useState("rgba(99,157,255,0.28)");
+  const [cardBorder,   setCardBorder]   = useState("rgba(255,255,255,0.28)");
   const [dotScale,     setDotScale]     = useState(1);
 
   const score = useCountUp(82, ringTrigger);
@@ -63,7 +63,7 @@ export default function AnimatedAgentCard() {
         setBarsVisible(false);
         setRingTrigger(false);
         setApproved(false);
-        setCardBorder("rgba(99,157,255,0.28)");
+        setCardBorder("rgba(255,255,255,0.28)");
 
         await cardControls.set({ opacity: 0, y: 16 });
         await headerControls.set({ opacity: 0 });
@@ -111,7 +111,7 @@ export default function AnimatedAgentCard() {
         setApproved(true);
         setCardBorder("rgba(61,214,140,0.5)");
         await new Promise(r => setTimeout(r, 350));
-        setCardBorder("rgba(99,157,255,0.28)");
+        setCardBorder("rgba(255,255,255,0.28)");
 
         // PHASE 7 — Hold approved state
         await new Promise(r => setTimeout(r, 1500));
@@ -151,7 +151,7 @@ export default function AnimatedAgentCard() {
       className="agent-card-inner"
       style={{
         width: 420,
-        background: "#0d1420",
+        background: "#0F0F0F",
         border: `0.5px solid ${cardBorder}`,
         borderRadius: 20,
         overflow: "hidden",
@@ -166,7 +166,7 @@ export default function AnimatedAgentCard() {
         style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
           padding: "14px 18px",
-          borderBottom: "0.5px solid rgba(99,157,255,0.08)",
+          borderBottom: "0.5px solid rgba(255,255,255,0.08)",
           background: "rgba(0,0,0,0.2)",
         }}
       >
@@ -174,10 +174,10 @@ export default function AnimatedAgentCard() {
           {/* Score ring */}
           <div style={{ position: "relative", width: 44, height: 44, flexShrink: 0 }}>
             <svg width={44} height={44} viewBox="0 0 44 44" style={{ transform: "rotate(-90deg)" }}>
-              <circle cx={22} cy={22} r={18} fill="none" stroke="rgba(77,159,255,0.15)" strokeWidth={3} />
+              <circle cx={22} cy={22} r={18} fill="none" stroke="rgba(153,225,217,0.15)" strokeWidth={3} />
               <motion.circle
                 cx={22} cy={22} r={18} fill="none"
-                stroke="#4d9fff" strokeWidth={3}
+                stroke="#99E1D9" strokeWidth={3}
                 strokeLinecap="round"
                 strokeDasharray={ringCircumference}
                 animate={ringControls}
@@ -187,17 +187,17 @@ export default function AnimatedAgentCard() {
             <div style={{
               position: "absolute", inset: 0,
               display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 11, fontWeight: 700, color: "#4d9fff", fontFamily: MONO,
+              fontSize: 11, fontWeight: 700, color: "#99E1D9", fontFamily: MONO,
             }}>
               {score}
             </div>
           </div>
 
           <div>
-            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "#7a8aab", textTransform: "uppercase" }}>
+            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "#666666", textTransform: "uppercase" }}>
               AGENT · NVDA ANALYSIS
             </div>
-            <div style={{ fontSize: 10, color: "#2e3d5a", marginTop: 2, letterSpacing: "0.04em" }}>
+            <div style={{ fontSize: 10, color: "#444444", marginTop: 2, letterSpacing: "0.04em" }}>
               Alpha-1 · Equities Momentum
             </div>
           </div>
@@ -226,10 +226,10 @@ export default function AnimatedAgentCard() {
             style={{
               display: "flex", alignItems: "center", justifyContent: "space-between",
               padding: "9px 18px",
-              borderBottom: i < ROWS.length - 1 ? "0.5px solid rgba(99,157,255,0.08)" : "none",
+              borderBottom: i < ROWS.length - 1 ? "0.5px solid rgba(255,255,255,0.08)" : "none",
             }}
           >
-            <span style={{ fontSize: 10, color: "#2e3d5a", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+            <span style={{ fontSize: 10, color: "#444444", textTransform: "uppercase", letterSpacing: "0.08em" }}>
               {row.label}
             </span>
             <span style={{ fontSize: 12, color: row.vc, fontVariantNumeric: "tabular-nums" }}>
@@ -240,7 +240,7 @@ export default function AnimatedAgentCard() {
       </div>
 
       {/* Mini bar chart */}
-      <div style={{ padding: "12px 18px", borderTop: "0.5px solid rgba(99,157,255,0.08)" }}>
+      <div style={{ padding: "12px 18px", borderTop: "0.5px solid rgba(255,255,255,0.08)" }}>
         <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 28 }}>
           {BAR_HEIGHTS.map((h, i) => (
             <motion.div
@@ -252,7 +252,7 @@ export default function AnimatedAgentCard() {
                 flex: 1,
                 height: `${h}%`,
                 borderRadius: "2px 2px 0 0",
-                background: i >= 9 ? "#4d9fff" : "#2e3d5a",
+                background: i >= 9 ? "#99E1D9" : "#444444",
                 transformOrigin: "bottom",
               }}
             />
@@ -266,8 +266,8 @@ export default function AnimatedAgentCard() {
         initial={{ opacity: 0, y: 20 }}
         style={{
           margin: "0 16px 16px",
-          background: "rgba(77,159,255,0.08)",
-          border: "0.5px solid rgba(99,157,255,0.25)",
+          background: "rgba(153,225,217,0.08)",
+          border: "0.5px solid rgba(255,255,255,0.25)",
           borderRadius: 14,
           padding: 16,
           pointerEvents: "none",
@@ -276,25 +276,25 @@ export default function AnimatedAgentCard() {
         <motion.div
           animate={panelTextControls}
           initial={{ opacity: 0 }}
-          style={{ fontSize: 10, letterSpacing: "0.12em", color: "#4d9fff", textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}
+          style={{ fontSize: 10, letterSpacing: "0.12em", color: "#99E1D9", textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}
         >
           AWAITING YOUR APPROVAL
         </motion.div>
         <motion.p
           animate={panelTextControls}
           initial={{ opacity: 0 }}
-          style={{ fontSize: 13, color: "#7a8aab", lineHeight: 1.55, margin: "0 0 14px", fontFamily: SANS }}
+          style={{ fontSize: 13, color: "#666666", lineHeight: 1.55, margin: "0 0 14px", fontFamily: SANS }}
         >
           Agent requests to open a long position in{" "}
-          <span style={{ color: "#eef2ff", fontWeight: 500 }}>NVDA</span>. 50 shares · Est.{" "}
-          <span style={{ color: "#eef2ff", fontWeight: 500 }}>$5,920</span>
+          <span style={{ color: "#F5F5F5", fontWeight: 500 }}>NVDA</span>. 50 shares · Est.{" "}
+          <span style={{ color: "#F5F5F5", fontWeight: 500 }}>$5,920</span>
         </motion.p>
         <div style={{ display: "flex", gap: 8 }}>
           <motion.button
             animate={approveControls}
             style={{
               flex: 1,
-              background: approved ? "#3dd68c" : "#4d9fff",
+              background: approved ? "#3dd68c" : "#99E1D9",
               color: "#fff", border: "none", borderRadius: 10,
               padding: "10px 0", fontSize: 13, fontWeight: 600,
               cursor: "default", fontFamily: SANS,
@@ -304,8 +304,8 @@ export default function AnimatedAgentCard() {
             {approved ? "Approved ✓" : "Approve"}
           </motion.button>
           <button style={{
-            flex: 1, background: "#111b2e", color: "#7a8aab",
-            border: "0.5px solid rgba(99,157,255,0.2)", borderRadius: 10,
+            flex: 1, background: "#141414", color: "#666666",
+            border: "0.5px solid rgba(255,255,255,0.2)", borderRadius: 10,
             padding: "10px 0", fontSize: 13, fontWeight: 500,
             cursor: "default", fontFamily: SANS,
           }}>

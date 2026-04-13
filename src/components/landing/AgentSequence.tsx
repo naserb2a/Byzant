@@ -20,11 +20,11 @@ function StepCard({
       initial={initial}
       animate={animate}
       transition={transition}
-      whileHover={{ borderColor: "rgba(99,157,255,0.35)" }}
+      whileHover={{ borderColor: "rgba(255,255,255,0.35)" }}
       style={{
         flex: 1,
-        background: "#0d1420",
-        border: "0.5px solid rgba(99,157,255,0.12)",
+        background: "#0F0F0F",
+        border: "0.5px solid rgba(255,255,255,0.12)",
         borderRadius: 16,
         padding: 24,
         cursor: "default",
@@ -35,8 +35,8 @@ function StepCard({
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
         <div style={{
           width: 32, height: 32, borderRadius: 8,
-          background: "rgba(77,159,255,0.1)",
-          border: "0.5px solid rgba(99,157,255,0.2)",
+          background: "rgba(153,225,217,0.1)",
+          border: "0.5px solid rgba(255,255,255,0.2)",
           display: "flex", alignItems: "center", justifyContent: "center",
           flexShrink: 0,
         }}>
@@ -54,7 +54,7 @@ function StepCard({
       </div>
 
       {/* Main value */}
-      <div style={{ fontSize: 15, fontWeight: 500, color: "#eef2ff", fontFamily: SANS, marginBottom: 14 }}>
+      <div style={{ fontSize: 15, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS, marginBottom: 14 }}>
         {value}
       </div>
 
@@ -66,7 +66,7 @@ function StepCard({
           flexShrink: 0,
           animation: statusPulse ? "db-pulse 2s infinite" : "none",
         }} />
-        <span style={{ fontSize: 10, color: "#7a8aab", fontFamily: MONO, letterSpacing: "0.06em" }}>
+        <span style={{ fontSize: 10, color: "#666666", fontFamily: MONO, letterSpacing: "0.06em" }}>
           {statusText}
         </span>
       </div>
@@ -77,14 +77,14 @@ function StepCard({
 function Connector() {
   return (
     <div className="agent-seq-connector" style={{ width: 40, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-      <div style={{ width: "100%", height: 1, background: "rgba(99,157,255,0.2)" }} />
+      <div style={{ width: "100%", height: 1, background: "rgba(255,255,255,0.2)" }} />
       <motion.div
         animate={{ x: [-16, 16, -16] }}
         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         style={{
           position: "absolute",
           width: 6, height: 6, borderRadius: "50%",
-          background: "#4d9fff",
+          background: "#99E1D9",
         }}
       />
     </div>
@@ -100,7 +100,7 @@ export default function AgentSequence() {
       ref={ref}
       className="seq-section"
       style={{
-        background: "#080c12",
+        background: "#0A0A0A",
         padding: "80px 0",
         width: "100%",
       }}
@@ -118,14 +118,14 @@ export default function AgentSequence() {
         <div className="seq-header" style={{ textAlign: "center", marginBottom: 64 }}>
           {/* Eyebrow */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 20 }}>
-            <div style={{ width: 24, height: 1, background: "#4d9fff" }} />
+            <div style={{ width: 24, height: 1, background: "#99E1D9" }} />
             <span className="eyebrow-label" style={{
-              fontSize: 11, letterSpacing: "0.14em", color: "#4d9fff",
+              fontSize: 11, letterSpacing: "0.14em", color: "#99E1D9",
               fontFamily: MONO, fontWeight: 600, textTransform: "uppercase",
             }}>
               HOW IT WORKS
             </span>
-            <div style={{ width: 24, height: 1, background: "#4d9fff" }} />
+            <div style={{ width: 24, height: 1, background: "#99E1D9" }} />
           </div>
 
           <motion.h2
@@ -135,7 +135,7 @@ export default function AgentSequence() {
             transition={{ duration: 0.7, ease: "easeOut" }}
             style={{
               fontSize: 46, fontWeight: 600, letterSpacing: "-0.03em",
-              color: "#eef2ff", fontFamily: SANS, margin: "0 0 12px",
+              color: "#F5F5F5", fontFamily: SANS, margin: "0 0 12px",
             }}
           >
             From signal to execution.
@@ -147,7 +147,7 @@ export default function AgentSequence() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
             style={{
-              fontSize: 16, fontWeight: 300, color: "#7a8aab",
+              fontSize: 16, fontWeight: 300, color: "#666666",
               fontFamily: SANS, margin: 0,
             }}
           >
@@ -162,18 +162,18 @@ export default function AgentSequence() {
           <StepCard
             icon={
               <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
-                <path d="M6 4H3a1 1 0 00-1 1v6a1 1 0 001 1h3" stroke="#4d9fff" strokeWidth={1.4} strokeLinecap="round" />
-                <path d="M10 4h3a1 1 0 011 1v6a1 1 0 01-1 1h-3" stroke="#4d9fff" strokeWidth={1.4} strokeLinecap="round" />
-                <path d="M6 8h4" stroke="#4d9fff" strokeWidth={1.4} strokeLinecap="round" />
-                <circle cx={5} cy={8} r={1.5} fill="#4d9fff" />
-                <circle cx={11} cy={8} r={1.5} fill="#4d9fff" />
+                <path d="M6 4H3a1 1 0 00-1 1v6a1 1 0 001 1h3" stroke="#99E1D9" strokeWidth={1.4} strokeLinecap="round" />
+                <path d="M10 4h3a1 1 0 011 1v6a1 1 0 01-1 1h-3" stroke="#99E1D9" strokeWidth={1.4} strokeLinecap="round" />
+                <path d="M6 8h4" stroke="#99E1D9" strokeWidth={1.4} strokeLinecap="round" />
+                <circle cx={5} cy={8} r={1.5} fill="#99E1D9" />
+                <circle cx={11} cy={8} r={1.5} fill="#99E1D9" />
               </svg>
             }
             badge="MCP PROTOCOL"
-            badgeColor="#4d9fff"
-            badgeBg="rgba(77,159,255,0.1)"
+            badgeColor="#99E1D9"
+            badgeBg="rgba(153,225,217,0.1)"
             value="Agent · B2A linked"
-            statusColor="#4d9fff"
+            statusColor="#99E1D9"
             statusText="Zero config. Already speaking."
             statusPulse
             initial={{ opacity: 0, x: -30 }}
@@ -187,12 +187,12 @@ export default function AgentSequence() {
           <StepCard
             icon={
               <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
-                <path d="M2 11l3-4 3 3 3-5 3 3" stroke="#4d9fff" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M2 11l3-4 3 3 3-5 3 3" stroke="#99E1D9" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             }
             badge="ALPHA-1"
-            badgeColor="#4d9fff"
-            badgeBg="rgba(77,159,255,0.1)"
+            badgeColor="#99E1D9"
+            badgeBg="rgba(153,225,217,0.1)"
             value="NVDA · Bullish +0.82"
             statusColor="#3dd68c"
             statusText="Signal confirmed"

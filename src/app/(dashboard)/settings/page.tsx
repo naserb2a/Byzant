@@ -5,15 +5,15 @@ const MONO = "var(--font-geist-mono)";
 const SANS = "var(--font-geist-sans)";
 
 const CARD: React.CSSProperties = {
-  background: "#0d1420",
-  border: "0.5px solid rgba(99,157,255,0.08)",
+  background: "#0F0F0F",
+  border: "0.5px solid rgba(255,255,255,0.08)",
   borderRadius: 14,
   padding: 24,
   marginBottom: 24,
 };
 
 const SECTION_TITLE: React.CSSProperties = {
-  fontSize: 15, fontWeight: 500, color: "#eef2ff",
+  fontSize: 15, fontWeight: 500, color: "#F5F5F5",
   fontFamily: SANS, marginBottom: 20,
 };
 
@@ -33,7 +33,7 @@ const INPUT: React.CSSProperties = {
 };
 
 const SAVE_BTN: React.CSSProperties = {
-  background: "#4d9fff", color: "#fff", border: "none",
+  background: "#99E1D9", color: "#fff", border: "none",
   borderRadius: 8, padding: "9px 20px",
   fontSize: 13, fontWeight: 500, cursor: "pointer",
   fontFamily: SANS, marginTop: 20,
@@ -53,8 +53,8 @@ function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void 
       onClick={() => onChange(!on)}
       style={{
         width: 40, height: 22, borderRadius: 11, flexShrink: 0,
-        background: on ? "#4d9fff" : "var(--db-bg4)",
-        border: `1px solid ${on ? "rgba(77,159,255,0.4)" : "var(--db-border-mid)"}`,
+        background: on ? "#99E1D9" : "var(--db-bg4)",
+        border: `1px solid ${on ? "rgba(153,225,217,0.4)" : "var(--db-border-mid)"}`,
         cursor: "pointer", padding: 0, position: "relative",
         transition: "background 0.2s, border-color 0.2s",
       }}
@@ -134,7 +134,7 @@ export default function SettingsPage() {
                 onChange={e => setFullName(e.target.value)}
                 placeholder="Nas"
                 style={INPUT}
-                onFocus={e => (e.currentTarget.style.borderColor = "rgba(99,157,255,0.28)")}
+                onFocus={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)")}
                 onBlur={e => (e.currentTarget.style.borderColor = "var(--db-border)")}
               />
             </div>
@@ -144,9 +144,9 @@ export default function SettingsPage() {
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="nas@b2acapital.ai"
+                placeholder="nas@byzant.ai"
                 style={INPUT}
-                onFocus={e => (e.currentTarget.style.borderColor = "rgba(99,157,255,0.28)")}
+                onFocus={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)")}
                 onBlur={e => (e.currentTarget.style.borderColor = "var(--db-border)")}
               />
             </div>
@@ -218,7 +218,7 @@ export default function SettingsPage() {
                 onChange={e => setMaxPosition(e.target.value)}
                 placeholder="$10,000"
                 style={INPUT}
-                onFocus={e => (e.currentTarget.style.borderColor = "rgba(99,157,255,0.28)")}
+                onFocus={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)")}
                 onBlur={e => (e.currentTarget.style.borderColor = "var(--db-border)")}
               />
             </div>
@@ -229,7 +229,7 @@ export default function SettingsPage() {
                 onChange={e => setDailyLoss(e.target.value)}
                 placeholder="$500"
                 style={INPUT}
-                onFocus={e => (e.currentTarget.style.borderColor = "rgba(99,157,255,0.28)")}
+                onFocus={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)")}
                 onBlur={e => (e.currentTarget.style.borderColor = "var(--db-border)")}
               />
             </div>
@@ -240,7 +240,7 @@ export default function SettingsPage() {
                 onChange={e => setMaxOpenPos(e.target.value)}
                 placeholder="5"
                 style={INPUT}
-                onFocus={e => (e.currentTarget.style.borderColor = "rgba(99,157,255,0.28)")}
+                onFocus={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)")}
                 onBlur={e => (e.currentTarget.style.borderColor = "var(--db-border)")}
               />
             </div>

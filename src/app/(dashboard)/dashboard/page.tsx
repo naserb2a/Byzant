@@ -205,7 +205,7 @@ export default function DashboardPage() {
         <button
           onClick={() => setModalOpen(true)}
           style={{
-            background: "#4d9fff", color: "#fff", border: "none",
+            background: "#99E1D9", color: "#fff", border: "none",
             borderRadius: 8, padding: "8px 18px",
             fontSize: 13, fontWeight: 500, cursor: "pointer",
             fontFamily: SANS, marginBottom: -1,
@@ -280,20 +280,20 @@ export default function DashboardPage() {
           <div
             onClick={e => e.stopPropagation()}
             style={{
-              background: "#0d1420",
-              border: "0.5px solid rgba(99,157,255,0.28)",
+              background: "#0F0F0F",
+              border: "0.5px solid rgba(255,255,255,0.28)",
               borderRadius: 16, padding: 24, width: 480,
               display: "flex", flexDirection: "column", gap: 20,
             }}
           >
             {/* Modal header */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ fontSize: 18, fontWeight: 500, color: "#eef2ff", fontFamily: SANS }}>Add Widget</span>
+              <span style={{ fontSize: 18, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS }}>Add Widget</span>
               <button
                 onClick={() => setModalOpen(false)}
                 style={{
                   background: "none", border: "none", cursor: "pointer",
-                  fontSize: 18, color: "#7a8aab", lineHeight: 1,
+                  fontSize: 18, color: "#666666", lineHeight: 1,
                   fontFamily: SANS, padding: "2px 6px",
                 }}
               >
@@ -317,14 +317,14 @@ export default function DashboardPage() {
                     }}
                   >
                     <div>
-                      <div style={{ fontSize: 14, fontWeight: 400, color: "#eef2ff", fontFamily: SANS }}>{w.name}</div>
-                      <div style={{ fontSize: 12, fontWeight: 400, color: "#7a8aab", fontFamily: SANS, marginTop: 2 }}>{w.desc}</div>
+                      <div style={{ fontSize: 14, fontWeight: 400, color: "#F5F5F5", fontFamily: SANS }}>{w.name}</div>
+                      <div style={{ fontSize: 12, fontWeight: 400, color: "#666666", fontFamily: SANS, marginTop: 2 }}>{w.desc}</div>
                     </div>
                     <button
                       onClick={() => toggleWidget(w.id)}
                       style={{
                         flexShrink: 0, marginLeft: 16,
-                        background: active ? "var(--db-green-dim)" : "#4d9fff",
+                        background: active ? "var(--db-green-dim)" : "#99E1D9",
                         color: active ? "var(--db-green)" : "#fff",
                         border: active ? "1px solid rgba(61,214,140,0.3)" : "none",
                         borderRadius: 7, padding: "6px 14px",

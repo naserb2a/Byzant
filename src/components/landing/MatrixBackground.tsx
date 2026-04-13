@@ -28,7 +28,7 @@ const REPEL_MAX = 4;
 const REPEL_DECAY = 0.87;
 const BRIGHT_DECAY = 0.972;
 
-/* ── Color: #4d9fff → #6eb8ff on hover ───────────────────────────────── */
+/* ── Color: #99E1D9 → #B2EBE5 on hover ───────────────────────────────── */
 const BASE_R = 77;  const BASE_G = 159; const BASE_B = 255;
 const BRIGHT_R = 110; const BRIGHT_G = 184;
 

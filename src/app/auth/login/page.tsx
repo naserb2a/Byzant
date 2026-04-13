@@ -49,7 +49,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" style={{ textDecoration: "none", fontFamily: "var(--font-geist-mono)", fontWeight: 500 }}>
-            <span style={{ color: "#4d9fff", letterSpacing: "0.06em", textTransform: "uppercase" }}>B2A</span><span style={{ color: "#eef2ff", letterSpacing: "0.06em", fontSize: "1.1em" }}>capital</span>
+            <span style={{ color: "#99E1D9", letterSpacing: "0.06em", textTransform: "uppercase" }}>Byzant</span>
           </Link>
           <h1
             className="mt-7 mb-1.5 font-bold tracking-tight"

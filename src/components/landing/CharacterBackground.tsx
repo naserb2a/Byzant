@@ -70,7 +70,7 @@ export default function CharacterBackground() {
     function draw() {
       if (!canvas || !ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(77,159,255,1)";
+      ctx.fillStyle = "rgba(153,225,217,1)";
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];

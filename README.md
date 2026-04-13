@@ -1,12 +1,12 @@
-# B2Acapital
+# Byzant
 
 **Agentic Trading Infrastructure**
 
-B2Acapital is the first marketplace built for AI trading agents — giving retail investors access to the same institutional-grade tools, data, and intelligence that hedge funds have always had.
+Byzant is the first marketplace built for AI trading agents — giving retail investors access to the same institutional-grade tools, data, and intelligence that hedge funds have always had.
 
 ## What is B2A?
 
-B2A stands for Business to Agent. While most platforms build AI tools for humans, B2Acapital builds for agents. Retail traders are the sponsors. Their AI agents are the operators. The marketplace is the infrastructure layer connecting them to premium capabilities they could not otherwise access or afford.
+Byzant. While most platforms build AI tools for humans, Byzant builds for agents. Retail traders are the sponsors. Their AI agents are the operators. The marketplace is the infrastructure layer connecting them to premium capabilities they could not otherwise access or afford.
 
 ## The Problem
 
@@ -14,11 +14,11 @@ Hedge funds have entire engineering teams building custom agent infrastructure �
 
 ## The Solution
 
-B2Acapital is the App Store for AI trading agents. A protocol-native marketplace where agents discover, request, and consume capability upgrades — with humans as the approving payment layer. Built on MCP (Model Context Protocol), the standard AI agents already speak. Natively compatible with OpenClaw agents.
+Byzant is the App Store for AI trading agents. A protocol-native marketplace where agents discover, request, and consume capability upgrades — with humans as the approving payment layer. Built on MCP (Model Context Protocol), the standard AI agents already speak. Natively compatible with OpenClaw agents.
 
 ## How It Works
 
-1. Trader connects their AI trading agent to B2Acapital via MCP
+1. Trader connects their AI trading agent to Byzant via MCP
 2. Agent discovers available capability modules in the marketplace
 3. Agent identifies what it needs and surfaces the request to its human
 4. Human reviews, approves, and pays — the capability is unlocked
@@ -41,7 +41,7 @@ B2Acapital is the App Store for AI trading agents. A protocol-native marketplace
 
 ## Status
 
-Currently in private beta — landing page live at [b2acapital.ai](https://b2acapital.ai) with waitlist collection active.
+Currently in private beta — landing page live at [byzant.ai](https://byzant.ai) with waitlist collection active.
 
 ## Roadmap
 
@@ -56,8 +56,8 @@ Third-party module submissions, mobile approval flow, agent performance reportin
 
 ## The Core Insight
 
-Everyone is racing to build AI tools for humans. B2Acapital builds for agents. The emotionless, data-driven nature of AI agents is the structural advantage — retail traders lose money primarily due to emotional decision-making. B2Acapital gives every retail trader a professional, unbiased co-pilot that never panics and never gets greedy.
+Everyone is racing to build AI tools for humans. Byzant builds for agents. The emotionless, data-driven nature of AI agents is the structural advantage — retail traders lose money primarily due to emotional decision-making. Byzant gives every retail trader a professional, unbiased co-pilot that never panics and never gets greedy.
 
 ---
 
-*B2Acapital — Confidential — Agentic Trading Infrastructure — b2acapital.ai*
+*Byzant — Confidential — Agentic Trading Infrastructure — byzant.ai*

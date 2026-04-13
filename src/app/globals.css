@@ -4,21 +4,21 @@
 
 /* ── Dashboard design tokens ─────────────────────────────────── */
 :root {
-  --db-bg:          #080c12;
-  --db-bg2:         #0d1420;
-  --db-bg3:         #111b2e;
-  --db-bg4:         #162035;
-  --db-border:      rgba(99,157,255,0.08);
-  --db-border-mid:  rgba(99,157,255,0.15);
-  --db-border-hi:   rgba(99,157,255,0.28);
-  --db-blue:        #4d9fff;
-  --db-blue-bright: #6eb8ff;
-  --db-blue-dim:    rgba(77,159,255,0.10);
-  --db-blue-mid:    rgba(77,159,255,0.18);
-  --db-blue-glow:   rgba(77,159,255,0.06);
-  --db-ink:         #eef2ff;
-  --db-ink-muted:   #7a8aab;
-  --db-ink-faint:   #2e3d5a;
+  --db-bg:          #0A0A0A;
+  --db-bg2:         #0F0F0F;
+  --db-bg3:         #141414;
+  --db-bg4:         #1A1A1A;
+  --db-border:      rgba(255,255,255,0.06);
+  --db-border-mid:  rgba(255,255,255,0.08);
+  --db-border-hi:   rgba(255,255,255,0.15);
+  --db-blue:        #99E1D9;
+  --db-blue-bright: #B2EBE5;
+  --db-blue-dim:    rgba(153,225,217,0.10);
+  --db-blue-mid:    rgba(153,225,217,0.18);
+  --db-blue-glow:   rgba(153,225,217,0.06);
+  --db-ink:         #F5F5F5;
+  --db-ink-muted:   #666666;
+  --db-ink-faint:   #444444;
   --db-green:       #3dd68c;
   --db-green-dim:   rgba(61,214,140,0.10);
   --db-red:         #ff5a5a;
@@ -35,17 +35,17 @@
 
 /* ── Landing page aliases (maps to db- tokens) ───────────────── */
 :root {
-  --bg:              #080c12;
-  --surface:         #0d1420;
-  --surface-raised:  #111b2e;
-  --blue:            #4d9fff;
-  --blue-dim:        rgba(77,159,255,0.10);
-  --blue-border:     rgba(99,157,255,0.28);
-  --text:            #eef2ff;
-  --text-muted:      #7a8aab;
-  --text-faint:      #2e3d5a;
-  --border:          rgba(99,157,255,0.08);
-  --border-mid:      rgba(99,157,255,0.15);
+  --bg:              #0A0A0A;
+  --surface:         #0F0F0F;
+  --surface-raised:  #141414;
+  --blue:            #99E1D9;
+  --blue-dim:        rgba(153,225,217,0.10);
+  --blue-border:     rgba(255,255,255,0.15);
+  --text:            #F5F5F5;
+  --text-muted:      #666666;
+  --text-faint:      #444444;
+  --border:          rgba(255,255,255,0.06);
+  --border-mid:      rgba(255,255,255,0.08);
 }
 
 * {
@@ -63,7 +63,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background-color: #080c12;
+  background-color: #0A0A0A;
   color: var(--text);
   font-family: var(--font-geist-sans);
 }
@@ -116,14 +116,14 @@ body {
 
   /* Buttons */
   .btn-orange {
-    background: #4d9fff;
+    background: #99E1D9;
     color: #fff;
     border-radius: 10px;
     font-weight: 500;
     transition: background 0.15s ease, transform 0.1s ease;
   }
   .btn-orange:hover {
-    background: #6eb8ff;
+    background: #B2EBE5;
   }
   .btn-orange:active {
     transform: scale(0.98);

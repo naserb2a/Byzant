@@ -98,7 +98,7 @@ export default function Sidebar() {
             </svg>
           </div>
           <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 500, letterSpacing: 0 }}>
-            <span style={{ color: "#4d9fff", letterSpacing: "0.06em", textTransform: "uppercase" }}>B2A</span><span style={{ color: "#eef2ff", letterSpacing: "0.06em" }}>capital</span>
+            <span style={{ color: "#99E1D9", letterSpacing: "0.06em", textTransform: "uppercase" }}>Byzant</span>
           </span>
         </Link>
       </div>

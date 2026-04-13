@@ -4,7 +4,7 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "B2Acapital — Agentic Trading Infrastructure Marketplace",
+  title: "Byzant — Agentic Trading Infrastructure",
   description:
     "Discover, deploy, and compose agentic trading modules. The infrastructure marketplace for algorithmic trading.",
 };
