@@ -846,7 +846,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: heroVisible ? 1 : 0, y: heroVisible ? 0 : 30 }}
               transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
-              style={{ fontSize: 61, fontWeight: 300, fontStyle: "italic", letterSpacing: "0.02em", lineHeight: 1.15, margin: "0 0 20px", color: "#94a3b8", fontFamily: "'Playfair Display', serif" }}
+              style={{ fontSize: 61, fontWeight: 300, fontStyle: "normal", letterSpacing: "-0.04em", lineHeight: 1.15, margin: "0 0 20px", color: "#94a3b8", fontFamily: SANS }}
             >
               Analysis without emotion.
             </motion.h1>
@@ -855,7 +855,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: heroVisible ? 1 : 0, y: heroVisible ? 0 : 30 }}
               transition={{ duration: 0.7, delay: 0.28, ease: "easeOut" }}
-              style={{ fontSize: 61, fontWeight: 400, fontStyle: "normal", letterSpacing: "0.02em", lineHeight: 1.15, margin: "0 0 32px", color: "#F5F5F5", fontFamily: "'Playfair Display', serif" }}
+              style={{ fontSize: 61, fontWeight: 700, fontStyle: "normal", letterSpacing: "-0.04em", lineHeight: 1.15, margin: "0 0 32px", color: "#F5F5F5", fontFamily: SANS }}
             >
               You are the arbiter.
             </motion.h2>
