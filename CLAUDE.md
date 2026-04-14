@@ -1,11 +1,11 @@
-# B2Acapital — Project Intelligence File
+# Byzant — Project Intelligence File
 # Claude Code must read this file in full before every session.
 
 ---
 
 ## THE VISION
 
-B2Acapital is the first protocol-native marketplace built for AI trading
+Byzant is the first protocol-native marketplace built for AI trading
 agents. It sits between retail traders and financial markets, giving
 everyday investors access to the same institutional-grade data feeds,
 analytical tools, and risk modules that hedge funds have always had —
@@ -14,7 +14,7 @@ MCP (Model Context Protocol) standard.
 
 The core insight that drives everything:
 Everyone is racing to build AI tools for humans.
-B2Acapital builds for agents.
+Byzant builds for agents.
 
 Retail traders are the sponsors. Their AI agents are the operators.
 The marketplace is the infrastructure layer connecting them to premium
@@ -22,11 +22,11 @@ capabilities they could not otherwise access or afford.
 
 The emotionless, data-driven nature of AI agents is the structural
 advantage. Retail traders lose money primarily due to emotional
-decision-making — fear, greed, FOMO, revenge trading. B2Acapital gives
+decision-making — fear, greed, FOMO, revenge trading. Byzant gives
 every retail trader a professional, unbiased co-pilot that never panics
 and never gets greedy.
 
-Positioning: "The emotionless co-pilot your trading has been missing."
+Tagline (LOCKED — never change): "You are the arbiter."
 
 ---
 
@@ -46,13 +46,13 @@ Positioning: "The emotionless co-pilot your trading has been missing."
 3. Emotion is the #1 reason retail traders lose money
    An AI agent has no emotions, no ego, no greed, and no fear.
    This is a structural advantage that has never been properly packaged
-   for retail investors. B2Acapital packages it.
+   for retail investors. Byzant packages it.
 
 ---
 
 ## HOW IT WORKS
 
-1. Trader connects their AI trading agent to B2Acapital via MCP
+1. Trader connects their AI trading agent to Byzant via MCP
 2. Agent discovers available capability modules in the marketplace
 3. Agent identifies what it needs and surfaces the request to its human
 4. Human reviews, approves, and pays — the capability is unlocked
@@ -84,7 +84,7 @@ opinion without losing control of their money.
 - Hosting: Vercel (auto-deploys from GitHub on push)
 - Payments: Stripe (planned Phase 2)
 - Animation: Framer Motion (landing page)
-- Domain: b2acapital.ai (live and connected)
+- Domain: byzant.ai (planned) — currently live at b2acapital.ai during transition
 - Repo: github.com/naserb2a/B2Acapital
 
 ---
@@ -92,21 +92,21 @@ opinion without losing control of their money.
 ## DESIGN SYSTEM (NON-NEGOTIABLE — NEVER DEVIATE)
 
 ### Colors
---db-bg:           #080c12   (page background)
---db-bg2:          #0d1420   (card background)
---db-bg3:          #111b2e   (nested/hover elements)
---db-bg4:          #162035   (deepest nesting)
---db-blue:         #4d9fff   (primary accent)
---db-blue-bright:  #6eb8ff   (hover/highlight blue)
---db-blue-dim:     rgba(77,159,255,0.10)
---db-blue-mid:     rgba(77,159,255,0.18)
---db-blue-glow:    rgba(77,159,255,0.06)
---db-border:       rgba(99,157,255,0.08)
---db-border-mid:   rgba(99,157,255,0.15)
---db-border-hi:    rgba(99,157,255,0.28)
---db-ink:          #eef2ff   (primary text)
---db-ink-muted:    #7a8aab   (secondary text)
---db-ink-faint:    #2e3d5a   (labels/disabled)
+--db-bg:           #0A0A0A   (page background — deep black)
+--db-bg2:          #0F0F0F   (card background)
+--db-bg3:          #141414   (nested/hover elements)
+--db-bg4:          #1A1A1A   (deepest nesting)
+--db-blue:         #99E1D9   (primary accent — mint teal)
+--db-blue-bright:  #B2EBE5   (hover/highlight mint)
+--db-blue-dim:     rgba(153,225,217,0.10)
+--db-blue-mid:     rgba(153,225,217,0.18)
+--db-blue-glow:    rgba(153,225,217,0.06)
+--db-border:       rgba(255,255,255,0.06)
+--db-border-mid:   rgba(255,255,255,0.08)
+--db-border-hi:    rgba(255,255,255,0.15)
+--db-ink:          #F5F5F5   (primary text)
+--db-ink-muted:    #666666   (secondary text)
+--db-ink-faint:    #444444   (labels/disabled)
 --db-green:        #3dd68c   (success/bullish)
 --db-green-dim:    rgba(61,214,140,0.10)
 --db-red:          #ff5a5a   (danger/bearish)
@@ -119,7 +119,8 @@ opinion without losing control of their money.
 - NO white backgrounds in the dashboard
 - NO purple gradients
 - NO hardcoded light colors in dashboard components
-- If you see orange, replace it with #4d9fff immediately
+- If you see orange, replace it with #99E1D9 immediately
+- Primary accent is #99E1D9 (mint teal) — not blue, not green
 
 ### Typography
 - Sora: ALL headings, body text, nav items, buttons, descriptions
@@ -132,9 +133,9 @@ opinion without losing control of their money.
 - NEVER use system fonts, Inter, Roboto, or Arial as primary
 
 ### Card Styling
-- Background: var(--db-bg2) = #0d1420
-- Border: 0.5px solid var(--db-border)
-- Border-radius: 14-16px
+- Background: var(--db-bg2) = #0F0F0F (or #141414 for surface cards)
+- Border: 1px solid var(--db-border) = rgba(255,255,255,0.06)
+- Border-radius: 12-16px
 - Hover: border-color shifts to var(--db-border-hi)
 - All charts: inline SVG only, no external chart libraries
 
@@ -186,7 +187,7 @@ b2acapital/
 ## CURRENT BUILD STATUS
 
 ### Phase 1 — COMPLETE
-- Landing page live at b2acapital.ai
+- Landing page live at b2acapital.ai (byzant.ai transition planned)
 - Supabase auth (login + signup)
 - Dashboard shell with sidebar + topbar
 - All 6 dashboard screens built
@@ -274,7 +275,7 @@ Hidden (founder only, route exists but not in nav):
 
 1. NEVER touch app/page.tsx (landing page) unless explicitly asked
 2. NEVER touch app/layout.tsx (root layout) unless explicitly asked
-3. NEVER use orange — any orange found must be replaced with #4d9fff
+3. NEVER use orange — any orange found must be replaced with #99E1D9
 4. ALWAYS use Sora + DM Mono, never system fonts as primary
 5. ALWAYS add "use client" to components using hooks or event handlers
 6. ALWAYS run: rm -rf .next && npm run dev after major edits
@@ -310,7 +311,7 @@ White/broken dashboard after edits:
 ## DEPLOYMENT
 
 Every push to the main branch on GitHub auto-deploys to Vercel.
-Production URL: b2acapital.ai
+Production URL: b2acapital.ai (byzant.ai transition planned)
 Dev server: localhost:3000 (run: npm run dev)
 Always test locally before pushing.
 
@@ -318,7 +319,7 @@ Always test locally before pushing.
 
 ## WHAT SUCCESS LOOKS LIKE
 
-B2Acapital becomes the default infrastructure layer that retail traders
+Byzant becomes the default infrastructure layer that retail traders
 use to connect, manage, and upgrade their AI trading agents. The
 marketplace grows through third-party module developers, data provider
 partnerships, and network effects. Every retail trader who has ever
@@ -328,4 +329,4 @@ Target: 500 waitlist signups → Phase 2 launch → paid tier → scale.
 
 ---
 
-B2Acapital — Confidential — b2acapital.ai
+Byzant — Confidential — byzant.ai (b2acapital.ai during transition)
