@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- V2: Triple Ring — three concentric circles + cross fitting innermost -->
+  <circle cx="60" cy="60" r="54" stroke="currentColor" stroke-width="1.4"/>
+  <circle cx="60" cy="60" r="40" stroke="currentColor" stroke-width="1.4"/>
+  <circle cx="60" cy="60" r="12" stroke="currentColor" stroke-width="1.4"/>
+  <line x1="48" y1="60" x2="72" y2="60" stroke="currentColor" stroke-width="1.4"/>
+  <line x1="60" y1="48" x2="60" y2="72" stroke="currentColor" stroke-width="1.4"/>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- V6: Floating Cross — outer ring + cross arms detached from ring and from center -->
+  <circle cx="60" cy="60" r="54" stroke="currentColor" stroke-width="1.4"/>
+  <!-- 4 arm segments: each from r=16 to r=44, leaving gap at center and at ring -->
+  <line x1="60" y1="16" x2="60" y2="44" stroke="currentColor" stroke-width="1.4"/>
+  <line x1="60" y1="76" x2="60" y2="104" stroke="currentColor" stroke-width="1.4"/>
+  <line x1="16" y1="60" x2="44" y2="60" stroke="currentColor" stroke-width="1.4"/>
+  <line x1="76" y1="60" x2="104" y2="60" stroke="currentColor" stroke-width="1.4"/>
+  <!-- Center anchor dot -->
+  <circle cx="60" cy="60" r="3" fill="currentColor"/>
+</svg>
