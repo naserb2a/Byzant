@@ -1210,10 +1210,29 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: heroVisible ? 1 : 0, y: heroVisible ? 0 : 16 }}
               transition={{ duration: 0.7, delay: 0.5 }}
-              style={{ fontSize: 18, color: "#666666", fontFamily: SANS, fontWeight: 300, lineHeight: 1.65, maxWidth: 560, margin: "0 0 40px" }}
+              style={{ fontSize: 18, color: "#666666", fontFamily: SANS, fontWeight: 300, lineHeight: 1.65, maxWidth: 560, margin: "0 0 20px" }}
             >
               Byzant is the first marketplace built for AI trading agents — giving retail investors access to the same institutional-grade tools, data, and intelligence that hedge funds have always had.
             </motion.p>
+
+            {/* Agent compatibility badges */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: heroVisible ? 1 : 0 }}
+              transition={{ duration: 0.6, delay: 0.65 }}
+              style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 32 }}
+            >
+              {["OpenClaw", "Claude", "GPT-4", "Gemini", "Grok", "LangChain", "Cursor"].map((agent) => (
+                <span key={agent} style={{
+                  fontFamily: MONO, fontSize: 11, fontWeight: 500,
+                  color: "#0a0f1a", background: "#3dd68c",
+                  borderRadius: 100, padding: "5px 14px",
+                  whiteSpace: "nowrap",
+                }}>
+                  {agent}
+                </span>
+              ))}
+            </motion.div>
 
             {/* Form */}
             <motion.div
@@ -1258,9 +1277,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* ── MCP COMPATIBILITY BAR ───────────────────────────────── */}
-      <MCPCompatibilityBar />
 
       {/* ── STATS BAR ───────────────────────────────────────────── */}
       <StatsBar />
