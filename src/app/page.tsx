@@ -471,7 +471,7 @@ function BentoGrid() {
 
   return (
     <section className="bento-section" style={{ background: "#0A0A0A", padding: "120px 0" }}>
-      <div ref={ref} style={{ maxWidth: 1080, margin: "0 auto", padding: "0 2rem" }}>
+      <div ref={ref} style={{ maxWidth: 1160, margin: "0 auto", padding: "0 2rem" }}>
         {/* Eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}

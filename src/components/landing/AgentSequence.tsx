@@ -112,7 +112,7 @@ export default function AgentSequence() {
           .agent-seq-row > * { width: 100% !important; flex: none !important; }
         }
       `}</style>
-      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 2rem" }}>
+      <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 2rem" }}>
 
         {/* Header */}
         <div className="seq-header" style={{ textAlign: "left", marginBottom: 64 }}>
