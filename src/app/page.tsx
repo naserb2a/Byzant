@@ -1184,7 +1184,8 @@ export default function HomePage() {
               {["OpenClaw", "Claude", "GPT-4", "Gemini", "Grok", "LangChain", "Cursor"].map((agent) => (
                 <span key={agent} style={{
                   fontFamily: MONO, fontSize: 11, fontWeight: 500,
-                  color: "#0a0f1a", background: "#3dd68c",
+                  color: "#3dd68c", background: "rgba(61,214,140,0.15)",
+                  border: "1px solid rgba(61,214,140,0.4)",
                   borderRadius: 100, padding: "5px 14px",
                   whiteSpace: "nowrap",
                 }}>
