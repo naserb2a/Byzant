@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import AgentSequence from "@/components/landing/AgentSequence";
 
 const AnimatedAgentCard = dynamic(
@@ -178,24 +178,21 @@ function StatsBar() {
   );
 }
 
-/* ─── Bento Card SVGs ───────────────────────────────────────────── */
+/* ─── Bento Card Static SVGs (top of card) ──────────────────────── */
 function NodeNetworkSVG() {
   return (
     <svg width="100%" height="180" viewBox="0 0 380 180" fill="none" style={{ display: "block" }}>
-      {/* Grid dots */}
       {[40,80,120,160,200,240,280,320,360].map(x =>
         [30,70,110,150].map(y => (
           <circle key={`${x}-${y}`} cx={x} cy={y} r={1.5} fill="rgba(153,225,217,0.15)" />
         ))
       )}
-      {/* Nodes */}
       <circle cx={60} cy={90} r={18} fill="rgba(153,225,217,0.08)" stroke="#99E1D9" strokeWidth={1} />
       <circle cx={190} cy={50} r={22} fill="rgba(153,225,217,0.12)" stroke="#99E1D9" strokeWidth={1.5} />
       <circle cx={190} cy={130} r={14} fill="rgba(153,225,217,0.06)" stroke="rgba(153,225,217,0.5)" strokeWidth={1} />
       <circle cx={310} cy={90} r={18} fill="rgba(153,225,217,0.08)" stroke="#99E1D9" strokeWidth={1} />
       <circle cx={130} cy={145} r={10} fill="rgba(153,225,217,0.06)" stroke="rgba(153,225,217,0.4)" strokeWidth={0.75} />
       <circle cx={250} cy={145} r={10} fill="rgba(153,225,217,0.06)" stroke="rgba(153,225,217,0.4)" strokeWidth={0.75} />
-      {/* Lines */}
       <line x1={78} y1={90} x2={168} y2={55} stroke="rgba(153,225,217,0.3)" strokeWidth={0.75} />
       <line x1={78} y1={92} x2={168} y2={128} stroke="rgba(153,225,217,0.2)" strokeWidth={0.5} />
       <line x1={212} y1={52} x2={292} y2={88} stroke="rgba(153,225,217,0.3)" strokeWidth={0.75} />
@@ -203,7 +200,6 @@ function NodeNetworkSVG() {
       <line x1={190} y1={72} x2={190} y2={116} stroke="rgba(153,225,217,0.25)" strokeWidth={0.75} />
       <line x1={140} y1={142} x2={176} y2={132} stroke="rgba(153,225,217,0.2)" strokeWidth={0.5} />
       <line x1={240} y1={142} x2={204} y2={132} stroke="rgba(153,225,217,0.2)" strokeWidth={0.5} />
-      {/* Center icon */}
       <rect x={182} y={42} width={16} height={16} rx={3} fill="#99E1D9" fillOpacity={0.6} />
       <path d="M186 50l3 3 5-5" stroke="#fff" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
@@ -213,18 +209,14 @@ function NodeNetworkSVG() {
 function ApprovalSVG() {
   return (
     <svg width="100%" height="180" viewBox="0 0 320 180" fill="none" style={{ display: "block" }}>
-      {/* Background ring */}
       <circle cx={160} cy={90} r={70} stroke="rgba(61,214,140,0.08)" strokeWidth={1} />
       <circle cx={160} cy={90} r={50} stroke="rgba(61,214,140,0.12)" strokeWidth={1} />
-      {/* Main checkmark circle */}
       <circle cx={160} cy={90} r={34} fill="rgba(61,214,140,0.1)" stroke="#3dd68c" strokeWidth={1.5} />
       <path d="M146 90l10 10 18-18" stroke="#3dd68c" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
-      {/* Orbiting dots */}
       <circle cx={160} cy={20} r={5} fill="rgba(61,214,140,0.4)" />
       <circle cx={230} cy={90} r={4} fill="rgba(61,214,140,0.25)" />
       <circle cx={160} cy={160} r={3} fill="rgba(61,214,140,0.2)" />
       <circle cx={90} cy={90} r={4} fill="rgba(61,214,140,0.25)" />
-      {/* Connecting lines */}
       <line x1={160} y1={25} x2={160} y2={56} stroke="rgba(61,214,140,0.15)" strokeWidth={0.75} strokeDasharray="3 3" />
       <line x1={225} y1={90} x2={194} y2={90} stroke="rgba(61,214,140,0.15)" strokeWidth={0.75} strokeDasharray="3 3" />
     </svg>
@@ -236,13 +228,8 @@ function BarChartSVG() {
   return (
     <svg width="100%" height="140" viewBox="0 0 300 140" fill="none" style={{ display: "block" }}>
       {bars.map((h, i) => (
-        <rect
-          key={i}
-          x={10 + i * 28} y={140 - h}
-          width={20} height={h}
-          rx={3}
-          fill={i >= 7 ? "#99E1D9" : `rgba(153,225,217,${0.15 + i * 0.06})`}
-        />
+        <rect key={i} x={10 + i * 28} y={140 - h} width={20} height={h} rx={3}
+          fill={i >= 7 ? "#3dd68c" : `rgba(153,225,217,${0.15 + i * 0.06})`} />
       ))}
       <line x1={0} y1={139} x2={300} y2={139} stroke="rgba(255,255,255,0.15)" strokeWidth={0.75} />
     </svg>
@@ -252,22 +239,20 @@ function BarChartSVG() {
 function ProtocolSVG() {
   return (
     <svg width="100%" height="140" viewBox="0 0 280 140" fill="none" style={{ display: "block" }}>
-      {/* Horizontal bus */}
       <line x1={20} y1={70} x2={260} y2={70} stroke="rgba(153,225,217,0.3)" strokeWidth={1} />
-      {/* Nodes on bus */}
       {[40, 100, 140, 180, 240].map((x, i) => (
         <g key={i}>
-          <circle cx={x} cy={70} r={8} fill="rgba(153,225,217,0.1)" stroke={i === 2 ? "#99E1D9" : "rgba(153,225,217,0.4)"} strokeWidth={i === 2 ? 1.5 : 1} />
+          <circle cx={x} cy={70} r={8} fill="rgba(153,225,217,0.1)"
+            stroke={i === 2 ? "#99E1D9" : "rgba(153,225,217,0.4)"}
+            strokeWidth={i === 2 ? 1.5 : 1} />
           {i === 2 && <circle cx={x} cy={70} r={3} fill="#99E1D9" />}
         </g>
       ))}
-      {/* Labels */}
       <text x={40} y={92} textAnchor="middle" fill="rgba(153,225,217,0.4)" fontSize={7} fontFamily="var(--font-geist-mono)">AGENT</text>
       <text x={100} y={92} textAnchor="middle" fill="rgba(153,225,217,0.4)" fontSize={7} fontFamily="var(--font-geist-mono)">MCP</text>
       <text x={140} y={92} textAnchor="middle" fill="#99E1D9" fontSize={7} fontFamily="var(--font-geist-mono)">Byzant</text>
       <text x={180} y={92} textAnchor="middle" fill="rgba(153,225,217,0.4)" fontSize={7} fontFamily="var(--font-geist-mono)">DATA</text>
       <text x={240} y={92} textAnchor="middle" fill="rgba(153,225,217,0.4)" fontSize={7} fontFamily="var(--font-geist-mono)">EXEC</text>
-      {/* Vertical ticks */}
       {[40,100,140,180,240].map((x, i) => (
         <line key={i} x1={x} y1={62} x2={x} y2={42} stroke="rgba(153,225,217,0.15)" strokeWidth={0.75} strokeDasharray="2 2" />
       ))}
@@ -275,19 +260,214 @@ function ProtocolSVG() {
   );
 }
 
+/* ─── Bento Card Expanded Animated Visuals ──────────────────────── */
+function ExpandedNodeGraph({ active }: { active: boolean }) {
+  const nodes = [
+    { x: 35,  y: 70, label: "AGENT" },
+    { x: 130, y: 70, label: "MCP" },
+    { x: 235, y: 18, label: "DATA" },
+    { x: 235, y: 70, label: "RISK" },
+    { x: 235, y: 122, label: "STRATEGY" },
+  ];
+  const lines: [number,number,number,number][] = [
+    [51,70,112,70], [146,67,217,22], [146,70,217,70], [146,73,217,118],
+  ];
+  return (
+    <svg width="100%" height="142" viewBox="0 0 280 142" fill="none">
+      {lines.map(([x1,y1,x2,y2], i) => (
+        <motion.line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
+          stroke="rgba(153,225,217,0.3)" strokeWidth={0.75}
+          initial={{ opacity: 0 }}
+          animate={active ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ delay: 0.15 + i * 0.1, duration: 0.4 }}
+        />
+      ))}
+      {nodes.map((n, i) => (
+        <motion.g key={i}
+          initial={{ opacity: 0 }}
+          animate={active ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ delay: i * 0.12, duration: 0.35 }}
+        >
+          <motion.circle cx={n.x} cy={n.y} r={15}
+            fill="rgba(153,225,217,0.06)" stroke="#99E1D9" strokeWidth={1}
+            animate={active ? { strokeOpacity: [0.3, 1, 0.3] } : { strokeOpacity: 0.3 }}
+            transition={active ? { delay: i * 0.15 + 0.7, duration: 2.2, repeat: Infinity, ease: "easeInOut" } : {}}
+          />
+          <text x={n.x} y={n.y + 28} textAnchor="middle"
+            fill="rgba(153,225,217,0.45)" fontSize={6.5}
+            fontFamily="var(--font-geist-mono)">{n.label}</text>
+        </motion.g>
+      ))}
+    </svg>
+  );
+}
+
+function ApprovalMockup() {
+  return (
+    <div style={{
+      background: "#0A0A0A", border: "0.5px solid rgba(255,255,255,0.1)",
+      borderRadius: 12, padding: "16px 20px", maxWidth: 340,
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
+        <span style={{ fontSize: 10, color: "#99E1D9", fontFamily: MONO, letterSpacing: "0.1em" }}>AWAITING APPROVAL</span>
+        <span style={{ fontSize: 10, color: "#3dd68c", fontFamily: MONO }}>● LIVE</span>
+      </div>
+      <div style={{ fontSize: 13, color: "#F5F5F5", fontFamily: SANS, marginBottom: 4 }}>
+        Agent requests LONG in <strong>NVDA</strong>
+      </div>
+      <div style={{ fontSize: 11, color: "#666666", fontFamily: SANS, marginBottom: 16 }}>50 shares · Est. $5,920</div>
+      <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ flex: 1, background: "#99E1D9", color: "#0A0A0A", textAlign: "center", padding: "8px 0", borderRadius: 6, fontSize: 12, fontWeight: 600, fontFamily: SANS }}>Approve</div>
+        <div style={{ flex: 1, background: "rgba(255,255,255,0.06)", color: "#666666", textAlign: "center", padding: "8px 0", borderRadius: 6, fontSize: 12, fontFamily: SANS }}>Decline</div>
+      </div>
+    </div>
+  );
+}
+
+function AnimatedBars({ active }: { active: boolean }) {
+  const bars = [28, 44, 36, 60, 50, 72, 64, 80, 68, 90];
+  return (
+    <svg width="100%" height="100" viewBox="0 0 300 100" fill="none">
+      {bars.map((h, i) => (
+        <motion.rect key={i} x={10 + i * 28} width={20} rx={3}
+          initial={{ height: 0, y: 100 }}
+          animate={active ? { height: h, y: 100 - h } : { height: 0, y: 100 }}
+          transition={{ duration: 0.55, delay: active ? i * 0.05 : 0, ease: "easeOut" }}
+          fill={i >= 7 ? "#3dd68c" : `rgba(153,225,217,${0.14 + i * 0.06})`}
+        />
+      ))}
+      <line x1={0} y1={99} x2={300} y2={99} stroke="rgba(255,255,255,0.12)" strokeWidth={0.75} />
+    </svg>
+  );
+}
+
+function EmotionChart({ active }: { active: boolean }) {
+  const humanPath = "M 0,68 L 28,30 L 52,82 L 76,14 L 100,78 L 128,26 L 152,64 L 176,16 L 200,80 L 228,36 L 255,70 L 280,22";
+  const agentPath  = "M 0,76 C 56,72 112,62 168,52 S 228,40 280,35";
+  return (
+    <svg width="100%" height="110" viewBox="0 0 280 110" fill="none">
+      {[25,50,75].map(y => (
+        <line key={y} x1={0} y1={y} x2={280} y2={y} stroke="rgba(255,255,255,0.04)" strokeWidth={0.5} />
+      ))}
+      <motion.path d={humanPath} stroke="rgba(255,90,90,0.5)" strokeWidth={1.5}
+        fill="none" strokeLinecap="round" strokeLinejoin="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={active ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+        transition={{ duration: 1, ease: "easeInOut" }}
+      />
+      <motion.path d={agentPath} stroke="#3dd68c" strokeWidth={1.5}
+        fill="none" strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={active ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+        transition={{ duration: 1, delay: 0.35, ease: "easeInOut" }}
+      />
+      <motion.text x={4} y={106} fill="rgba(255,90,90,0.5)" fontSize={7} fontFamily="var(--font-geist-mono)"
+        initial={{ opacity: 0 }} animate={active ? { opacity: 1 } : { opacity: 0 }} transition={{ delay: 0.9 }}>
+        HUMAN
+      </motion.text>
+      <motion.text x={242} y={106} fill="#3dd68c" fontSize={7} fontFamily="var(--font-geist-mono)"
+        initial={{ opacity: 0 }} animate={active ? { opacity: 1 } : { opacity: 0 }} transition={{ delay: 1.1 }}>
+        AGENT
+      </motion.text>
+    </svg>
+  );
+}
+
+function AnimatedPipeline({ active }: { active: boolean }) {
+  const nodes = [
+    { x: 40,  label: "AGENT"  },
+    { x: 100, label: "MCP"    },
+    { x: 140, label: "Byzant" },
+    { x: 180, label: "DATA"   },
+    { x: 240, label: "EXEC"   },
+  ];
+  return (
+    <svg width="100%" height="90" viewBox="0 0 280 90" fill="none">
+      <line x1={20} y1={45} x2={260} y2={45} stroke="rgba(153,225,217,0.25)" strokeWidth={1} />
+      {nodes.map((n, i) => (
+        <motion.g key={i}
+          animate={active ? { opacity: [0.25, 1, 0.25] } : { opacity: 0.25 }}
+          transition={active ? {
+            delay: i * 0.3, duration: 0.6,
+            repeat: Infinity, repeatDelay: nodes.length * 0.3, ease: "easeInOut",
+          } : { duration: 0.3 }}
+        >
+          <circle cx={n.x} cy={45} r={9} fill="rgba(153,225,217,0.08)"
+            stroke={i === 2 ? "#99E1D9" : "rgba(153,225,217,0.4)"}
+            strokeWidth={i === 2 ? 1.5 : 1} />
+          {i === 2 && <circle cx={n.x} cy={45} r={3} fill="#99E1D9" />}
+          <text x={n.x} y={66} textAnchor="middle" fill="rgba(153,225,217,0.4)"
+            fontSize={7} fontFamily="var(--font-geist-mono)">{n.label}</text>
+          <line x1={n.x} y1={36} x2={n.x} y2={20} stroke="rgba(153,225,217,0.12)"
+            strokeWidth={0.75} strokeDasharray="2 2" />
+        </motion.g>
+      ))}
+    </svg>
+  );
+}
+
+/* ─── Shared bento expand primitives ────────────────────────────── */
+function BentoToggleIcon({ isOpen }: { isOpen: boolean }) {
+  return (
+    <motion.div
+      animate={{ rotate: isOpen ? 45 : 0 }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
+      style={{
+        position: "absolute", top: 16, right: 16, zIndex: 10,
+        width: 26, height: 26, borderRadius: "50%",
+        border: `0.5px solid ${isOpen ? "rgba(153,225,217,0.4)" : "rgba(255,255,255,0.15)"}`,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: 16, lineHeight: 1,
+        color: isOpen ? "#99E1D9" : "#555555",
+        background: isOpen ? "rgba(153,225,217,0.06)" : "rgba(255,255,255,0.03)",
+        userSelect: "none" as const,
+        transition: "color 0.2s, border-color 0.2s, background 0.2s",
+      }}
+    >+</motion.div>
+  );
+}
+
+function BentoExpanded({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: "auto", opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
+      transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
+      style={{ overflow: "hidden" }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 /* ─── Bento Grid ────────────────────────────────────────────────── */
 function BentoGrid() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const [openCard, setOpenCard] = useState<number | null>(null);
 
-  const cardStyle = (bg: string, border?: string): React.CSSProperties => ({
-    background: bg,
-    border: `0.5px solid ${border ?? "rgba(255,255,255,0.15)"}`,
-    borderRadius: 20,
-    overflow: "hidden",
-    cursor: "default",
-    transition: "border-color 0.25s, transform 0.25s",
-  });
+  function toggle(id: number) {
+    setOpenCard(prev => prev === id ? null : id);
+  }
+
+  const expandedTextStyle: React.CSSProperties = {
+    fontSize: 14, color: "#94a3b8", fontFamily: SANS,
+    lineHeight: 1.7, margin: "0 0 20px",
+  };
+
+  function baseCard(id: number, bg: string, border: string): React.CSSProperties {
+    const isOpen = openCard === id;
+    return {
+      background: isOpen ? "#1a1a1a" : bg,
+      border: `0.5px solid ${border}`,
+      borderRadius: 20,
+      overflow: "hidden",
+      cursor: "pointer",
+      position: "relative",
+      transition: "border-color 0.25s, transform 0.25s, background 0.3s",
+    };
+  }
 
   return (
     <section className="bento-section" style={{ background: "#0A0A0A", padding: "120px 0" }}>
@@ -311,87 +491,121 @@ function BentoGrid() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="section-h2"
-          style={{
-            textAlign: "center", fontSize: 48, fontWeight: 600,
-            letterSpacing: "-0.03em", color: "#F5F5F5",
-            fontFamily: SANS, margin: "0 auto 64px", maxWidth: 640,
-          }}
+          style={{ textAlign: "center", fontSize: 48, fontWeight: 600, letterSpacing: "-0.03em", color: "#F5F5F5", fontFamily: SANS, margin: "0 auto 64px", maxWidth: 640 }}
         >
           Built for how agents actually trade.
         </motion.h2>
 
-        {/* Row 1: 60/40 */}
+        {/* ── Row 1: 60/40 ── */}
         <div className="bento-row1" style={{ display: "grid", gridTemplateColumns: "60fr 40fr", gap: 16, marginBottom: 16 }}>
-          {/* Card 1 */}
+
+          {/* Card 1 — Agent-Native Infrastructure */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
-            style={cardStyle("#0F0F0F")}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.transform = "translateY(0)"; }}
+            style={baseCard(1, "#0F0F0F", "rgba(255,255,255,0.15)")}
+            onClick={() => toggle(1)}
+            onMouseEnter={e => { if (openCard !== 1) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.transform = "translateY(-4px)"; }}}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = openCard === 1 ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.15)"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
+            <BentoToggleIcon isOpen={openCard === 1} />
             <div style={{ padding: "28px 28px 0", borderBottom: "0.5px solid rgba(255,255,255,0.08)" }}>
               <NodeNetworkSVG />
             </div>
-            <div className="bento-card-content" style={{ padding: "24px 28px 28px" }}>
+            <div className="bento-card-content" style={{ padding: "24px 28px 20px" }}>
               <span style={{ fontSize: 11, color: "#99E1D9", fontFamily: MONO, letterSpacing: "0.1em", fontWeight: 600 }}>01</span>
-              <div style={{ fontSize: 20, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS, margin: "8px 0 10px" }}>
-                Agent-Native Infrastructure
-              </div>
+              <div style={{ fontSize: 20, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS, margin: "8px 0 10px" }}>Agent-Native Infrastructure</div>
               <div style={{ fontSize: 13, color: "#666666", fontFamily: SANS, lineHeight: 1.6 }}>
                 Built on MCP protocol — the standard AI agents already speak. Plug in capabilities without configuration or custom integrations.
               </div>
             </div>
+            <AnimatePresence initial={false}>
+              {openCard === 1 && (
+                <BentoExpanded>
+                  <div style={{ padding: "4px 28px 28px" }}>
+                    <p style={expandedTextStyle}>
+                      Every Byzant module is an MCP server. Your agent discovers, requests, and consumes capabilities — no hardcoded integrations, no developer required.
+                    </p>
+                    <ExpandedNodeGraph active={openCard === 1} />
+                  </div>
+                </BentoExpanded>
+              )}
+            </AnimatePresence>
           </motion.div>
 
-          {/* Card 2 */}
+          {/* Card 2 — Human in Control */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-            style={cardStyle("#141414", "rgba(61,214,140,0.15)")}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(61,214,140,0.3)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
+            style={baseCard(2, "#141414", "rgba(61,214,140,0.15)")}
+            onClick={() => toggle(2)}
+            onMouseEnter={e => { if (openCard !== 2) { e.currentTarget.style.borderColor = "rgba(61,214,140,0.3)"; e.currentTarget.style.transform = "translateY(-4px)"; }}}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(61,214,140,0.15)"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
+            <BentoToggleIcon isOpen={openCard === 2} />
             <div style={{ padding: "28px 28px 0", borderBottom: "0.5px solid rgba(61,214,140,0.08)" }}>
               <ApprovalSVG />
             </div>
-            <div className="bento-card-content" style={{ padding: "24px 28px 28px" }}>
+            <div className="bento-card-content" style={{ padding: "24px 28px 20px" }}>
               <span style={{ fontSize: 11, color: "#3dd68c", fontFamily: MONO, letterSpacing: "0.1em", fontWeight: 600 }}>02</span>
-              <div style={{ fontSize: 20, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS, margin: "8px 0 10px" }}>
-                Human in Control
-              </div>
+              <div style={{ fontSize: 20, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS, margin: "8px 0 10px" }}>Human in Control</div>
               <div style={{ fontSize: 13, color: "#666666", fontFamily: SANS, lineHeight: 1.6 }}>
                 Your agent surfaces opportunities. You approve. Emotionless analysis without bias, fear, or greed.
               </div>
             </div>
+            <AnimatePresence initial={false}>
+              {openCard === 2 && (
+                <BentoExpanded>
+                  <div style={{ padding: "4px 28px 28px" }}>
+                    <p style={expandedTextStyle}>
+                      Your agent never acts autonomously. It surfaces trade setups and signals — you approve or decline every action. Emotionless analysis, full human authority.
+                    </p>
+                    <ApprovalMockup />
+                  </div>
+                </BentoExpanded>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
 
-        {/* Row 2: three equal */}
+        {/* ── Row 2: three equal ── */}
         <div className="bento-row2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
-          {/* Card 3 */}
+
+          {/* Card 3 — Institutional Edge */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-            style={cardStyle("#0F0F0F")}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
+            style={baseCard(3, "#0F0F0F", "rgba(255,255,255,0.15)")}
+            onClick={() => toggle(3)}
+            onMouseEnter={e => { if (openCard !== 3) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.transform = "translateY(-4px)"; }}}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
+            <BentoToggleIcon isOpen={openCard === 3} />
             <div style={{ padding: "24px 24px 0" }}>
               <BarChartSVG />
             </div>
-            <div className="bento-card-content" style={{ padding: "16px 24px 24px" }}>
+            <div className="bento-card-content" style={{ padding: "16px 24px 20px" }}>
               <span style={{ fontSize: 11, color: "#99E1D9", fontFamily: MONO, letterSpacing: "0.1em", fontWeight: 600 }}>03</span>
-              <div style={{ fontSize: 17, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS, margin: "8px 0 8px" }}>
-                Institutional Edge
-              </div>
+              <div style={{ fontSize: 17, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS, margin: "8px 0 8px" }}>Institutional Edge</div>
               <div style={{ fontSize: 12, color: "#666666", fontFamily: SANS, lineHeight: 1.6 }}>
                 Premium tools once reserved for Wall Street — now modular, affordable, and agent-ready.
               </div>
             </div>
+            <AnimatePresence initial={false}>
+              {openCard === 3 && (
+                <BentoExpanded>
+                  <div style={{ padding: "4px 24px 24px" }}>
+                    <p style={expandedTextStyle}>
+                      Whale tracking, congressional trade monitoring, dark pool signals, options flow — tools hedge funds pay six figures for, now modular and agent-ready.
+                    </p>
+                    <AnimatedBars active={openCard === 3} />
+                  </div>
+                </BentoExpanded>
+              )}
+            </AnimatePresence>
           </motion.div>
 
           {/* Card 4 — Zero Emotion */}
@@ -399,44 +613,67 @@ function BentoGrid() {
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
-            style={{ ...cardStyle("#0F0F0F"), display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 24px" }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
+            style={{ ...baseCard(4, "#0F0F0F", "rgba(255,255,255,0.15)"), display: "flex", flexDirection: "column" }}
+            onClick={() => toggle(4)}
+            onMouseEnter={e => { if (openCard !== 4) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.transform = "translateY(-4px)"; }}}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
-            <div style={{
-              fontSize: 96, fontWeight: 600, fontFamily: MONO,
-              color: "#3dd68c", letterSpacing: "-0.05em", lineHeight: 1,
-              textShadow: "0 0 40px rgba(61,214,140,0.25)",
-            }}>
-              0
+            <BentoToggleIcon isOpen={openCard === 4} />
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 24px", flex: "0 0 auto" }}>
+              <div style={{ fontSize: 96, fontWeight: 600, fontFamily: MONO, color: "#3dd68c", letterSpacing: "-0.05em", lineHeight: 1, textShadow: "0 0 40px rgba(61,214,140,0.25)" }}>0</div>
+              <div style={{ fontSize: 10, color: "#666666", fontFamily: MONO, letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 12, textAlign: "center" }}>
+                Emotional trades<br />detected
+              </div>
             </div>
-            <div style={{ fontSize: 10, color: "#666666", fontFamily: MONO, letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 12, textAlign: "center" }}>
-              Emotional trades<br />detected
-            </div>
+            <AnimatePresence initial={false}>
+              {openCard === 4 && (
+                <BentoExpanded>
+                  <div style={{ padding: "0 24px 24px" }}>
+                    <p style={expandedTextStyle}>
+                      AI agents have no fear, no greed, no FOMO. They execute your strategy exactly as defined — every time.
+                    </p>
+                    <EmotionChart active={openCard === 4} />
+                  </div>
+                </BentoExpanded>
+              )}
+            </AnimatePresence>
           </motion.div>
 
-          {/* Card 5 */}
+          {/* Card 5 — MCP Native */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
-            style={cardStyle("#0F0F0F")}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
+            style={baseCard(5, "#0F0F0F", "rgba(255,255,255,0.15)")}
+            onClick={() => toggle(5)}
+            onMouseEnter={e => { if (openCard !== 5) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.transform = "translateY(-4px)"; }}}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
+            <BentoToggleIcon isOpen={openCard === 5} />
             <div style={{ padding: "24px 24px 0" }}>
               <ProtocolSVG />
             </div>
-            <div className="bento-card-content" style={{ padding: "16px 24px 24px" }}>
+            <div className="bento-card-content" style={{ padding: "16px 24px 20px" }}>
               <span style={{ fontSize: 11, color: "#99E1D9", fontFamily: MONO, letterSpacing: "0.1em", fontWeight: 600 }}>05</span>
-              <div style={{ fontSize: 17, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS, margin: "8px 0 8px" }}>
-                MCP Native
-              </div>
+              <div style={{ fontSize: 17, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS, margin: "8px 0 8px" }}>MCP Native</div>
               <div style={{ fontSize: 12, color: "#666666", fontFamily: SANS, lineHeight: 1.6 }}>
                 Every module speaks the language agents already understand. Zero friction deployment.
               </div>
             </div>
+            <AnimatePresence initial={false}>
+              {openCard === 5 && (
+                <BentoExpanded>
+                  <div style={{ padding: "4px 24px 24px" }}>
+                    <p style={expandedTextStyle}>
+                      MCP is the protocol AI agents already speak. Byzant is built on it from day one — not retrofitted. Every module is plug-and-play for any Claude-powered agent.
+                    </p>
+                    <AnimatedPipeline active={openCard === 5} />
+                  </div>
+                </BentoExpanded>
+              )}
+            </AnimatePresence>
           </motion.div>
+
         </div>
       </div>
     </section>
