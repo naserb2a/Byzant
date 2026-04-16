@@ -742,7 +742,7 @@ function MCPCompatibilitySection() {
       background: "#99E1D9",
       position: "relative",
       zIndex: 1,
-      isolation: "isolate",
+      overflow: "hidden",
       padding: "120px 0",
     }}>
       <div ref={ref} style={{ maxWidth: 1160, margin: "0 auto", padding: "0 2rem" }}>
@@ -1002,7 +1002,7 @@ function CTASectionTeal({
       background: "#99E1D9",
       position: "relative",
       zIndex: 1,
-      isolation: "isolate",
+      overflow: "hidden",
       marginTop: "-1px",
     }}>
       {/* ── CTA content ── */}
