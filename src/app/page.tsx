@@ -823,8 +823,8 @@ function MarketplacePreview() {
   );
 }
 
-/* ─── Full-bleed CTA ────────────────────────────────────────────── */
-function CTASection({
+/* ─── Teal CTA + Footer ─────────────────────────────────────────── */
+function CTASectionTeal({
   email, setEmail, submitted, onSubmit,
 }: {
   email: string; setEmail: (v: string) => void;
@@ -834,72 +834,135 @@ function CTASection({
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section style={{
-      position: "relative", background: "transparent",
-      padding: "160px 0", overflow: "hidden",
-    }}>
-      {/* Radial glow */}
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(153,225,217,0.1) 0%, transparent 70%)",
-        pointerEvents: "none",
-      }} />
-      <div ref={ref} style={{ position: "relative", maxWidth: 720, margin: "0 auto", padding: "0 2rem", textAlign: "left" }}>
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
-            padding: "6px 16px", marginBottom: 28,
-            background: "rgba(153,225,217,0.08)",
-            border: "0.5px solid rgba(255,255,255,0.3)",
-            borderRadius: 999,
-          }}
-        >
-          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#99E1D9", display: "inline-block" }} />
-          <span style={{ fontSize: 10, color: "#99E1D9", fontFamily: MONO, letterSpacing: "0.12em", fontWeight: 600, textTransform: "uppercase" }}>
-            EARLY ACCESS
-          </span>
-        </motion.div>
-
+    <section style={{ background: "#99E1D9" }}>
+      {/* ── CTA content ── */}
+      <div ref={ref} style={{ maxWidth: 640, margin: "0 auto", padding: "120px 2rem 80px", textAlign: "center" }}>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
           style={{
             fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 700,
-            letterSpacing: "-0.04em", color: "#F5F5F5",
-            fontFamily: SANS, margin: "0 0 16px",
+            letterSpacing: "-0.04em", color: "#0a0f1a",
+            fontFamily: SANS, margin: "0 0 20px",
           }}
         >
-          Ready to give your<br />agent an edge?
+          Ready to give your agent an edge?
         </motion.h2>
 
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.25 }}
-          style={{ fontSize: 16, color: "#666666", fontFamily: SANS, fontWeight: 300, margin: "0 0 40px" }}
+          style={{ fontSize: 16, color: "#1a2b3a", fontFamily: SANS, fontWeight: 300, margin: "0 0 40px", lineHeight: 1.6 }}
         >
-          Join the waitlist. Be first when we launch.
+          Join the waitlist. Be first when we launch.<br />
+          No spam. No commitments. Just early access.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
-          style={{ display: "flex", justifyContent: "flex-start", marginBottom: 16 }}
+          style={{ display: "flex", justifyContent: "center" }}
         >
-          <WaitlistForm email={email} setEmail={setEmail} submitted={submitted} onSubmit={onSubmit} size="large" />
+          {submitted ? (
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 10,
+              padding: "14px 24px",
+              background: "rgba(10,15,26,0.08)",
+              border: "0.5px solid rgba(10,15,26,0.3)",
+              borderRadius: 14, fontSize: 14,
+              color: "#0a0f1a", fontFamily: SANS,
+            }}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="7" r="6.5" stroke="#0a0f1a" strokeWidth="1" />
+                <path d="M4.5 7l1.8 1.8L9.5 4.5" stroke="#0a0f1a" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              You&apos;re on the list. We&apos;ll be in touch.
+            </div>
+          ) : (
+            <form onSubmit={onSubmit} style={{ display: "flex", maxWidth: 480, width: "100%" }}>
+              <div style={{
+                display: "flex", flex: 1,
+                background: "#ffffff",
+                border: "1px solid #0a0f1a",
+                borderRadius: 14, overflow: "hidden",
+              }}>
+                <input
+                  type="email" required value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="cta-teal-input"
+                  style={{
+                    flex: 1, background: "transparent", border: "none", outline: "none",
+                    padding: "16px 20px",
+                    fontSize: 15,
+                    color: "#0a0f1a", fontFamily: SANS, minWidth: 0,
+                  }}
+                />
+                <button
+                  type="submit"
+                  style={{
+                    background: "#0a0f1a", color: "#99E1D9", border: "none",
+                    padding: "12px 28px",
+                    fontSize: 13, fontWeight: 600, cursor: "pointer",
+                    borderRadius: 11, margin: 4,
+                    letterSpacing: "0.01em", transition: "background 0.15s",
+                    fontFamily: SANS, whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#1a2b3a")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "#0a0f1a")}
+                >
+                  Join Waitlist
+                </button>
+              </div>
+            </form>
+          )}
         </motion.div>
+      </div>
 
-        {!submitted && (
-          <p style={{ fontSize: 11, color: "#444444", fontFamily: MONO, letterSpacing: "0.04em" }}>
-            No spam. No commitments. Just early access.
-          </p>
-        )}
+      {/* ── Footer area ── */}
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 2rem 0" }}>
+        {/* Nav links row */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 32, marginBottom: 28, flexWrap: "wrap" }}>
+          {[
+            { label: "Home", href: "/" },
+            { label: "Marketplace", href: "#marketplace" },
+            { label: "How it Works", href: "#how-it-works" },
+            { label: "Sign In", href: "/auth/login" },
+          ].map(l => (
+            <Link key={l.label} href={l.href}
+              style={{ fontSize: 12, color: "#0a0f1a", textDecoration: "none", fontFamily: MONO, letterSpacing: "0.05em", opacity: 0.75, transition: "opacity 0.15s" }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+              onMouseLeave={e => (e.currentTarget.style.opacity = "0.75")}>
+              {l.label}
+            </Link>
+          ))}
+        </div>
+
+        {/* Divider */}
+        <div style={{ width: "100%", height: "1px", background: "rgba(10,15,26,0.2)", marginBottom: 20 }} />
+
+        {/* Copyright */}
+        <p style={{ textAlign: "center", fontSize: 12, color: "#0a0f1a", fontFamily: MONO, letterSpacing: "0.04em", margin: "0 0 0" }}>
+          © 2026 Byzant · All Rights Reserved
+        </p>
+      </div>
+
+      {/* ── Big Wordmark ── */}
+      <div style={{ textAlign: "center", lineHeight: 0.85, marginTop: 16 }}>
+        <span style={{
+          fontFamily: SANS,
+          fontSize: "clamp(80px, 14vw, 160px)",
+          fontWeight: 700,
+          color: "#0a0f1a",
+          letterSpacing: "-0.04em",
+          display: "block",
+          userSelect: "none",
+        }}>
+          Byzant
+        </span>
       </div>
     </section>
   );
@@ -930,6 +993,7 @@ export default function HomePage() {
         @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
         .nav-link:hover { color: #F5F5F5 !important; }
         input::placeholder { color: #444444; }
+        .cta-teal-input::placeholder { color: #6b7280; }
 
         /* ── Scroll reveal ── */
         .sr { opacity: 0; transform: translateY(24px); }
@@ -1221,52 +1285,12 @@ export default function HomePage() {
         <MarketplacePreview />
       </div>
 
-      {/* ── FULL-BLEED CTA ──────────────────────────────────────── */}
-      <CTASection
+      {/* ── TEAL CTA + FOOTER ───────────────────────────────────── */}
+      <CTASectionTeal
         email={email2} setEmail={setEmail2}
         submitted={submitted2}
         onSubmit={(e) => { e.preventDefault(); if (email2) setSubmitted2(true); }}
       />
-
-      {/* ── FOOTER ──────────────────────────────────────────────── */}
-      <footer style={{
-        background: "#0F0F0F",
-        borderTop: "1px solid rgba(255,255,255,0.08)",
-        width: "100%",
-      }}>
-        <div style={{
-          maxWidth: 1080, margin: "0 auto",
-          padding: "32px 48px",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          flexWrap: "wrap", gap: 20,
-        }}>
-          {/* Logo */}
-          <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "baseline" }}>
-            <span style={{ color: "#99E1D9", fontWeight: 500, fontSize: 18, fontFamily: "var(--font-geist-sans)", letterSpacing: 0, WebkitTextStroke: "0.8px white" }}>Byzant</span>
-          </Link>
-
-          {/* Copyright */}
-          <span style={{ fontSize: 12, color: "#666666", fontFamily: MONO, letterSpacing: "0.04em" }}>
-            © 2026 Byzant · All Rights Reserved
-          </span>
-
-          {/* Nav links */}
-          <div style={{ display: "flex", gap: 28 }}>
-            {[
-              { label: "Marketplace", href: "#marketplace" },
-              { label: "How it Works", href: "#how-it-works" },
-              { label: "Sign In", href: "/auth/login" },
-            ].map(l => (
-              <Link key={l.label} href={l.href}
-                style={{ fontSize: 13, color: "#666666", textDecoration: "none", fontFamily: SANS, transition: "color 0.15s" }}
-                onMouseEnter={e => (e.currentTarget.style.color = "#F5F5F5")}
-                onMouseLeave={e => (e.currentTarget.style.color = "#666666")}>
-                {l.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
