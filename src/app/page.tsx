@@ -1372,7 +1372,7 @@ export default function HomePage() {
       </nav>
 
       {/* ── HERO ────────────────────────────────────────────────── */}
-      <section style={{ position: "relative", display: "flex", overflow: "hidden" }}>
+      <section style={{ position: "relative", display: "flex", overflow: "hidden", background: "#080c12", zIndex: 2 }}>
         {/* Glow */}
         <div style={{ position: "absolute", top: "10%", left: "5%", width: "60%", height: "70%", background: "radial-gradient(ellipse at center, rgba(153,225,217,0.06) 0%, transparent 65%)", pointerEvents: "none", zIndex: 0 }} />
 
