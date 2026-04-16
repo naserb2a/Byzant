@@ -742,7 +742,7 @@ function MCPCompatibilitySection() {
       background: "#99E1D9",
       position: "relative",
       zIndex: 1,
-      overflowX: "hidden",
+      overflowX: "clip",
       width: "100%",
       padding: "120px 0",
     }}>
@@ -1193,8 +1193,8 @@ export default function HomePage() {
   return (
     <div style={{ background: "#0A0A0A", color: "#F5F5F5", minHeight: "100vh", fontFamily: SANS, overflowX: "hidden", position: "relative", zIndex: 0 }}>
       <style>{`
-        html { scroll-behavior: smooth; overscroll-behavior: none; overflow-x: hidden; }
-        body { overscroll-behavior: none; overflow-x: hidden; }
+        html { scroll-behavior: smooth; overscroll-behavior: none; }
+        body { overscroll-behavior: none; }
         * { box-sizing: border-box; }
         @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
         .nav-link:hover { color: #F5F5F5 !important; }
