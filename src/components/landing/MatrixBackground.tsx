@@ -52,12 +52,15 @@ interface State {
   animId: number;
   W: number;
   H: number;
+  lastMoveTime: number;
+  mouseInfluence: number;
 }
 
 export default function MatrixBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef<State>({
     particles: [], mouseX: -9999, mouseY: -9999, animId: 0, W: 0, H: 0,
+    lastMoveTime: 0, mouseInfluence: 0,
   });
 
   useEffect(() => {
@@ -104,6 +107,16 @@ export default function MatrixBackground() {
 
     function draw() {
       const { W, H, particles, mouseX, mouseY } = state;
+
+      // Fade influence in (fast, ~200ms) when mouse recently moved, out (slow, ~1500ms) when idle
+      const idleMs = Date.now() - state.lastMoveTime;
+      if (idleMs < 300) {
+        state.mouseInfluence = Math.min(1, state.mouseInfluence + 0.083);
+      } else {
+        state.mouseInfluence = Math.max(0, state.mouseInfluence - 0.011);
+      }
+      const mi = state.mouseInfluence;
+
       cx.clearRect(0, 0, W, H);
       cx.font = `${FONT_SIZE}px 'Geist Mono', monospace`;
       cx.textBaseline = "top";
@@ -129,10 +142,10 @@ export default function MatrixBackground() {
         const dy = py - mouseY;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < REACT_RADIUS && dist > 0) {
+        if (dist < REACT_RADIUS && dist > 0 && mi > 0) {
           const t = 1 - dist / REACT_RADIUS;
-          p.bright = Math.min(1, p.bright + t * 0.12);
-          const force = REPEL_MAX * t * t * 0.08;
+          p.bright = Math.min(1, p.bright + t * 0.12 * mi);
+          const force = REPEL_MAX * t * t * 0.08 * mi;
           p.repelX += (dx / dist) * force;
           p.repelY += (dy / dist) * force;
         } else {
@@ -163,6 +176,7 @@ export default function MatrixBackground() {
     function onMouseMove(e: MouseEvent) {
       state.mouseX = e.clientX;
       state.mouseY = e.clientY;
+      state.lastMoveTime = Date.now();
     }
     function onMouseLeave() {
       state.mouseX = -9999;
