@@ -926,6 +926,30 @@ function CTASectionTeal({
             </form>
           )}
         </motion.div>
+
+        {/* ── Social icons ── */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 48 }}>
+          <a
+            href="https://x.com/byzant_ai"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Byzant on X"
+            style={{
+              width: 44, height: 44, borderRadius: "50%",
+              border: "1px solid #0a0f1a",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: "#0a0f1a", textDecoration: "none",
+              transition: "background 0.15s, color 0.15s",
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(10,15,26,0.1)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "transparent"; }}
+          >
+            {/* X (Twitter) logo */}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.259 5.629 5.905-5.629zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+          </a>
+        </div>
       </div>
 
       {/* ── Footer area ── */}
@@ -1077,10 +1101,10 @@ export default function HomePage() {
       {/* ── NAV ─────────────────────────────────────────────────── */}
       <nav style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
-        background: scrolled || menuOpen ? "rgba(10,10,10,0.96)" : "transparent",
+        background: scrolled || menuOpen ? "#080c12" : "transparent",
         borderBottom: scrolled ? "0.5px solid rgba(255,255,255,0.1)" : "0.5px solid transparent",
-        backdropFilter: scrolled || menuOpen ? "blur(20px)" : "none",
-        WebkitBackdropFilter: scrolled || menuOpen ? "blur(20px)" : "none",
+        backdropFilter: "none",
+        WebkitBackdropFilter: "none",
         transition: "background 0.3s ease, border-color 0.3s ease",
       }}>
         {/* Main nav row */}
