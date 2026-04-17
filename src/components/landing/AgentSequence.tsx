@@ -100,9 +100,11 @@ export default function AgentSequence() {
       ref={ref}
       className="seq-section"
       style={{
-        background: "#0A0A0A",
+        background: "transparent",
         padding: "140px 0",
         width: "100%",
+        position: "relative",
+        zIndex: 1,
       }}
     >
       <style>{`

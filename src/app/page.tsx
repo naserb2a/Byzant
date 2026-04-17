@@ -154,11 +154,13 @@ function StatsBar() {
       ref={ref}
       className={visible ? "sr sr-in" : "sr"}
       style={{
-        background: "#0a0f1a",
+        background: "transparent",
         borderTop: "0.5px solid rgba(153,225,217,0.15)",
         borderBottom: "0.5px solid rgba(153,225,217,0.15)",
         padding: "32px 0",
         width: "100%",
+        position: "relative",
+        zIndex: 1,
       }}
     >
       <div style={{
@@ -470,7 +472,7 @@ function BentoGrid() {
   }
 
   return (
-    <section className="bento-section" style={{ background: "#0A0A0A", padding: "140px 0" }}>
+    <section className="bento-section" style={{ background: "transparent", padding: "140px 0", position: "relative", zIndex: 1 }}>
       <div ref={ref} style={{ maxWidth: 1160, margin: "0 auto", padding: "0 2rem" }}>
         <motion.h2
           initial={{ opacity: 0, y: 16 }}
@@ -857,7 +859,7 @@ function MarketplacePreview() {
   }
 
   return (
-    <section className="preview-section" style={{ background: "#0F0F0F", padding: "140px 0", overflow: "hidden" }}>
+    <section className="preview-section" style={{ background: "transparent", padding: "140px 0", overflow: "hidden", position: "relative", zIndex: 1 }}>
       <div ref={ref} style={{ maxWidth: 1160, margin: "0 auto", padding: "0 2rem" }}>
 
         {/* Header row: eyebrow + title + subhead left, arrows right */}
@@ -1373,7 +1375,7 @@ export default function HomePage() {
       </nav>
 
       {/* ── HERO ────────────────────────────────────────────────── */}
-      <section style={{ position: "relative", display: "flex", overflow: "hidden", background: "#080c12", zIndex: 2 }}>
+      <section style={{ position: "relative", display: "flex", overflow: "hidden", background: "transparent", zIndex: 2 }}>
         {/* Glow */}
         <div style={{ position: "absolute", top: "10%", left: "5%", width: "60%", height: "70%", background: "radial-gradient(ellipse at center, rgba(153,225,217,0.06) 0%, transparent 65%)", pointerEvents: "none", zIndex: 0 }} />
 

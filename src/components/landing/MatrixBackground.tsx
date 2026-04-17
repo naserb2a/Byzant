@@ -108,12 +108,12 @@ export default function MatrixBackground() {
     function draw() {
       const { W, H, particles, mouseX, mouseY } = state;
 
-      // Fade influence in (fast, ~200ms) when mouse recently moved, out (slow, ~1500ms) when idle
+      // Fade influence in (fast, ~200ms) when mouse recently moved, out (~600ms) when idle
       const idleMs = Date.now() - state.lastMoveTime;
       if (idleMs < 300) {
         state.mouseInfluence = Math.min(1, state.mouseInfluence + 0.083);
       } else {
-        state.mouseInfluence = Math.max(0, state.mouseInfluence - 0.011);
+        state.mouseInfluence = Math.max(0, state.mouseInfluence - 0.028);
       }
       const mi = state.mouseInfluence;
 
