@@ -1380,7 +1380,7 @@ export default function HomePage() {
         <div className="hero-grid" style={{
           position: "relative", zIndex: 1,
           maxWidth: 1200, margin: "0 auto",
-          padding: "120px 48px 80px",
+          padding: "160px 48px 80px",
           display: "grid", gridTemplateColumns: "1fr 1fr",
           gap: 80, alignItems: "center", width: "100%",
         }}>
@@ -1416,27 +1416,6 @@ export default function HomePage() {
             >
               Byzant is the first B2A (Business-to-Agent) marketplace — delivering institutional-grade trading infrastructure directly to AI agents, so retail investors finally have the edge hedge funds always had.
             </motion.p>
-
-            {/* Agent compatibility badges */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: heroVisible ? 1 : 0 }}
-              transition={{ duration: 0.6, delay: 0.65 }}
-              style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 32 }}
-            >
-              {["OpenClaw", "Claude", "GPT-4", "Gemini", "Grok", "LangChain", "Cursor"].map((agent) => (
-                <span key={agent} style={{
-                  fontFamily: MONO, fontSize: 11, fontWeight: 500,
-                  color: "#99E1D9", background: "rgba(0,0,0,0.3)",
-                  border: "1px solid #99E1D9",
-                  borderRadius: 100, padding: "5px 16px",
-                  whiteSpace: "nowrap", textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                }}>
-                  {agent}
-                </span>
-              ))}
-            </motion.div>
 
             {/* Form */}
             <motion.div
