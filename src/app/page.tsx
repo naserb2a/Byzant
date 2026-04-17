@@ -1200,7 +1200,7 @@ export default function HomePage() {
         .nav-link:hover { color: #F5F5F5 !important; }
         input::placeholder { color: #444444; }
         .cta-teal-input::placeholder { color: #6b7280; }
-        html, body { background: #99E1D9; }
+        html, body { background: #0A0A0A; }
 
         /* ── Scroll reveal ── */
         .sr { opacity: 0; transform: translateY(24px); }
