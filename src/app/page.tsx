@@ -780,6 +780,7 @@ const MCP_ITEMS = [
         alt="OpenClaw"
         width="24"
         height="24"
+        style={{ filter: "brightness(0) saturate(100%)" }}
       />
     ),
   },
