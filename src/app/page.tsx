@@ -776,11 +776,11 @@ const MCP_ITEMS = [
     desc: "The leading open-source autonomous trading agent. Byzant modules plug in natively via MCP.",
     icon: (
       <img
-        src="/icons/openclaw.jpg"
+        src="/icons/openclaw.png"
         alt="OpenClaw"
         width="20"
         height="20"
-        style={{ filter: "brightness(0) saturate(100%)", borderRadius: "4px" }}
+        style={{ filter: "brightness(0) saturate(100%)" }}
       />
     ),
   },
