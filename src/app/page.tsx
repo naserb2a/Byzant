@@ -831,9 +831,13 @@ const MCP_ITEMS = [
     title: "Cursor",
     desc: "AI-powered IDE. Byzant modules surface trading context directly in your dev environment.",
     icon: (
-      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="10,5 10,75 30,55 45,90 58,85 43,50 70,50" fill="#1a1a1a"/>
-      </svg>
+      <img
+        src="/icons/cursor.png"
+        alt="Cursor"
+        width="32"
+        height="32"
+        style={{ filter: "brightness(0) saturate(100%)" }}
+      />
     ),
   },
 ];
