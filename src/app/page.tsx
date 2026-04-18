@@ -275,7 +275,7 @@ function ExpandedNodeGraph({ active }: { active: boolean }) {
     [51,70,112,70], [146,67,217,22], [146,70,217,70], [146,73,217,118],
   ];
   return (
-    <svg width="100%" height="142" viewBox="0 0 280 142" fill="none">
+    <svg width="100%" height="160" viewBox="0 0 280 160" fill="none">
       {lines.map(([x1,y1,x2,y2], i) => (
         <motion.line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
           stroke="rgba(153,225,217,0.3)" strokeWidth={0.75}
@@ -326,20 +326,30 @@ function ApprovalMockup() {
   );
 }
 
-function AnimatedBars({ active }: { active: boolean }) {
-  const bars = [28, 44, 36, 60, 50, 72, 64, 80, 68, 90];
+function WhaleIcon({ active }: { active: boolean }) {
   return (
-    <svg width="100%" height="100" viewBox="0 0 300 100" fill="none">
-      {bars.map((h, i) => (
-        <motion.rect key={i} x={10 + i * 28} width={20} rx={3}
-          initial={{ height: 0, y: 100 }}
-          animate={active ? { height: h, y: 100 - h } : { height: 0, y: 100 }}
-          transition={{ duration: 0.55, delay: active ? i * 0.05 : 0, ease: "easeOut" }}
-          fill={i >= 7 ? "#3dd68c" : `rgba(153,225,217,${0.14 + i * 0.06})`}
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", padding: "24px 0 8px" }}>
+      <motion.svg
+        width="120" height="120" viewBox="0 0 140 110" fill="none"
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={active ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        <path
+          d="M 22 55 C 22 30, 55 22, 85 26 C 105 29, 118 40, 115 55 C 118 70, 105 81, 85 84 C 55 88, 22 80, 22 55 Z"
+          stroke="#99E1D9" strokeWidth={1.8} fill="none" strokeLinejoin="round"
         />
-      ))}
-      <line x1={0} y1={99} x2={300} y2={99} stroke="rgba(255,255,255,0.12)" strokeWidth={0.75} />
-    </svg>
+        <path
+          d="M 115 46 L 132 32 L 135 44 L 128 55 L 135 66 L 132 78 L 115 64"
+          stroke="#99E1D9" strokeWidth={1.8} fill="none" strokeLinejoin="round" strokeLinecap="round"
+        />
+        <circle cx={40} cy={48} r={2} fill="#99E1D9" />
+        <path d="M 60 78 Q 66 85 74 80" stroke="#99E1D9" strokeWidth={1.5} fill="none" strokeLinecap="round" />
+        <path d="M 24 62 Q 32 66 40 62" stroke="#99E1D9" strokeWidth={1.2} fill="none" strokeLinecap="round" opacity={0.7} />
+        <path d="M 60 22 C 58 14 62 10 60 4 M 68 22 L 68 6 M 76 22 C 78 14 74 10 76 4"
+          stroke="#99E1D9" strokeWidth={1.2} fill="none" strokeLinecap="round" opacity={0.6} />
+      </motion.svg>
+    </div>
   );
 }
 
@@ -589,7 +599,7 @@ function BentoGrid() {
                     <p style={expandedTextStyle}>
                       Whale tracking, congressional trade monitoring, dark pool signals, options flow — tools hedge funds pay six figures for, now modular and agent-ready.
                     </p>
-                    <AnimatedBars active={openCard === 3} />
+                    <WhaleIcon active={openCard === 3} />
                   </div>
                 </BentoExpanded>
               )}
