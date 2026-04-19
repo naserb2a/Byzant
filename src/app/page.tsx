@@ -822,12 +822,23 @@ const MCP_ITEMS = [
     title: "LangChain",
     desc: "Build agents on LangChain and plug into Byzant's marketplace via MCP instantly.",
     icon: (
-      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M50 15 C30 15 15 30 15 50 C15 35 30 25 50 25 C65 25 75 35 75 50 C75 30 65 15 50 15Z" fill="#1a1a1a"/>
-        <path d="M85 50 C85 70 70 85 50 85 C65 85 75 70 75 50 C75 65 65 75 50 75 C70 75 85 65 85 50Z" fill="#1a1a1a"/>
-        <path d="M50 85 C30 85 15 70 15 50 C15 65 25 75 50 75 C35 75 25 65 25 50 C25 70 35 85 50 85Z" fill="#1a1a1a"/>
-        <path d="M15 50 C15 30 30 15 50 15 C35 15 25 25 25 50 C25 35 35 25 50 25 C30 25 15 35 15 50Z" fill="#1a1a1a"/>
-      </svg>
+      <div style={{
+        width: "32px",
+        height: "32px",
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
+      }}>
+        <img
+          src="/icons/langchain.svg"
+          alt="LangChain"
+          style={{
+            height: "32px",
+            width: "auto",
+            filter: "brightness(0) saturate(100%)",
+          }}
+        />
+      </div>
     ),
   },
   {
