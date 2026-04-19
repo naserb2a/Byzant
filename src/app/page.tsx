@@ -836,7 +836,7 @@ const MCP_ITEMS = [
         alt="Cursor"
         width="32"
         height="32"
-        style={{ filter: "brightness(0) saturate(100%)" }}
+        style={{ mixBlendMode: "multiply" }}
       />
     ),
   },
