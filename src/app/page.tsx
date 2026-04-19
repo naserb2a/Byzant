@@ -826,16 +826,15 @@ const MCP_ITEMS = [
         width: "32px",
         height: "32px",
         overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
       }}>
         <img
           src="/icons/langchain.svg"
           alt="LangChain"
           style={{
-            height: "32px",
+            height: "64px",
             width: "auto",
             filter: "brightness(0) saturate(100%)",
+            marginTop: "-16px",
           }}
         />
       </div>
