@@ -1030,6 +1030,7 @@ function MarketplacePreview() {
             gap: 16,
             overflowX: "auto",
             scrollSnapType: "x mandatory",
+            paddingTop: 12,
             paddingBottom: 12,
             paddingRight: 48, /* peek effect */
             msOverflowStyle: "none",
