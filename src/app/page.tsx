@@ -1501,20 +1501,6 @@ export default function HomePage() {
           padding: "240px 2rem 200px",
           width: "100%",
         }}>
-          {/* Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: heroVisible ? 1 : 0, y: heroVisible ? 0 : 16 }}
-            transition={{ duration: 0.7, delay: 0, ease: "easeOut" }}
-            style={{
-              fontFamily: MONO, fontSize: 11,
-              letterSpacing: "0.14em", textTransform: "uppercase",
-              color: "#99E1D9", marginBottom: 40,
-            }}
-          >
-            Agentic Trading Infrastructure
-          </motion.div>
-
           {/* Headline — line 1 */}
           <motion.h1
             className="hero-h1"
@@ -1522,7 +1508,7 @@ export default function HomePage() {
             animate={{ opacity: heroVisible ? 1 : 0, y: heroVisible ? 0 : 30 }}
             transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
             style={{
-              fontSize: "clamp(3rem, 6vw, 5.5rem)",
+              fontSize: "clamp(2.4rem, 4.5vw, 4rem)",
               fontWeight: 700, letterSpacing: "-0.04em",
               lineHeight: 1.05, margin: "0",
               color: "#64748b", fontFamily: SANS,
@@ -1538,7 +1524,7 @@ export default function HomePage() {
             animate={{ opacity: heroVisible ? 1 : 0, y: heroVisible ? 0 : 30 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             style={{
-              fontSize: "clamp(3rem, 6vw, 5.5rem)",
+              fontSize: "clamp(2.4rem, 4.5vw, 4rem)",
               fontWeight: 700, letterSpacing: "-0.04em",
               lineHeight: 1.05, margin: "0 0 56px",
               color: "#eef2ff", fontFamily: SANS,
@@ -1559,7 +1545,7 @@ export default function HomePage() {
               margin: "0 0 40px",
             }}
           >
-            Byzant is the first B2A marketplace — delivering institutional-grade trading infrastructure directly to AI agents, so retail investors finally have the edge hedge funds always had.
+            Byzant is the first agentic trading infrastructure marketplace — delivering institutional-grade capabilities directly to AI agents, so retail investors finally have the edge hedge funds always had.
           </motion.p>
 
           {/* Waitlist form */}
