@@ -1511,7 +1511,7 @@ export default function HomePage() {
               fontSize: "clamp(2.4rem, 4.5vw, 4rem)",
               fontWeight: 700, letterSpacing: "-0.04em",
               lineHeight: 1.05, margin: "0",
-              color: "#64748b", fontFamily: SANS,
+              color: "#eef2ff", fontFamily: SANS,
             }}
           >
             Analysis without emotion.
