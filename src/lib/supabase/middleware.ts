@@ -36,7 +36,7 @@ export async function updateSession(request: NextRequest) {
 
   if (!user && isProtected) {
     const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
+    url.pathname = "/auth";
     return NextResponse.redirect(url);
   }
 

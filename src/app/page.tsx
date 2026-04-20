@@ -1244,7 +1244,7 @@ function CTASectionTeal({
             { label: "Home", href: "/" },
             { label: "Marketplace", href: "#marketplace" },
             { label: "How it Works", href: "#how-it-works" },
-            { label: "Sign In", href: "/auth/login" },
+            { label: "Sign In", href: "/auth" },
           ].map(l => (
             <Link key={l.label} href={l.href}
               style={{ fontSize: 12, color: "#0a0f1a", textDecoration: "none", fontFamily: MONO, letterSpacing: "0.05em", opacity: 0.75, transition: "opacity 0.15s" }}
@@ -1421,13 +1421,13 @@ export default function HomePage() {
 
           {/* Desktop auth buttons */}
           <div className="nav-desktop" style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <Link href="/auth/login"
+            <Link href="/auth"
               style={{ color: "#666666", fontSize: 13, textDecoration: "none", padding: "7px 18px", border: "0.5px solid rgba(255,255,255,0.15)", borderRadius: 10, fontFamily: SANS, transition: "border-color 0.15s, color 0.15s" }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.color = "#F5F5F5"; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "#666666"; }}>
               Sign In
             </Link>
-            <Link href="/auth/signup"
+            <Link href="/auth?mode=signup"
               style={{ background: "#99E1D9", color: "#fff", fontSize: 13, fontWeight: 600, textDecoration: "none", padding: "7px 20px", borderRadius: 10, fontFamily: SANS, transition: "background 0.15s" }}
               onMouseEnter={e => (e.currentTarget.style.background = "#B2EBE5")}
               onMouseLeave={e => (e.currentTarget.style.background = "#99E1D9")}>
@@ -1476,12 +1476,12 @@ export default function HomePage() {
               </Link>
             ))}
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 16 }}>
-              <Link href="/auth/login"
+              <Link href="/auth"
                 onClick={() => setMenuOpen(false)}
                 style={{ color: "#F5F5F5", fontSize: 14, textDecoration: "none", padding: "10px 16px", border: "0.5px solid rgba(255,255,255,0.2)", borderRadius: 10, fontFamily: SANS, textAlign: "center" }}>
                 Sign In
               </Link>
-              <Link href="/auth/signup"
+              <Link href="/auth?mode=signup"
                 onClick={() => setMenuOpen(false)}
                 style={{ background: "#99E1D9", color: "#fff", fontSize: 14, fontWeight: 600, textDecoration: "none", padding: "10px 16px", borderRadius: 10, fontFamily: SANS, textAlign: "center" }}>
                 Join Waitlist
