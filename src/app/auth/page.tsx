@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import AuthMatrixBackground from "@/components/auth/AuthMatrixBackground";
@@ -12,6 +12,33 @@ const MONO = "var(--font-geist-mono)";
 type Mode = "signin" | "signup";
 
 export default function AuthPage() {
+  return (
+    <Suspense fallback={<AuthFallback />}>
+      <AuthContent />
+    </Suspense>
+  );
+}
+
+function AuthFallback() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#0A0A0A",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#64748b",
+        fontFamily: SANS,
+        fontSize: 13,
+      }}
+    >
+      Loading…
+    </div>
+  );
+}
+
+function AuthContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
