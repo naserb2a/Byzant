@@ -102,8 +102,8 @@ export default function AuthShell({
 
 export const authButtonBase: React.CSSProperties = {
   width: "100%",
-  height: 56,
-  borderRadius: 12,
+  height: 52,
+  borderRadius: 999,
   fontFamily: SORA,
   fontSize: 15,
   fontWeight: 500,
@@ -124,7 +124,7 @@ export const primaryButton: React.CSSProperties = {
 
 export const secondaryButton: React.CSSProperties = {
   ...authButtonBase,
-  background: "#1a1a2e",
+  background: "#1f1f1f",
   color: "#ffffff",
   border: "1px solid rgba(255,255,255,0.08)",
 };

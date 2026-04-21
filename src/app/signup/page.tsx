@@ -34,9 +34,8 @@ export default function SignupPage() {
 
   return (
     <AuthShell
-      title="Create your account"
+      title="Create an edge."
       titleSize={32}
-      tagline="Create an edge."
       footer={
         <>
           Already have an account?{" "}
@@ -51,7 +50,7 @@ export default function SignupPage() {
     >
       {error && <ErrorPill message={error} />}
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <button
           type="button"
           onClick={handleGoogle}
@@ -72,8 +71,8 @@ export default function SignupPage() {
           type="button"
           style={secondaryButton}
           onClick={() => router.push("/signup/email")}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#22223a")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#1a1a2e")}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#2a2a2a")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#1f1f1f")}
         >
           Continue with email
         </button>

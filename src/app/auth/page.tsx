@@ -48,7 +48,7 @@ export default function LoginPage() {
     >
       {error && <ErrorPill message={error} />}
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <button
           type="button"
           onClick={handleGoogle}
@@ -70,10 +70,10 @@ export default function LoginPage() {
           style={secondaryButton}
           onClick={() => router.push("/auth/email")}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#22223a";
+            e.currentTarget.style.background = "#2a2a2a";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = "#1a1a2e";
+            e.currentTarget.style.background = "#1f1f1f";
           }}
         >
           Continue with email

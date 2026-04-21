@@ -113,8 +113,8 @@ export default function AuthEmailPage() {
           <button
             type="submit"
             style={secondaryButton}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#22223a")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#1a1a2e")}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#2a2a2a")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#1f1f1f")}
           >
             Continue with email
           </button>
@@ -150,10 +150,10 @@ export default function AuthEmailPage() {
             disabled={loading}
             style={{ ...secondaryButton, opacity: loading ? 0.7 : 1 }}
             onMouseEnter={(e) => {
-              if (!loading) e.currentTarget.style.background = "#22223a";
+              if (!loading) e.currentTarget.style.background = "#2a2a2a";
             }}
             onMouseLeave={(e) => {
-              if (!loading) e.currentTarget.style.background = "#1a1a2e";
+              if (!loading) e.currentTarget.style.background = "#1f1f1f";
             }}
           >
             {loading ? "Signing in…" : "Sign in"}
