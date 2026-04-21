@@ -36,6 +36,7 @@ export default function SignupPage() {
     <AuthShell
       title="Create your account"
       titleSize={32}
+      tagline="Create an edge."
       footer={
         <>
           Already have an account?{" "}
@@ -50,7 +51,7 @@ export default function SignupPage() {
     >
       {error && <ErrorPill message={error} />}
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <button
           type="button"
           onClick={handleGoogle}

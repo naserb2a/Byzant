@@ -7,11 +7,13 @@ const SORA = "var(--font-sora)";
 export default function AuthShell({
   title,
   titleSize = 32,
+  tagline,
   children,
   footer,
 }: {
   title: string;
   titleSize?: number;
+  tagline?: string;
   children: ReactNode;
   footer?: ReactNode;
 }) {
@@ -19,7 +21,7 @@ export default function AuthShell({
     <div
       style={{
         minHeight: "100vh",
-        background: "#080c12",
+        background: "#0a0a0a",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -45,11 +47,25 @@ export default function AuthShell({
             fontWeight: 600,
             color: "#99E1D9",
             letterSpacing: "-0.01em",
-            marginBottom: 32,
+            marginBottom: tagline ? 12 : 32,
           }}
         >
           Byzant
         </Link>
+
+        {tagline && (
+          <p
+            style={{
+              fontFamily: SORA,
+              fontSize: 14,
+              color: "#64748b",
+              margin: "0 0 8px",
+              textAlign: "center",
+            }}
+          >
+            {tagline}
+          </p>
+        )}
 
         <h1
           style={{
@@ -102,7 +118,7 @@ export const authButtonBase: React.CSSProperties = {
 export const primaryButton: React.CSSProperties = {
   ...authButtonBase,
   background: "#99E1D9",
-  color: "#080c12",
+  color: "#0a0a0a",
   border: "1px solid #99E1D9",
 };
 

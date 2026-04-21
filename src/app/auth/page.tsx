@@ -48,7 +48,7 @@ export default function LoginPage() {
     >
       {error && <ErrorPill message={error} />}
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <button
           type="button"
           onClick={handleGoogle}
