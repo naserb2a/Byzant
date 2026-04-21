@@ -1427,7 +1427,7 @@ export default function HomePage() {
               onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.color = "#666666"; }}>
               Sign In
             </Link>
-            <Link href="/auth?mode=signup"
+            <Link href="/signup"
               style={{ background: "#99E1D9", color: "#fff", fontSize: 13, fontWeight: 600, textDecoration: "none", padding: "7px 20px", borderRadius: 10, fontFamily: SANS, transition: "background 0.15s" }}
               onMouseEnter={e => (e.currentTarget.style.background = "#B2EBE5")}
               onMouseLeave={e => (e.currentTarget.style.background = "#99E1D9")}>
@@ -1481,7 +1481,7 @@ export default function HomePage() {
                 style={{ color: "#F5F5F5", fontSize: 14, textDecoration: "none", padding: "10px 16px", border: "0.5px solid rgba(255,255,255,0.2)", borderRadius: 10, fontFamily: SANS, textAlign: "center" }}>
                 Sign In
               </Link>
-              <Link href="/auth?mode=signup"
+              <Link href="/signup"
                 onClick={() => setMenuOpen(false)}
                 style={{ background: "#99E1D9", color: "#fff", fontSize: 14, fontWeight: 600, textDecoration: "none", padding: "10px 16px", borderRadius: 10, fontFamily: SANS, textAlign: "center" }}>
                 Join Waitlist

@@ -11,7 +11,9 @@ import AuthShell, {
   ErrorPill,
 } from "@/components/auth/AuthShell";
 
-export default function LoginPage() {
+const SORA = "var(--font-sora)";
+
+export default function SignupPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,16 +34,16 @@ export default function LoginPage() {
 
   return (
     <AuthShell
-      title="Log in to Byzant"
+      title="Create your account"
       titleSize={32}
       footer={
         <>
-          Don&apos;t have an account?{" "}
+          Already have an account?{" "}
           <Link
-            href="/signup"
+            href="/auth"
             style={{ color: "#F5F5F5", textDecoration: "none", fontWeight: 500 }}
           >
-            Sign up
+            Log in
           </Link>
         </>
       }
@@ -68,17 +70,26 @@ export default function LoginPage() {
         <button
           type="button"
           style={secondaryButton}
-          onClick={() => router.push("/auth/email")}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#22223a";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "#1a1a2e";
-          }}
+          onClick={() => router.push("/signup/email")}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#22223a")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#1a1a2e")}
         >
           Continue with email
         </button>
       </div>
+
+      <p
+        style={{
+          marginTop: 20,
+          fontFamily: SORA,
+          fontSize: 12,
+          color: "#64748b",
+          lineHeight: 1.5,
+          textAlign: "center",
+        }}
+      >
+        By signing up, you agree to our Terms of Service and Privacy Policy.
+      </p>
     </AuthShell>
   );
 }
