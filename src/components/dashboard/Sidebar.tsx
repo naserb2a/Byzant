@@ -52,6 +52,30 @@ const navItems = [
     badge: null,
   },
   {
+    label: "Whale Tracker",
+    href: "/whale-tracker",
+    icon: (
+      <svg width={15} height={15} viewBox="0 0 15 15" fill="none">
+        <path
+          d="M1.5 9c1.5 1.5 3 1.5 4.5 0s3-1.5 4.5 0 3 1.5 4.5 0"
+          stroke="currentColor"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M3.5 6.5c1.2-1.6 3-2.5 4.8-2.5 2.8 0 4.7 1.7 5.2 3.3"
+          stroke="currentColor"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle cx="11.5" cy="5.5" r="0.6" fill="currentColor" />
+      </svg>
+    ),
+    badge: null,
+  },
+  {
     label: "Agent Log",
     href: "/log",
     icon: (
