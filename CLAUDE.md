@@ -75,6 +75,40 @@ opinion without losing control of their money.
 
 ---
 
+## UX PRINCIPLES — NON-NEGOTIABLE
+
+Byzant involves real money and real trade execution. Every UX
+decision must reflect that seriousness. These rules apply to
+every screen, flow, and feature:
+
+**Onboarding is first impression.**
+Ask only what is absolutely necessary to get the user into the
+product. The 3-step onboarding (disclaimer, broker, model) is
+the maximum. Never add steps without strong justification.
+
+**Never ask personal or financial questions at onboarding.**
+Capital size, income, net worth, account balance — none of this
+belongs in onboarding. Users are exploring before they trust.
+Collect sensitive data only inside specific module settings where
+the context makes it obvious why it's needed.
+
+**Delay configuration to the point of need.**
+Risk profiles, position sizing, strategy settings — these belong
+inside the relevant module, not at first impression. A user
+activating the Risk Agent expects to configure it. A user signing
+up does not.
+
+**Always ask: would a user trust this with their money?**
+Before building any screen or feature, apply this test. If the
+answer is uncertain, flag it before building — not after.
+
+**Users exploring the product are not yet committed.**
+Friction, personal questions, or premature configuration requests
+will cost users before they've seen the value. Get them to the
+dashboard first. Let the product speak.
+
+---
+
 ## TECH STACK
 
 - Framework: Next.js 14 with App Router + TypeScript
