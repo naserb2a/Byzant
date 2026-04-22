@@ -7,8 +7,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 
 const SORA = "var(--font-sora)";
-const MONO = "var(--font-dm-mono)";
-
 const BG = "#0a0a0a";
 const TEAL = "#99E1D9";
 const TEAL_DIM = "rgba(153,225,217,0.10)";
@@ -46,13 +44,11 @@ const AGENT_OPTIONS: {
   key: AgentType;
   name: string;
   desc: string;
-  recommended?: boolean;
 }[] = [
   {
     key: "claude",
     name: "Claude (Anthropic)",
-    desc: "Best-in-class reasoning. Powers most Byzant agents.",
-    recommended: true,
+    desc: "Native MCP support. Fully compatible with all Byzant modules.",
   },
   {
     key: "gpt-4",
@@ -83,6 +79,21 @@ const EXPERIENCE_LEVELS: { key: Experience; label: string }[] = [
   { key: "beginner", label: "Beginner" },
   { key: "intermediate", label: "Intermediate" },
   { key: "advanced", label: "Advanced" },
+];
+
+const BROKERS: {
+  key: string;
+  name: string;
+  desc: string;
+  available: boolean;
+}[] = [
+  { key: "alpaca", name: "Alpaca", desc: "Commission-free API trading", available: true },
+  { key: "robinhood", name: "Robinhood", desc: "Retail brokerage", available: false },
+  { key: "td", name: "TD Ameritrade", desc: "Full-service brokerage", available: false },
+  { key: "webull", name: "Webull", desc: "Commission-free trading", available: false },
+  { key: "ibkr", name: "Interactive Brokers", desc: "Professional-grade platform", available: false },
+  { key: "etrade", name: "E*Trade", desc: "Full-service brokerage", available: false },
+  { key: "fidelity", name: "Fidelity", desc: "Full-service brokerage", available: false },
 ];
 
 function Wordmark() {
@@ -322,9 +333,9 @@ export default function OnboardingPage() {
         style={{
           flex: 1,
           display: "flex",
-          alignItems: "flex-start",
+          alignItems: "center",
           justifyContent: "center",
-          padding: "40px 24px 80px",
+          padding: "40px 24px",
         }}
       >
         <div style={{ width: "100%", maxWidth: 560 }}>
@@ -352,8 +363,8 @@ export default function OnboardingPage() {
                     padding: 20,
                     maxHeight: 240,
                     overflowY: "auto",
-                    fontFamily: MONO,
-                    fontSize: 12,
+                    fontFamily: SORA,
+                    fontSize: 13,
                     lineHeight: 1.7,
                     color: INK_MUTED,
                     whiteSpace: "pre-wrap",
@@ -448,86 +459,44 @@ export default function OnboardingPage() {
 
                 <div
                   style={{
-                    background: SURFACE,
-                    border: "1px solid " + BORDER,
-                    borderRadius: 8,
-                    padding: 24,
-                    marginBottom: 16,
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, 1fr)",
+                    gap: 12,
                   }}
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: 12,
-                      marginBottom: 4,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: MONO,
-                        fontSize: 16,
-                        fontWeight: 500,
-                        color: INK,
-                        letterSpacing: "0.02em",
-                      }}
-                    >
-                      Alpaca
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: MONO,
-                        fontSize: 10,
-                        fontWeight: 500,
-                        color: TEAL,
-                        background: TEAL_DIM,
-                        padding: "3px 8px",
-                        borderRadius: 999,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.08em",
-                      }}
-                    >
-                      Recommended
-                    </span>
-                  </div>
+                  {BROKERS.map((b) => (
+                    <BrokerCard
+                      key={b.key}
+                      name={b.name}
+                      desc={b.desc}
+                      available={b.available}
+                      onConnect={
+                        b.available
+                          ? () =>
+                              setBrokerMessage(
+                                `Coming soon — ${b.name} connection will be available at launch.`
+                              )
+                          : undefined
+                      }
+                    />
+                  ))}
+                </div>
+
+                {brokerMessage && (
                   <p
                     style={{
+                      marginTop: 16,
                       fontFamily: SORA,
                       fontSize: 13,
                       color: INK_MUTED,
-                      margin: "0 0 20px",
+                      textAlign: "center",
                     }}
                   >
-                    Commission-free trading API
+                    {brokerMessage}
                   </p>
+                )}
 
-                  <PrimaryButton
-                    onClick={() =>
-                      setBrokerMessage(
-                        "Coming soon — Alpaca connection will be available at launch."
-                      )
-                    }
-                  >
-                    Connect Alpaca
-                  </PrimaryButton>
-
-                  {brokerMessage && (
-                    <p
-                      style={{
-                        marginTop: 14,
-                        fontFamily: SORA,
-                        fontSize: 12,
-                        color: INK_MUTED,
-                        textAlign: "center",
-                      }}
-                    >
-                      {brokerMessage}
-                    </p>
-                  )}
-                </div>
-
-                <div style={{ textAlign: "center", marginTop: 20 }}>
+                <div style={{ textAlign: "center", marginTop: 24 }}>
                   <button
                     type="button"
                     onClick={() => setStep(2)}
@@ -608,38 +577,15 @@ export default function OnboardingPage() {
                         <span style={{ flex: 1 }}>
                           <span
                             style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 10,
+                              display: "block",
+                              fontFamily: SORA,
+                              fontSize: 15,
+                              fontWeight: 500,
+                              color: INK,
                               marginBottom: 4,
                             }}
                           >
-                            <span
-                              style={{
-                                fontSize: 15,
-                                fontWeight: 500,
-                                color: INK,
-                              }}
-                            >
-                              {opt.name}
-                            </span>
-                            {opt.recommended && (
-                              <span
-                                style={{
-                                  fontFamily: MONO,
-                                  fontSize: 9,
-                                  fontWeight: 500,
-                                  color: TEAL,
-                                  background: TEAL_DIM,
-                                  padding: "2px 7px",
-                                  borderRadius: 999,
-                                  textTransform: "uppercase",
-                                  letterSpacing: "0.08em",
-                                }}
-                              >
-                                Recommended
-                              </span>
-                            )}
+                            {opt.name}
                           </span>
                           <span
                             style={{
@@ -783,11 +729,11 @@ function StepHeader({
     <div style={{ marginBottom: 28 }}>
       <div
         style={{
-          fontFamily: MONO,
-          fontSize: 10,
+          fontFamily: SORA,
+          fontSize: 12,
+          fontWeight: 500,
           color: INK_MUTED,
-          letterSpacing: "0.12em",
-          textTransform: "uppercase",
+          letterSpacing: "0.04em",
           marginBottom: 12,
         }}
       >
@@ -832,17 +778,120 @@ function QuestionBlock({
     <div style={{ marginBottom: 24 }}>
       <div
         style={{
-          fontFamily: MONO,
-          fontSize: 10,
-          color: INK_MUTED,
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
+          fontFamily: SORA,
+          fontSize: 13,
+          fontWeight: 500,
+          color: INK,
           marginBottom: 10,
         }}
       >
         {label}
       </div>
       {children}
+    </div>
+  );
+}
+
+function BrokerCard({
+  name,
+  desc,
+  available,
+  onConnect,
+}: {
+  name: string;
+  desc: string;
+  available: boolean;
+  onConnect?: () => void;
+}) {
+  return (
+    <div
+      style={{
+        background: SURFACE,
+        border: "1px solid " + (available ? TEAL : BORDER),
+        borderRadius: 10,
+        padding: 18,
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+        opacity: available ? 1 : 0.72,
+      }}
+    >
+      <div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 8,
+            marginBottom: 4,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: SORA,
+              fontSize: 15,
+              fontWeight: 500,
+              color: INK,
+            }}
+          >
+            {name}
+          </span>
+          {!available && (
+            <span
+              style={{
+                fontFamily: SORA,
+                fontSize: 10,
+                fontWeight: 500,
+                color: INK_MUTED,
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid " + BORDER,
+                padding: "2px 8px",
+                borderRadius: 999,
+              }}
+            >
+              Coming soon
+            </span>
+          )}
+        </div>
+        <p
+          style={{
+            fontFamily: SORA,
+            fontSize: 12,
+            color: INK_MUTED,
+            margin: 0,
+            lineHeight: 1.4,
+          }}
+        >
+          {desc}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        disabled={!available}
+        onClick={onConnect}
+        style={{
+          width: "100%",
+          height: 38,
+          borderRadius: 999,
+          border: "1px solid " + (available ? TEAL : BORDER),
+          background: available ? TEAL : "transparent",
+          color: available ? "#0a0a0a" : INK_MUTED,
+          fontFamily: SORA,
+          fontSize: 13,
+          fontWeight: 500,
+          cursor: available ? "pointer" : "not-allowed",
+          transition: "background 0.15s",
+        }}
+        onMouseEnter={(e) => {
+          if (available) e.currentTarget.style.background = "#B2EBE5";
+        }}
+        onMouseLeave={(e) => {
+          if (available) e.currentTarget.style.background = TEAL;
+        }}
+      >
+        {available ? "Connect" : "Unavailable"}
+      </button>
     </div>
   );
 }
