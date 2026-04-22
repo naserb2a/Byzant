@@ -579,7 +579,7 @@ export default function OnboardingPage() {
               >
                 <StepHeader
                   eyebrow="Step 3 of 4"
-                  title="Which AI powers your agent?"
+                  title="Which model powers your agent?"
                   subtitle="Byzant modules work with any MCP-compatible AI agent."
                 />
 
