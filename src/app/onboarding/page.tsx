@@ -437,9 +437,9 @@ export default function OnboardingPage() {
                 transition={{ duration: 0.28, ease: "easeOut" }}
               >
                 <StepHeader
-                  eyebrow="Step 2 of 4"
+                  eyebrow="Step 2 of 4 (Optional)"
                   title="Connect your broker."
-                  subtitle="Your agent connects to your brokerage via MCP. Byzant modules plug in automatically — no setup required."
+                  subtitle="Connect your brokerage to enable one-click trade execution with your approval. Or skip — all Byzant data modules work without a connected broker."
                 />
 
                 <div style={{ display: "flex", justifyContent: "center" }}>
@@ -473,7 +473,8 @@ export default function OnboardingPage() {
 
                 <p
                   style={{
-                    marginTop: 28,
+                    marginTop: 24,
+                    marginBottom: 20,
                     fontFamily: SORA,
                     fontSize: 14,
                     color: INK_MUTED,
@@ -496,25 +497,73 @@ export default function OnboardingPage() {
                   </a>
                 </p>
 
-                <div style={{ textAlign: "center", marginTop: 20 }}>
-                  <button
-                    type="button"
-                    onClick={() => setStep(2)}
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <div
                     style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      fontFamily: SORA,
-                      fontSize: 13,
-                      color: INK_MUTED,
-                      cursor: "pointer",
-                      textDecoration: "none",
+                      width: "100%",
+                      maxWidth: 480,
+                      background: SURFACE,
+                      border: "1px solid " + BORDER,
+                      borderRadius: 10,
+                      padding: 18,
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 12,
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = INK)}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = INK_MUTED)}
                   >
-                    Skip for now →
-                  </button>
+                    <div>
+                      <div
+                        style={{
+                          fontFamily: SORA,
+                          fontSize: 15,
+                          fontWeight: 500,
+                          color: INK,
+                          marginBottom: 4,
+                        }}
+                      >
+                        Data modules only
+                      </div>
+                      <p
+                        style={{
+                          fontFamily: SORA,
+                          fontSize: 12,
+                          color: INK_MUTED,
+                          margin: 0,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        Use Byzant market intelligence without trade
+                        execution. Connect a broker anytime later.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setStep(2)}
+                      style={{
+                        width: "100%",
+                        height: 38,
+                        borderRadius: 999,
+                        border: "1px solid " + BORDER,
+                        background: "#1f1f1f",
+                        color: INK,
+                        fontFamily: SORA,
+                        fontSize: 13,
+                        fontWeight: 500,
+                        cursor: "pointer",
+                        transition: "background 0.15s, border-color 0.15s",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "#2a2a2a";
+                        e.currentTarget.style.borderColor = BORDER_HI;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "#1f1f1f";
+                        e.currentTarget.style.borderColor = BORDER;
+                      }}
+                    >
+                      Continue without broker →
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             )}
