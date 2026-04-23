@@ -79,11 +79,12 @@ function Wordmark() {
     <Link
       href="/"
       style={{
-        fontFamily: SORA,
-        fontSize: 20,
-        fontWeight: 600,
-        color: TEAL,
-        letterSpacing: "-0.01em",
+        color: "#99E1D9",
+        fontWeight: 500,
+        fontSize: 21,
+        fontFamily: "var(--font-geist-sans)",
+        letterSpacing: 0,
+        WebkitTextStroke: "0.8px white",
         textDecoration: "none",
       }}
     >
