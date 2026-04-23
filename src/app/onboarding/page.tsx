@@ -236,15 +236,19 @@ export default function OnboardingPage() {
         fontFamily: SORA,
         display: "flex",
         flexDirection: "column",
+        borderTop: 0,
+        outline: "none",
       }}
     >
       {/* Top bar */}
       <div
         style={{
-          padding: "20px 24px",
+          padding: "24px 24px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          border: 0,
+          outline: "none",
         }}
       >
         <Wordmark />
@@ -258,7 +262,7 @@ export default function OnboardingPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "40px 24px",
+          padding: "64px 24px 80px",
         }}
       >
         <div style={{ width: "100%", maxWidth: 560 }}>
@@ -291,7 +295,7 @@ export default function OnboardingPage() {
                     lineHeight: 1.7,
                     color: INK_MUTED,
                     whiteSpace: "pre-wrap",
-                    marginBottom: 20,
+                    marginBottom: 32,
                   }}
                 >
                   {DISCLAIMER}
@@ -302,7 +306,7 @@ export default function OnboardingPage() {
                     display: "flex",
                     alignItems: "flex-start",
                     gap: 12,
-                    marginBottom: 24,
+                    marginBottom: 40,
                     cursor: "pointer",
                     userSelect: "none",
                   }}
@@ -398,7 +402,7 @@ export default function OnboardingPage() {
                 {brokerMessage && (
                   <p
                     style={{
-                      marginTop: 16,
+                      marginTop: 20,
                       fontFamily: SORA,
                       fontSize: 13,
                       color: INK_MUTED,
@@ -411,8 +415,8 @@ export default function OnboardingPage() {
 
                 <p
                   style={{
-                    marginTop: 24,
-                    marginBottom: 20,
+                    marginTop: 40,
+                    marginBottom: 32,
                     fontFamily: SORA,
                     fontSize: 14,
                     color: INK_MUTED,
@@ -525,8 +529,8 @@ export default function OnboardingPage() {
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: 12,
-                    marginBottom: 24,
+                    gap: 14,
+                    marginBottom: 40,
                   }}
                 >
                   {AGENT_OPTIONS.map((opt) => {
@@ -662,7 +666,7 @@ function StepHeader({
   subtitle: string;
 }) {
   return (
-    <div style={{ marginBottom: 28 }}>
+    <div style={{ marginBottom: 44 }}>
       <div
         style={{
           fontFamily: SORA,
@@ -670,7 +674,7 @@ function StepHeader({
           fontWeight: 500,
           color: INK_MUTED,
           letterSpacing: "0.04em",
-          marginBottom: 12,
+          marginBottom: 20,
         }}
       >
         {eyebrow}
@@ -682,7 +686,7 @@ function StepHeader({
           fontWeight: 500,
           color: INK,
           letterSpacing: "-0.02em",
-          margin: "0 0 10px",
+          margin: "0 0 16px",
           lineHeight: 1.2,
         }}
       >
