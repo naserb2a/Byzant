@@ -80,11 +80,21 @@ export default function Sidebar() {
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
+    if (
+      !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+      !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    ) {
+      return;
+    }
     let cancelled = false;
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!cancelled && user?.email) setEmail(user.email);
-    });
+    try {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (!cancelled && user?.email) setEmail(user.email);
+      });
+    } catch {
+      // Supabase client unavailable — leave placeholder values.
+    }
     return () => {
       cancelled = true;
     };

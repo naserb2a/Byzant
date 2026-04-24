@@ -32,13 +32,23 @@ export default function Topbar() {
   const [initial, setInitial] = useState("N");
 
   useEffect(() => {
+    if (
+      !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+      !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    ) {
+      return;
+    }
     let cancelled = false;
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!cancelled && user?.email) {
-        setInitial(user.email.charAt(0).toUpperCase());
-      }
-    });
+    try {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (!cancelled && user?.email) {
+          setInitial(user.email.charAt(0).toUpperCase());
+        }
+      });
+    } catch {
+      // Supabase client unavailable — leave the default initial.
+    }
     return () => {
       cancelled = true;
     };
