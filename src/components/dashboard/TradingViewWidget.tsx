@@ -12,7 +12,7 @@ export default function TradingViewWidget({
   style = "1",
 }: {
   symbol: string;
-  height?: number;
+  height?: number | string;
   style?: string;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -43,6 +43,7 @@ export default function TradingViewWidget({
       hide_top_toolbar: false,
       hide_legend: false,
       hide_side_toolbar: true,
+      left_toolbar_hidden: true,
       allow_symbol_change: true,
       save_image: false,
       calendar: false,

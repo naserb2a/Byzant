@@ -107,18 +107,14 @@ export default function ApprovalsPage() {
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
             <div>
-              <div style={{ fontSize: 15, fontWeight: 500, color: "var(--db-ink)", fontFamily: SANS }}>{selected.ticker} Signal Analysis</div>
-              <div style={{ fontSize: 11, color: "var(--db-ink-muted)", fontFamily: MONO, marginTop: 2 }}>Live price action · {selected.agentName}</div>
+              <div style={{ fontSize: 15, fontWeight: 500, color: "var(--db-ink)", fontFamily: SANS }}>Live Chart · {selected.agentName}</div>
+              <div style={{ fontSize: 11, color: "var(--db-ink-muted)", fontFamily: MONO, marginTop: 2 }}>{selected.ticker} · Live price action</div>
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: "var(--db-green)", fontFamily: MONO }}>
+              {selected.price}
             </div>
           </div>
-          <div style={{
-            position: "absolute", top: 20, right: 20,
-            fontSize: 18, fontWeight: 700, color: "var(--db-green)", fontFamily: MONO,
-            zIndex: 2,
-          }}>
-            {selected.price}
-          </div>
-          <TradingViewWidget symbol={selected.ticker} height={500} />
+          <TradingViewWidget symbol={selected.ticker} height="calc(100vh - 220px)" />
         </div>
 
         {/* Agent reasoning */}
