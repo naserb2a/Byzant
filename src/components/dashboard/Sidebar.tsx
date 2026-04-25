@@ -134,41 +134,6 @@ export default function Sidebar() {
         >
           Byzant
         </Link>
-        <div
-          style={{
-            marginTop: 6,
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
-            minWidth: 0,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 12,
-              fontWeight: 500,
-              color: t.textPrimary,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {displayName}
-          </div>
-          {displayEmail && (
-            <div
-              style={{
-                fontSize: 11,
-                color: t.textMuted,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {displayEmail}
-            </div>
-          )}
-        </div>
       </div>
 
       {/* Nav */}
@@ -193,8 +158,81 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* Settings pinned bottom */}
-      <div style={{ padding: "8px 8px 16px" }}>
+      {/* User identity + Settings pinned bottom */}
+      <div
+        style={{
+          padding: "10px 8px 16px",
+          borderTop: `1px solid ${t.sidebarBorder}`,
+          display: "flex",
+          flexDirection: "column",
+          gap: 6,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "4px 10px 4px 8px",
+            minWidth: 0,
+          }}
+        >
+          <div
+            style={{
+              width: 24,
+              height: 24,
+              borderRadius: "50%",
+              background: TEAL,
+              color: "#0a0a0a",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 11,
+              fontWeight: 600,
+              flexShrink: 0,
+            }}
+          >
+            {displayName.charAt(0).toUpperCase()}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+              minWidth: 0,
+              flex: 1,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 12,
+                fontWeight: 500,
+                color: t.textPrimary,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                lineHeight: 1.2,
+              }}
+            >
+              {displayName}
+            </div>
+            {displayEmail && (
+              <div
+                style={{
+                  fontSize: 11,
+                  color: t.textMuted,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  lineHeight: 1.2,
+                }}
+              >
+                {displayEmail}
+              </div>
+            )}
+          </div>
+        </div>
+
         <NavLink
           item={{ label: "Settings", href: "/settings", Icon: SettingsIcon }}
           active={isActive(pathname, "/settings")}
