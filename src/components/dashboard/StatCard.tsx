@@ -21,9 +21,9 @@ export default function StatCard({
     <div style={{
       background: "var(--db-bg2)",
       border: "0.5px solid var(--db-border)",
-      borderRadius: 14,
-      padding: "20px 22px",
-      display: "flex", flexDirection: "column", gap: 8,
+      borderRadius: 6,
+      padding: 20,
+      display: "flex", flexDirection: "column", gap: 6,
       transition: "border-color 0.2s",
       cursor: "default",
     }}
@@ -31,21 +31,20 @@ export default function StatCard({
       onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--db-border)")}
     >
       <div style={{
-        fontSize: 11, fontWeight: 600, letterSpacing: "0.08em",
+        fontSize: 11, fontWeight: 500, letterSpacing: "0.04em",
         textTransform: "uppercase", color: "var(--db-ink-muted)",
-        fontFamily: "var(--font-geist-mono)",
       }}>
         {label}
       </div>
       <div style={{
-        fontSize: 26, fontWeight: 700, letterSpacing: "-0.03em",
+        fontSize: 22, fontWeight: 600, letterSpacing: "-0.02em",
         color: col, fontVariantNumeric: "tabular-nums",
-        lineHeight: 1, fontFamily: "var(--font-geist-mono)",
+        lineHeight: 1.1,
       }}>
         {value}
       </div>
       {sub && (
-        <div style={{ fontSize: 12, color: "var(--db-ink-muted)", fontFamily: "var(--font-geist-sans)" }}>{sub}</div>
+        <div style={{ fontSize: 12, color: "var(--db-ink-muted)" }}>{sub}</div>
       )}
     </div>
   );

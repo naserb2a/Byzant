@@ -17,18 +17,17 @@ export default function InsightBubble({
     <div style={{
       background: "var(--db-bg3)",
       border: `1px solid ${c.border}`,
-      borderRadius: 12,
-      padding: "12px 14px",
+      borderRadius: 6,
+      padding: "14px 16px",
     }}>
       <div style={{
-        fontSize: 10, fontWeight: 600, letterSpacing: "0.1em",
+        fontSize: 10, fontWeight: 500, letterSpacing: "0.08em",
         textTransform: "uppercase", color: c.label,
-        fontFamily: "var(--font-geist-mono)",
         marginBottom: 6,
       }}>
         {label}
       </div>
-      <p style={{ fontSize: 14, color: "var(--db-ink-muted)", lineHeight: 1.6, margin: 0, fontFamily: "var(--font-geist-sans)" }}>
+      <p style={{ fontSize: 13, color: "var(--db-ink-muted)", lineHeight: 1.5, margin: 0 }}>
         {text}
       </p>
     </div>

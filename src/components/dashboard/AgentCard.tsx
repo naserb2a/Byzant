@@ -28,8 +28,8 @@ export default function AgentCard({
     <div style={{
       background: "var(--db-bg2)",
       border: "0.5px solid var(--db-border)",
-      borderRadius: 16,
-      padding: "20px",
+      borderRadius: 6,
+      padding: 20,
       display: "flex", flexDirection: "column", gap: 16,
       transition: "border-color 0.2s",
       cursor: "default",
@@ -56,8 +56,8 @@ export default function AgentCard({
             </svg>
           </div>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: "var(--db-ink)", letterSpacing: "-0.01em", fontFamily: "var(--font-geist-sans)" }}>{name}</div>
-            <div style={{ fontSize: 11, color: "var(--db-ink-muted)", fontFamily: "var(--font-geist-mono)", marginTop: 1 }}>{id} · {category}</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: "var(--db-ink)", letterSpacing: "-0.01em", fontFamily: "inherit" }}>{name}</div>
+            <div style={{ fontSize: 11, color: "var(--db-ink-muted)", fontFamily: "inherit", marginTop: 1 }}>{id} · {category}</div>
           </div>
         </div>
         <ScoreRing score={score} size={52} />
@@ -75,8 +75,8 @@ export default function AgentCard({
             padding: "7px 0",
             borderBottom: i < 2 ? "1px solid var(--db-border)" : "none",
           }}>
-            <span style={{ fontSize: 10, color: "var(--db-ink-faint)", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.06em", textTransform: "uppercase" }}>{r.l}</span>
-            <span style={{ fontSize: 12, fontWeight: 400, color: r.vc, fontFamily: "var(--font-geist-sans)" }}>{r.v}</span>
+            <span style={{ fontSize: 10, color: "var(--db-ink-faint)", fontFamily: "inherit", letterSpacing: "0.06em", textTransform: "uppercase" }}>{r.l}</span>
+            <span style={{ fontSize: 12, fontWeight: 400, color: r.vc, fontFamily: "inherit" }}>{r.v}</span>
           </div>
         ))}
       </div>
@@ -89,7 +89,7 @@ export default function AgentCard({
       {/* Footer */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <StatusPill status={status} />
-        <span style={{ fontSize: 11, color: "var(--db-blue)", cursor: "pointer", fontFamily: "var(--font-geist-sans)", fontWeight: 400 }}>View full analysis →</span>
+        <span style={{ fontSize: 11, color: "var(--db-blue)", cursor: "pointer", fontFamily: "inherit", fontWeight: 400 }}>View full analysis →</span>
       </div>
     </div>
   );

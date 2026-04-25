@@ -24,7 +24,6 @@ export default function ScoreRing({ score, size = 64 }: { score: number; size?: 
         x={size / 2} y={size / 2}
         textAnchor="middle" dominantBaseline="central"
         fill={color} fontSize={size * 0.22} fontWeight={700}
-        fontFamily="var(--font-geist-mono)"
       >
         {score}
       </text>

@@ -15,7 +15,7 @@ export default function StatusPill({ status, label }: { status: Status; label?: 
       display: "inline-flex", alignItems: "center", gap: 5,
       padding: "2px 9px", borderRadius: 999,
       background: c.bg, color: c.text,
-      fontSize: 11, fontFamily: "var(--font-geist-mono)",
+      fontSize: 11,
       fontWeight: 500, letterSpacing: "0.04em", whiteSpace: "nowrap",
     }}>
       <span style={{ width: 6, height: 6, borderRadius: "50%", background: c.dot, display: "inline-block", flexShrink: 0 }} />

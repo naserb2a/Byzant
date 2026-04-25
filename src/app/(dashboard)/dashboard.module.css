@@ -3,7 +3,7 @@
   Prevents body font-family and body background from bleeding into dashboard pages.
 */
 .root {
-  font-family: var(--font-geist-sans);
+  font-family: var(--font-system);
   background: var(--db-bg);
   color: var(--db-ink);
 }

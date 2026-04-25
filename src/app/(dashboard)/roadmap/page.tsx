@@ -2,8 +2,8 @@
 import StatCard from "@/components/dashboard/StatCard";
 import RoadmapCard from "@/components/dashboard/RoadmapCard";
 
-const MONO = "var(--font-geist-mono)";
-const SANS = "var(--font-geist-sans)";
+const MONO = "inherit";
+const SANS = "inherit";
 
 const PHASES = [
   {
@@ -114,7 +114,7 @@ export default function RoadmapPage() {
       {/* Timeline */}
       <div style={{
         background: "var(--db-bg2)", border: "0.5px solid var(--db-border)",
-        borderRadius: 16, padding: "24px 28px",
+        borderRadius: 6, padding: 20,
       }}>
         <div style={{ fontSize: 12, fontWeight: 600, color: "var(--db-ink-muted)", fontFamily: MONO, marginBottom: 16, letterSpacing: "0.06em", textTransform: "uppercase" }}>
           Timeline

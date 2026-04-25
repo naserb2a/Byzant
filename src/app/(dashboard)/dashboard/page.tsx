@@ -5,8 +5,8 @@ import AgentCard from "@/components/dashboard/AgentCard";
 import LineChart from "@/components/dashboard/LineChart";
 import InsightBubble from "@/components/dashboard/InsightBubble";
 
-const MONO = "var(--font-geist-mono)";
-const SANS = "var(--font-geist-sans)";
+const MONO = "inherit";
+const SANS = "inherit";
 
 const TABS = ["All Agents", "Monitoring", "Paused"];
 
@@ -232,7 +232,7 @@ export default function DashboardPage() {
             <Widget id="portfolio-performance" onRemove={removeWidget}>
               <div style={{
                 background: "var(--db-bg2)", border: "0.5px solid var(--db-border)",
-                borderRadius: 16, padding: "20px 20px 14px",
+                borderRadius: 6, padding: 20,
               }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
                   <div>
@@ -254,7 +254,7 @@ export default function DashboardPage() {
             <Widget id="agent-insights" onRemove={removeWidget}>
               <div style={{
                 background: "var(--db-bg2)", border: "0.5px solid var(--db-border)",
-                borderRadius: 16, padding: "20px",
+                borderRadius: 6, padding: 20,
                 display: "flex", flexDirection: "column", gap: 12,
               }}>
                 <div style={{ fontSize: 15, fontWeight: 500, color: "var(--db-ink)", marginBottom: 4, fontFamily: SANS }}>Agent Insights</div>

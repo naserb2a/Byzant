@@ -30,6 +30,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch {}
+    document.documentElement.setAttribute("data-theme", theme);
   }, [theme, mounted]);
 
   const toggle = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
@@ -65,9 +66,9 @@ export function tokens(theme: Theme) {
     : {
         sidebarBg: "#ffffff",
         sidebarBorder: "rgba(0,0,0,0.08)",
-        topbarBg: "#f5f5f5",
-        topbarBorder: "rgba(0,0,0,0.08)",
-        contentBg: "#f9f9f9",
+        topbarBg: "#ffffff",
+        topbarBorder: "rgba(0,0,0,0.06)",
+        contentBg: "#f5f5f5",
         textPrimary: "#111111",
         textMuted: "#666666",
         textFaint: "#888888",
@@ -78,4 +79,4 @@ export function tokens(theme: Theme) {
 }
 
 export const SYSTEM_FONT =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif";
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";

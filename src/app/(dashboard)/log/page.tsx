@@ -1,8 +1,8 @@
 "use client";
 import StatusPill from "@/components/dashboard/StatusPill";
 
-const MONO = "var(--font-geist-mono)";
-const SANS = "var(--font-geist-sans)";
+const MONO = "inherit";
+const SANS = "inherit";
 
 const ROWS = [
   { ts: "2026-04-05 09:31:04", status: "success"  as const, type: "Trade Executed",     agent: "Alpha-1",  ticker: "NVDA",  detail: "Long 50sh @ $118.40 · Filled" },
@@ -44,7 +44,7 @@ export default function LogPage() {
       {/* Table */}
       <div style={{
         background: "var(--db-bg2)", border: "0.5px solid var(--db-border)",
-        borderRadius: 16, overflow: "hidden",
+        borderRadius: 6, overflow: "hidden",
       }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>

@@ -1,3 +1,19 @@
+"use client";
+
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Line,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+type Row = { i: number; v?: number; f?: number };
+
 export default function LineChart({
   points,
   forecast,
@@ -11,87 +27,104 @@ export default function LineChart({
   color?: string;
   height?: number;
 }) {
-  const W = 400;
-  const H = height;
-  const pad = { t: 12, r: 12, b: 28, l: 36 };
-  const innerW = W - pad.l - pad.r;
-  const innerH = H - pad.t - pad.b;
-
-  const all = forecast ? [...points, ...forecast] : points;
-  const min = Math.min(...all);
-  const max = Math.max(...all);
-  const range = max - min || 1;
-
-  const toX = (i: number, len: number) => pad.l + (i / (len - 1)) * innerW;
-  const toY = (v: number) => pad.t + innerH - ((v - min) / range) * innerH;
-
-  const mainPts = points.map((v, i) => `${toX(i, points.length)},${toY(v)}`).join(" ");
-
-  let forecastPts = "";
+  const data: Row[] = points.map((v, i) => ({ i, v }));
   if (forecast && forecast.length > 0) {
-    const start = points.length - 1;
-    const total = points.length + forecast.length - 1;
-    const fAll = [points[points.length - 1], ...forecast];
-    forecastPts = fAll.map((v, i) => `${toX(start + i, total + 1)},${toY(v)}`).join(" ");
+    const lastV = points[points.length - 1];
+    const startI = points.length - 1;
+    data[startI] = { ...data[startI], f: lastV };
+    forecast.forEach((fv, j) => {
+      data.push({ i: startI + j + 1, f: fv });
+    });
   }
 
-  const todayX = todayIdx !== undefined ? toX(todayIdx, points.length) : undefined;
+  const gradId = `lineGrad-${Math.random().toString(36).slice(2, 8)}`;
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} style={{ overflow: "visible" }}>
-      {/* Grid lines */}
-      {[0, 0.25, 0.5, 0.75, 1].map((t) => {
-        const y = pad.t + innerH * (1 - t);
-        const v = (min + range * t).toFixed(0);
-        return (
-          <g key={t}>
-            <line x1={pad.l} y1={y} x2={W - pad.r} y2={y} stroke="var(--db-border)" strokeWidth={0.5} />
-            <text x={pad.l - 6} y={y + 4} textAnchor="end" fontSize={9} fill="var(--db-ink-faint)"
-              fontFamily="var(--font-geist-mono)">{v}</text>
-          </g>
-        );
-      })}
-
-      {/* Area fill */}
-      <defs>
-        <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity={0.18} />
-          <stop offset="100%" stopColor={color} stopOpacity={0} />
-        </linearGradient>
-      </defs>
-      <polygon
-        points={`${pad.l},${pad.t + innerH} ${mainPts} ${toX(points.length - 1, points.length)},${pad.t + innerH}`}
-        fill="url(#lineGrad)"
-      />
-
-      {/* Main line */}
-      <polyline points={mainPts} fill="none" stroke={color} strokeWidth={1.8} strokeLinejoin="round" />
-
-      {/* Forecast dashed */}
-      {forecastPts && (
-        <polyline
-          points={forecastPts}
-          fill="none"
-          stroke={color}
-          strokeWidth={1.5}
-          strokeDasharray="4 3"
-          strokeLinejoin="round"
-          opacity={0.55}
+    <ResponsiveContainer width="100%" height={height}>
+      <AreaChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: 0 }}>
+        <defs>
+          <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={color} stopOpacity={0.22} />
+            <stop offset="100%" stopColor={color} stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid
+          stroke="var(--db-border)"
+          strokeDasharray="0"
+          vertical={false}
         />
-      )}
-
-      {/* TODAY marker */}
-      {todayX !== undefined && (
-        <>
-          <line x1={todayX} y1={pad.t} x2={todayX} y2={pad.t + innerH} stroke="var(--db-amber)" strokeWidth={1} strokeDasharray="3 2" />
-          <text x={todayX + 4} y={pad.t + 8} fontSize={9} fill="var(--db-amber)"
-            fontFamily="var(--font-geist-mono)" fontWeight={600}>TODAY</text>
-        </>
-      )}
-
-      {/* End dot */}
-      <circle cx={toX(points.length - 1, points.length)} cy={toY(points[points.length - 1])}
-        r={3} fill={color} />
-    </svg>
+        <XAxis
+          dataKey="i"
+          hide
+        />
+        <YAxis
+          width={36}
+          tick={{
+            fill: "var(--db-ink-faint)",
+            fontSize: 10,
+            fontFamily: "inherit",
+          }}
+          axisLine={false}
+          tickLine={false}
+          domain={["dataMin", "dataMax"]}
+        />
+        <Tooltip
+          cursor={{ stroke: "var(--db-border-hi)", strokeWidth: 1 }}
+          contentStyle={{
+            background: "var(--db-bg2)",
+            border: "0.5px solid var(--db-border-hi)",
+            borderRadius: 6,
+            fontSize: 12,
+            padding: "6px 10px",
+            fontFamily: "inherit",
+            color: "var(--db-ink)",
+          }}
+          labelStyle={{ display: "none" }}
+          formatter={(value) => [
+            typeof value === "number" ? value.toFixed(2) : String(value),
+            "",
+          ]}
+          separator=""
+        />
+        <Area
+          type="monotone"
+          dataKey="v"
+          stroke={color}
+          strokeWidth={1.8}
+          fill={`url(#${gradId})`}
+          isAnimationActive
+          connectNulls
+        />
+        {forecast && forecast.length > 0 && (
+          <Line
+            type="monotone"
+            dataKey="f"
+            stroke={color}
+            strokeWidth={1.5}
+            strokeDasharray="4 3"
+            strokeOpacity={0.55}
+            dot={false}
+            isAnimationActive={false}
+            connectNulls
+          />
+        )}
+        {todayIdx !== undefined && (
+          <ReferenceLine
+            x={todayIdx}
+            stroke="var(--db-amber)"
+            strokeDasharray="3 2"
+            strokeWidth={1}
+            label={{
+              value: "TODAY",
+              position: "insideTopRight",
+              fill: "var(--db-amber)",
+              fontSize: 9,
+              fontFamily: "inherit",
+              fontWeight: 600,
+            }}
+          />
+        )}
+      </AreaChart>
+    </ResponsiveContainer>
   );
 }

@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-const MONO = "var(--font-geist-mono)";
-const SANS = "var(--font-geist-sans)";
+const MONO = "inherit";
+const SANS = "inherit";
 
 type Flow = {
   recordId: string;
@@ -269,7 +269,7 @@ export default function WhaleTrackerPage() {
         style={{
           background: "var(--db-bg2)",
           border: "0.5px solid var(--db-border)",
-          borderRadius: 16,
+          borderRadius: 6,
           overflow: "hidden",
         }}
       >

@@ -1,3 +1,7 @@
+"use client";
+
+import { Bar, BarChart, Cell, ResponsiveContainer } from "recharts";
+
 export default function MiniBarChart({
   bars,
   activeColor = "var(--db-blue)",
@@ -9,25 +13,22 @@ export default function MiniBarChart({
   inactiveColor?: string;
   height?: number;
 }) {
-  const max = Math.max(...bars, 1);
-  const w = 100 / bars.length;
+  const data = bars.map((v, i) => ({ i, v }));
+  const activeFrom = bars.length - 3;
 
   return (
-    <svg viewBox={`0 0 100 ${height}`} width="100%" height={height} preserveAspectRatio="none">
-      {bars.map((v, i) => {
-        const bh = (v / max) * height * 0.9;
-        return (
-          <rect
-            key={i}
-            x={i * w + 1}
-            y={height - bh}
-            width={w - 2}
-            height={bh}
-            rx={2}
-            fill={i >= bars.length - 3 ? activeColor : inactiveColor}
-          />
-        );
-      })}
-    </svg>
+    <ResponsiveContainer width="100%" height={height}>
+      <BarChart
+        data={data}
+        margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+        barCategoryGap={2}
+      >
+        <Bar dataKey="v" radius={[2, 2, 0, 0]} isAnimationActive={false}>
+          {data.map((_, i) => (
+            <Cell key={i} fill={i >= activeFrom ? activeColor : inactiveColor} />
+          ))}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
   );
 }

@@ -2,7 +2,6 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { SYSTEM_FONT, TEAL, tokens, useTheme } from "./ThemeProvider";
 
@@ -26,7 +25,7 @@ function resolveTitle(pathname: string): string {
 
 export default function Topbar() {
   const pathname = usePathname();
-  const { theme, toggle } = useTheme();
+  const { theme } = useTheme();
   const t = tokens(theme);
 
   const [initial, setInitial] = useState("N");
@@ -59,78 +58,50 @@ export default function Topbar() {
   return (
     <header
       style={{
+        position: "relative",
         height: 48,
         flexShrink: 0,
         background: t.topbarBg,
         borderBottom: `1px solid ${t.topbarBorder}`,
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "flex-end",
         padding: "0 20px",
         fontFamily: SYSTEM_FONT,
       }}
     >
       <div
         style={{
-          fontSize: 14,
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+          fontSize: 13,
           fontWeight: 500,
           color: t.textPrimary,
+          fontFamily: SYSTEM_FONT,
+          pointerEvents: "none",
         }}
       >
         {title}
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-        <button
-          type="button"
-          onClick={toggle}
-          aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-          style={{
-            width: 28,
-            height: 28,
-            borderRadius: 6,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-            color: t.textMuted,
-            transition: "color 0.12s, background 0.12s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = t.textPrimary;
-            e.currentTarget.style.background = t.hoverBg;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = t.textMuted;
-            e.currentTarget.style.background = "transparent";
-          }}
-        >
-          {theme === "dark" ? (
-            <Sun size={14} strokeWidth={1.75} />
-          ) : (
-            <Moon size={14} strokeWidth={1.75} />
-          )}
-        </button>
-
-        <div
-          style={{
-            width: 26,
-            height: 26,
-            borderRadius: "50%",
-            background: TEAL,
-            color: "#0a0a0a",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 11,
-            fontWeight: 600,
-            fontFamily: SYSTEM_FONT,
-          }}
-        >
-          {initial}
-        </div>
+      <div
+        style={{
+          width: 26,
+          height: 26,
+          borderRadius: "50%",
+          background: TEAL,
+          color: "#0a0a0a",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 11,
+          fontWeight: 600,
+          fontFamily: SYSTEM_FONT,
+        }}
+      >
+        {initial}
       </div>
     </header>
   );

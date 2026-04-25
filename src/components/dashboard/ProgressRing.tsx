@@ -24,7 +24,6 @@ export default function ProgressRing({
         x={size / 2} y={size / 2}
         textAnchor="middle" dominantBaseline="central"
         fill={color} fontSize={size * 0.2} fontWeight={700}
-        fontFamily="var(--font-geist-mono)"
       >
         {pct}%
       </text>

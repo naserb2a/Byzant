@@ -48,7 +48,8 @@ function NavLink({
         display: "flex",
         alignItems: "center",
         gap: 10,
-        padding: "7px 10px 7px 8px",
+        height: 36,
+        padding: "0 10px 0 8px",
         borderRadius: 6,
         textDecoration: "none",
         color: active ? TEAL : textMuted,
@@ -66,7 +67,7 @@ function NavLink({
         if (!active) e.currentTarget.style.color = textMuted;
       }}
     >
-      <item.Icon size={15} strokeWidth={1.75} />
+      <item.Icon size={16} strokeWidth={1.5} />
       <span>{item.label}</span>
     </Link>
   );
@@ -124,7 +125,7 @@ export default function Sidebar() {
           href="/"
           style={{
             color: TEAL,
-            fontSize: 14,
+            fontSize: 13,
             fontWeight: 600,
             letterSpacing: 0,
             textDecoration: "none",

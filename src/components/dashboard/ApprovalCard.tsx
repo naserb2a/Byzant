@@ -20,8 +20,8 @@ export default function ApprovalCard({
     <div style={{
       background: "var(--db-bg2)",
       border: `0.5px solid ${approved ? "rgba(61,214,140,0.25)" : "var(--db-border)"}`,
-      borderRadius: 16,
-      padding: "20px",
+      borderRadius: 6,
+      padding: 20,
       display: "flex", flexDirection: "column", gap: 16,
       transition: "border-color 0.25s",
     }}>
@@ -33,18 +33,18 @@ export default function ApprovalCard({
             background: "var(--db-blue-dim)", border: "1px solid var(--db-border-mid)",
             display: "flex", alignItems: "center", justifyContent: "center",
             fontSize: 11, fontWeight: 700, color: "var(--db-blue)",
-            fontFamily: "var(--font-geist-mono)",
+            fontFamily: "inherit",
           }}>
             {agentId[0]}
           </div>
           <div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: "var(--db-ink)", fontFamily: "var(--font-geist-sans)" }}>{agentName}</div>
-            <div style={{ fontSize: 10, color: "var(--db-ink-muted)", fontFamily: "var(--font-geist-mono)", marginTop: 1 }}>{agentId}</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: "var(--db-ink)", fontFamily: "inherit" }}>{agentName}</div>
+            <div style={{ fontSize: 10, color: "var(--db-ink-muted)", fontFamily: "inherit", marginTop: 1 }}>{agentId}</div>
           </div>
         </div>
         <div style={{ textAlign: "right" }}>
-          <div style={{ fontSize: 16, fontWeight: 700, color: "var(--db-ink)", fontFamily: "var(--font-geist-mono)" }}>{ticker}</div>
-          <div style={{ fontSize: 12, color: "var(--db-blue)", fontFamily: "var(--font-geist-mono)" }}>{price}</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: "var(--db-ink)", fontFamily: "inherit" }}>{ticker}</div>
+          <div style={{ fontSize: 12, color: "var(--db-blue)", fontFamily: "inherit" }}>{price}</div>
         </div>
       </div>
 
@@ -54,18 +54,18 @@ export default function ApprovalCard({
         border: "1px solid var(--db-border-mid)",
         borderRadius: 10, padding: "10px 12px",
       }}>
-        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--db-blue)", fontFamily: "var(--font-geist-mono)", marginBottom: 5 }}>
+        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--db-blue)", fontFamily: "inherit", marginBottom: 5 }}>
           Awaiting your approval
         </div>
-        <p style={{ fontSize: 14, color: "var(--db-ink-muted)", lineHeight: 1.55, margin: 0, fontFamily: "var(--font-geist-sans)" }}>{desc}</p>
+        <p style={{ fontSize: 14, color: "var(--db-ink-muted)", lineHeight: 1.55, margin: 0, fontFamily: "inherit" }}>{desc}</p>
       </div>
 
       {/* 2x2 meta grid */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
         {meta.map((m) => (
           <div key={m.label} style={{ background: "var(--db-bg3)", borderRadius: 8, padding: "8px 10px" }}>
-            <div style={{ fontSize: 9, color: "var(--db-ink-faint)", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 3 }}>{m.label}</div>
-            <div style={{ fontSize: 12, fontWeight: 600, color: "var(--db-ink)", fontFamily: "var(--font-geist-mono)" }}>{m.value}</div>
+            <div style={{ fontSize: 9, color: "var(--db-ink-faint)", fontFamily: "inherit", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 3 }}>{m.label}</div>
+            <div style={{ fontSize: 12, fontWeight: 600, color: "var(--db-ink)", fontFamily: "inherit" }}>{m.value}</div>
           </div>
         ))}
       </div>
@@ -81,7 +81,7 @@ export default function ApprovalCard({
             borderRadius: 10, padding: "10px 0", fontSize: 12.5, fontWeight: 600,
             cursor: approved ? "default" : "pointer",
             transition: "background 0.25s, color 0.25s",
-            fontFamily: "var(--font-geist-sans)",
+            fontFamily: "inherit",
           }}
         >
           {approved ? "Approved ✓" : "Approve"}
@@ -93,7 +93,7 @@ export default function ApprovalCard({
             border: "1px solid var(--db-border)", borderRadius: 10, padding: "10px 0",
             fontSize: 12.5, fontWeight: 500, cursor: "pointer",
             transition: "background 0.15s",
-            fontFamily: "var(--font-geist-sans)",
+            fontFamily: "inherit",
           }}
           onMouseEnter={e => (e.currentTarget.style.background = "var(--db-bg4)")}
           onMouseLeave={e => (e.currentTarget.style.background = "var(--db-bg3)")}

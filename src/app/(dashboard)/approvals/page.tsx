@@ -5,8 +5,8 @@ import ApprovalCard from "@/components/dashboard/ApprovalCard";
 import LineChart from "@/components/dashboard/LineChart";
 import InsightBubble from "@/components/dashboard/InsightBubble";
 
-const MONO = "var(--font-geist-mono)";
-const SANS = "var(--font-geist-sans)";
+const MONO = "inherit";
+const SANS = "inherit";
 
 const NVDA_PTS = [112, 114, 111, 116, 115, 118, 117, 119, 118, 121, 118, 120, 118, 118];
 
@@ -82,7 +82,7 @@ export default function ApprovalsPage() {
         {/* NVDA signal chart */}
         <div style={{
           background: "var(--db-bg2)", border: "0.5px solid var(--db-border)",
-          borderRadius: 16, padding: "20px 20px 14px",
+          borderRadius: 6, padding: 20,
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
             <div>
@@ -97,7 +97,7 @@ export default function ApprovalsPage() {
         {/* Agent reasoning */}
         <div style={{
           background: "var(--db-bg2)", border: "0.5px solid var(--db-border)",
-          borderRadius: 16, padding: "20px",
+          borderRadius: 6, padding: 20,
           display: "flex", flexDirection: "column", gap: 12,
         }}>
           <div style={{ fontSize: 15, fontWeight: 500, color: "var(--db-ink)", fontFamily: SANS }}>Agent Reasoning · Alpha-1</div>

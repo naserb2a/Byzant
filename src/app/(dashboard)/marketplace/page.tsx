@@ -1,10 +1,8 @@
 "use client";
 import { useState } from "react";
 
-const MONO = "var(--font-geist-mono)";
-const SANS = "var(--font-geist-sans)";
+const MONO = "inherit";
 
-/* ─── Module data ───────────────────────────────────────────────── */
 type ModuleCategory = "Data Feeds" | "Analytics" | "Risk" | "Execution" | "Memory";
 
 interface Module {
@@ -14,7 +12,7 @@ interface Module {
   desc: string;
   price: string;
   installed: boolean;
-  usage?: number; // 0-100 for installed modules
+  usage?: number;
   iconPath: string;
   iconColor: string;
 }
@@ -72,7 +70,7 @@ const MODULES: Module[] = [
     id: "amc", name: "Agent Memory & Context", category: "Memory",
     desc: "Persistent memory layer for your agents — learn from past trades, adapt over time.",
     price: "$29/mo", installed: false,
-    iconPath: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z", iconColor: "#666666",
+    iconPath: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z", iconColor: "#94a3b8",
   },
 ];
 
@@ -86,20 +84,19 @@ const TABS: Array<{ label: string; filter: ModuleCategory | null }> = [
 ];
 
 const CATEGORY_COLOR: Record<ModuleCategory, string> = {
-  "Data Feeds": "#99E1D9",
-  "Analytics": "#B2EBE5",
-  "Risk": "#f0b429",
-  "Execution": "#99E1D9",
-  "Memory": "#666666",
+  "Data Feeds": "var(--db-blue)",
+  "Analytics": "var(--db-blue-bright)",
+  "Risk": "var(--db-amber)",
+  "Execution": "var(--db-blue)",
+  "Memory": "var(--db-ink-muted)",
 };
 
-/* ─── Icon box ──────────────────────────────────────────────────── */
 function IconBox({ path, color, size = 40 }: { path: string; color: string; size?: number }) {
   return (
     <div style={{
-      width: size, height: size, borderRadius: 10, flexShrink: 0,
-      background: `${color}14`,
-      border: `0.5px solid ${color}33`,
+      width: size, height: size, borderRadius: 6, flexShrink: 0,
+      background: "var(--db-blue-dim)",
+      border: "0.5px solid var(--db-border-mid)",
       display: "flex", alignItems: "center", justifyContent: "center",
     }}>
       <svg width={size * 0.45} height={size * 0.45} viewBox="0 0 24 24" fill="none">
@@ -109,73 +106,70 @@ function IconBox({ path, color, size = 40 }: { path: string; color: string; size
   );
 }
 
-/* ─── Installed Card ────────────────────────────────────────────── */
 function InstalledCard({ module: m }: { module: Module }) {
   const catColor = CATEGORY_COLOR[m.category];
   return (
     <div style={{
-      background: "#0F0F0F",
-      border: "0.5px solid rgba(255,255,255,0.18)",
-      borderRadius: 14, padding: "20px 24px",
+      background: "var(--db-bg2)",
+      border: "0.5px solid var(--db-border)",
+      borderRadius: 6, padding: 20,
       display: "flex", flexDirection: "column", gap: 14,
     }}>
-      {/* Top row */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <IconBox path={m.iconPath} color={m.iconColor} size={40} />
           <div>
-            <div style={{ fontSize: 14, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS, marginBottom: 4 }}>
+            <div style={{ fontSize: 14, fontWeight: 500, color: "var(--db-ink)", marginBottom: 4 }}>
               {m.name}
             </div>
             <span style={{
-              fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase",
-              color: catColor, background: `${catColor}14`, border: `0.5px solid ${catColor}33`,
+              fontSize: 10, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase",
+              color: catColor,
               padding: "2px 8px", borderRadius: 999, fontFamily: MONO,
+              border: "0.5px solid var(--db-border-mid)",
+              background: "var(--db-bg3)",
             }}>
               {m.category}
             </span>
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6, flexShrink: 0 }}>
-          <span style={{ fontSize: 12, color: "#99E1D9", fontFamily: MONO }}>{m.price}</span>
+          <span style={{ fontSize: 12, color: "var(--db-blue)", fontFamily: MONO }}>{m.price}</span>
           <div style={{
             display: "flex", alignItems: "center", gap: 5,
             padding: "3px 10px", borderRadius: 999,
-            background: "rgba(61,214,140,0.08)", border: "0.5px solid rgba(61,214,140,0.2)",
+            background: "var(--db-green-dim)", border: "0.5px solid rgba(61,214,140,0.2)",
           }}>
-            <span style={{ color: "#3dd68c", fontSize: 10 }}>✓</span>
-            <span style={{ fontSize: 9, color: "#3dd68c", fontFamily: MONO, letterSpacing: "0.08em", fontWeight: 600 }}>INSTALLED</span>
+            <span style={{ color: "var(--db-green)", fontSize: 10 }}>✓</span>
+            <span style={{ fontSize: 10, color: "var(--db-green)", fontFamily: MONO, letterSpacing: "0.08em", fontWeight: 500 }}>INSTALLED</span>
           </div>
         </div>
       </div>
 
-      {/* Description */}
-      <p style={{ fontSize: 12, color: "#666666", fontFamily: SANS, lineHeight: 1.6, margin: 0 }}>
+      <p style={{ fontSize: 13, color: "var(--db-ink-muted)", lineHeight: 1.5, margin: 0 }}>
         {m.desc}
       </p>
 
-      {/* Usage bar */}
       <div>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-          <span style={{ fontSize: 9, color: "#444444", fontFamily: MONO, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+          <span style={{ fontSize: 10, color: "var(--db-ink-faint)", fontFamily: MONO, letterSpacing: "0.08em", textTransform: "uppercase" }}>
             Usage this month
           </span>
-          <span style={{ fontSize: 9, color: "#99E1D9", fontFamily: MONO }}>{m.usage}%</span>
+          <span style={{ fontSize: 10, color: "var(--db-blue)", fontFamily: MONO }}>{m.usage}%</span>
         </div>
-        <div style={{ height: 3, background: "rgba(255,255,255,0.1)", borderRadius: 2, overflow: "hidden" }}>
-          <div style={{ height: "100%", width: `${m.usage}%`, background: "#99E1D9", borderRadius: 2, transition: "width 0.6s ease" }} />
+        <div style={{ height: 3, background: "var(--db-bg4)", borderRadius: 2, overflow: "hidden" }}>
+          <div style={{ height: "100%", width: `${m.usage}%`, background: "var(--db-blue)", borderRadius: 2, transition: "width 0.6s ease" }} />
         </div>
       </div>
 
-      {/* Configure link */}
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <button style={{
-          background: "none", border: "none", color: "#99E1D9", cursor: "pointer",
-          fontSize: 12, fontFamily: SANS, padding: 0,
+          background: "none", border: "none", color: "var(--db-blue)", cursor: "pointer",
+          fontSize: 12, padding: 0,
           transition: "color 0.15s",
         }}
-          onMouseEnter={e => (e.currentTarget.style.color = "#B2EBE5")}
-          onMouseLeave={e => (e.currentTarget.style.color = "#99E1D9")}>
+          onMouseEnter={e => (e.currentTarget.style.color = "var(--db-blue-bright)")}
+          onMouseLeave={e => (e.currentTarget.style.color = "var(--db-blue)")}>
           Configure →
         </button>
       </div>
@@ -183,57 +177,53 @@ function InstalledCard({ module: m }: { module: Module }) {
   );
 }
 
-/* ─── Available Card ────────────────────────────────────────────── */
 function AvailableCard({ module: m }: { module: Module }) {
   const catColor = CATEGORY_COLOR[m.category];
   return (
     <div
       style={{
-        background: "#0A0A0A",
-        border: "0.5px solid rgba(255,255,255,0.08)",
-        borderRadius: 14, padding: 20,
+        background: "var(--db-bg2)",
+        border: "0.5px solid var(--db-border)",
+        borderRadius: 6, padding: 20,
         display: "flex", flexDirection: "column", gap: 0,
         cursor: "default", transition: "border-color 0.2s, transform 0.2s",
       }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.transform = "translateY(0)"; }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--db-border-hi)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--db-border)"; e.currentTarget.style.transform = "translateY(0)"; }}
     >
-      {/* Top row */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 12 }}>
         <IconBox path={m.iconPath} color={m.iconColor} size={38} />
-        <span style={{ fontSize: 13, color: "#F5F5F5", fontFamily: MONO, fontWeight: 500 }}>{m.price}</span>
+        <span style={{ fontSize: 13, color: "var(--db-ink)", fontFamily: MONO, fontWeight: 500 }}>{m.price}</span>
       </div>
 
-      {/* Badge */}
       <span style={{
-        fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase",
-        color: catColor, background: `${catColor}14`, border: `0.5px solid ${catColor}33`,
+        fontSize: 10, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase",
+        color: catColor,
         padding: "2px 8px", borderRadius: 999, fontFamily: MONO,
-        display: "inline-block", marginBottom: 10,
+        border: "0.5px solid var(--db-border-mid)",
+        background: "var(--db-bg3)",
+        display: "inline-block", marginBottom: 10, alignSelf: "flex-start",
       }}>
         {m.category}
       </span>
 
-      {/* Name */}
-      <div style={{ fontSize: 15, fontWeight: 500, color: "#F5F5F5", fontFamily: SANS, marginBottom: 8, lineHeight: 1.3 }}>
+      <div style={{ fontSize: 14, fontWeight: 500, color: "var(--db-ink)", marginBottom: 8, lineHeight: 1.3 }}>
         {m.name}
       </div>
 
-      {/* Desc */}
-      <p style={{ fontSize: 12, color: "#666666", fontFamily: SANS, lineHeight: 1.55, margin: "0 0 20px", flex: 1 }}>
+      <p style={{ fontSize: 13, color: "var(--db-ink-muted)", lineHeight: 1.5, margin: "0 0 16px", flex: 1 }}>
         {m.desc}
       </p>
 
-      {/* CTA */}
       <button
         style={{
-          width: "100%", background: "#99E1D9", color: "#fff",
-          border: "none", borderRadius: 8, padding: "10px 0",
+          width: "100%", background: "var(--db-blue)", color: "#0a0a0a",
+          border: "none", borderRadius: 6, padding: "9px 0",
           fontSize: 13, fontWeight: 500, cursor: "pointer",
-          fontFamily: SANS, transition: "background 0.15s",
+          transition: "background 0.15s",
         }}
-        onMouseEnter={e => (e.currentTarget.style.background = "#B2EBE5")}
-        onMouseLeave={e => (e.currentTarget.style.background = "#99E1D9")}
+        onMouseEnter={e => (e.currentTarget.style.background = "var(--db-blue-bright)")}
+        onMouseLeave={e => (e.currentTarget.style.background = "var(--db-blue)")}
       >
         Get Module
       </button>
@@ -241,37 +231,34 @@ function AvailableCard({ module: m }: { module: Module }) {
   );
 }
 
-/* ─── Empty state ───────────────────────────────────────────────── */
 function EmptyState() {
   return (
     <div style={{ textAlign: "center", padding: "48px 0", gridColumn: "1 / -1" }}>
       <div style={{
-        width: 56, height: 56, borderRadius: 14, margin: "0 auto 16px",
-        background: "rgba(255,255,255,0.06)", border: "0.5px solid rgba(255,255,255,0.12)",
+        width: 56, height: 56, borderRadius: 6, margin: "0 auto 16px",
+        background: "var(--db-bg3)", border: "0.5px solid var(--db-border-mid)",
         display: "flex", alignItems: "center", justifyContent: "center",
       }}>
         <svg width={22} height={22} viewBox="0 0 24 24" fill="none">
-          <rect x={3} y={3} width={18} height={18} rx={3} stroke="rgba(255,255,255,0.3)" strokeWidth={1.5} />
-          <path d="M9 12h6M12 9v6" stroke="rgba(255,255,255,0.3)" strokeWidth={1.5} strokeLinecap="round" />
+          <rect x={3} y={3} width={18} height={18} rx={3} stroke="var(--db-ink-muted)" strokeWidth={1.5} />
+          <path d="M9 12h6M12 9v6" stroke="var(--db-ink-muted)" strokeWidth={1.5} strokeLinecap="round" />
         </svg>
       </div>
-      <div style={{ fontSize: 14, color: "#666666", fontFamily: SANS }}>
+      <div style={{ fontSize: 14, color: "var(--db-ink-muted)" }}>
         No modules in this category yet.
       </div>
     </div>
   );
 }
 
-/* ─── Section label ─────────────────────────────────────────────── */
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ fontSize: 10, color: "#666666", fontFamily: MONO, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12 }}>
+    <div style={{ fontSize: 10, color: "var(--db-ink-muted)", fontFamily: MONO, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>
       {children}
     </div>
   );
 }
 
-/* ─── Main page ─────────────────────────────────────────────────── */
 export default function MarketplacePage() {
   const [activeTab, setActiveTab] = useState(0);
   const filter = TABS[activeTab].filter;
@@ -281,13 +268,12 @@ export default function MarketplacePage() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-      {/* Page header */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 24 }}>
         <div>
-          <h1 style={{ fontSize: 22, fontWeight: 500, color: "var(--db-ink)", letterSpacing: "-0.02em", margin: "0 0 4px", fontFamily: SANS }}>
+          <h1 style={{ fontSize: 22, fontWeight: 500, color: "var(--db-ink)", letterSpacing: "-0.02em", margin: "0 0 4px" }}>
             Module Marketplace
           </h1>
-          <p style={{ fontSize: 13, color: "var(--db-ink-muted)", margin: 0, fontFamily: SANS }}>
+          <p style={{ fontSize: 13, color: "var(--db-ink-muted)", margin: 0 }}>
             <span style={{ fontFamily: MONO }}>{MODULES.filter(m => m.installed).length}</span> installed ·{" "}
             <span style={{ fontFamily: MONO }}>{MODULES.filter(m => !m.installed).length}</span> available · Agent-ready
           </p>
@@ -295,31 +281,30 @@ export default function MarketplacePage() {
         <div style={{ display: "flex", gap: 8 }}>
           <button style={{
             background: "transparent", color: "var(--db-ink-muted)",
-            border: "0.5px solid var(--db-border)", borderRadius: 8,
-            padding: "7px 14px", fontSize: 12, fontFamily: SANS, cursor: "pointer",
+            border: "0.5px solid var(--db-border)", borderRadius: 6,
+            padding: "7px 14px", fontSize: 12, cursor: "pointer",
             transition: "border-color 0.15s, color 0.15s",
           }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--db-border-mid)"; e.currentTarget.style.color = "var(--db-ink)"; }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--db-border-hi)"; e.currentTarget.style.color = "var(--db-ink)"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--db-border)"; e.currentTarget.style.color = "var(--db-ink-muted)"; }}>
             Submit Module
           </button>
           <button style={{
             background: "transparent", color: "var(--db-ink-muted)",
-            border: "0.5px solid var(--db-border)", borderRadius: 8,
-            padding: "7px 14px", fontSize: 12, fontFamily: SANS, cursor: "pointer",
+            border: "0.5px solid var(--db-border)", borderRadius: 6,
+            padding: "7px 14px", fontSize: 12, cursor: "pointer",
             transition: "border-color 0.15s, color 0.15s",
           }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--db-border-mid)"; e.currentTarget.style.color = "var(--db-ink)"; }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--db-border-hi)"; e.currentTarget.style.color = "var(--db-ink)"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--db-border)"; e.currentTarget.style.color = "var(--db-ink-muted)"; }}>
             Filter
           </button>
         </div>
       </div>
 
-      {/* Category tab bar */}
       <div style={{
         display: "flex", gap: 6, alignItems: "center",
-        marginBottom: 32, flexWrap: "wrap",
+        marginBottom: 24, flexWrap: "wrap",
         borderBottom: "0.5px solid var(--db-border)",
         paddingBottom: 16,
       }}>
@@ -331,9 +316,9 @@ export default function MarketplacePage() {
               onClick={() => setActiveTab(i)}
               style={{
                 padding: "5px 14px", borderRadius: 20, border: "none", cursor: "pointer",
-                fontSize: 12, fontFamily: SANS, fontWeight: active ? 500 : 400,
-                background: active ? "#99E1D9" : "transparent",
-                color: active ? "#fff" : "var(--db-ink-muted)",
+                fontSize: 12, fontWeight: active ? 500 : 400,
+                background: active ? "var(--db-blue)" : "transparent",
+                color: active ? "#0a0a0a" : "var(--db-ink-muted)",
                 transition: "background 0.15s, color 0.15s",
               }}
               onMouseEnter={e => { if (!active) e.currentTarget.style.color = "var(--db-ink)"; }}
@@ -345,9 +330,8 @@ export default function MarketplacePage() {
         })}
       </div>
 
-      {/* Installed section */}
       {installed.length > 0 && (
-        <div style={{ marginBottom: 36 }}>
+        <div style={{ marginBottom: 32 }}>
           <SectionLabel>Installed</SectionLabel>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
             {installed.map(m => <InstalledCard key={m.id} module={m} />)}
@@ -355,7 +339,6 @@ export default function MarketplacePage() {
         </div>
       )}
 
-      {/* Available section */}
       <div>
         <SectionLabel>Available</SectionLabel>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
@@ -365,7 +348,7 @@ export default function MarketplacePage() {
         </div>
         {available.length === 0 && installed.length > 0 && (
           <div style={{ textAlign: "center", padding: "32px 0" }}>
-            <div style={{ fontSize: 13, color: "#666666", fontFamily: SANS }}>
+            <div style={{ fontSize: 13, color: "var(--db-ink-muted)" }}>
               All modules in this category are installed.
             </div>
           </div>

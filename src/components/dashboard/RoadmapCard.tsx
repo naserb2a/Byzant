@@ -27,7 +27,7 @@ export default function RoadmapCard({ phase, title, status, pct, items }: Roadma
     <div style={{
       background: "var(--db-bg2)",
       border: `0.5px solid ${status === "active" ? "var(--db-border-mid)" : "var(--db-border)"}`,
-      borderRadius: 16, padding: "22px",
+      borderRadius: 6, padding: 20,
       display: "flex", flexDirection: "column", gap: 16,
       transition: "border-color 0.2s",
     }}
@@ -39,12 +39,12 @@ export default function RoadmapCard({ phase, title, status, pct, items }: Roadma
         <span style={{
           fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase",
           color: "var(--db-ink-muted)",
-          fontFamily: "var(--font-geist-mono)",
+          fontFamily: "inherit",
         }}>{phase}</span>
         <span style={{
           fontSize: 10, fontWeight: 600, padding: "2px 8px", borderRadius: 999,
           background: s.bg, color: s.color,
-          fontFamily: "var(--font-geist-mono)",
+          fontFamily: "inherit",
         }}>{s.label}</span>
       </div>
 

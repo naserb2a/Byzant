@@ -2,8 +2,8 @@
 import StatCard from "@/components/dashboard/StatCard";
 import LineChart from "@/components/dashboard/LineChart";
 
-const MONO = "var(--font-geist-mono)";
-const SANS = "var(--font-geist-sans)";
+const MONO = "inherit";
+const SANS = "inherit";
 
 const PERF_PTS   = [92, 88, 95, 91, 97, 94, 100, 98, 105, 102, 108, 106, 112, 110];
 const FORECAST   = [110, 115, 112, 118, 122];
@@ -59,7 +59,7 @@ export default function AnalyticsPage() {
         {/* Performance chart with forecast */}
         <div style={{
           background: "var(--db-bg2)", border: "0.5px solid var(--db-border)",
-          borderRadius: 16, padding: "20px 20px 14px",
+          borderRadius: 6, padding: 20,
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
             <div>
@@ -87,7 +87,7 @@ export default function AnalyticsPage() {
         {/* Scenario modeling */}
         <div style={{
           background: "var(--db-bg2)", border: "0.5px solid var(--db-border)",
-          borderRadius: 16, padding: "20px",
+          borderRadius: 6, padding: 20,
           display: "flex", flexDirection: "column", gap: 14,
         }}>
           <div style={{ fontSize: 15, fontWeight: 500, color: "var(--db-ink)", fontFamily: SANS }}>Scenario Modeling</div>
@@ -95,7 +95,7 @@ export default function AnalyticsPage() {
             <div key={s.label} style={{
               background: "var(--db-bg3)",
               border: "1px solid var(--db-border)",
-              borderRadius: 12, padding: "14px",
+              borderRadius: 6, padding: 14,
               transition: "border-color 0.2s", cursor: "default",
             }}
               onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--db-border-mid)")}
