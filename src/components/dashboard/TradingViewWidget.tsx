@@ -28,6 +28,8 @@ export default function TradingViewWidget({
     widgetHost.className = "tradingview-widget-container__widget";
     widgetHost.style.height = "100%";
     widgetHost.style.width = "100%";
+    widgetHost.style.maxWidth = "100%";
+    widgetHost.style.overflow = "hidden";
     container.appendChild(widgetHost);
 
     const config = {
@@ -40,7 +42,7 @@ export default function TradingViewWidget({
       locale: "en",
       hide_top_toolbar: false,
       hide_legend: false,
-      hide_side_toolbar: false,
+      hide_side_toolbar: true,
       allow_symbol_change: true,
       save_image: false,
       calendar: false,

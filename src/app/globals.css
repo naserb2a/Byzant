@@ -262,3 +262,15 @@ body {
     border-left: 2px solid var(--blue);
   }
 }
+
+.tradingview-widget-container,
+.tradingview-widget-container__widget {
+  max-width: 100%;
+  overflow: hidden;
+}
+.tradingview-widget-container iframe,
+.tradingview-widget-container__widget iframe {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block;
+}

@@ -100,14 +100,23 @@ export default function ApprovalsPage() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 14 }}>
         {/* Live signal chart */}
         <div style={{
+          position: "relative",
           background: "var(--db-bg2)", border: "0.5px solid var(--db-border)",
           borderRadius: 6, padding: 20, marginBottom: 48,
+          overflow: "hidden",
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
             <div>
               <div style={{ fontSize: 15, fontWeight: 500, color: "var(--db-ink)", fontFamily: SANS }}>{selected.ticker} Signal Analysis</div>
               <div style={{ fontSize: 11, color: "var(--db-ink-muted)", fontFamily: MONO, marginTop: 2 }}>Live price action · {selected.agentName}</div>
             </div>
+          </div>
+          <div style={{
+            position: "absolute", top: 20, right: 20,
+            fontSize: 18, fontWeight: 700, color: "var(--db-green)", fontFamily: MONO,
+            zIndex: 2,
+          }}>
+            {selected.price}
           </div>
           <TradingViewWidget symbol={selected.ticker} height={500} />
         </div>
