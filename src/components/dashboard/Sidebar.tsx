@@ -15,11 +15,13 @@ import {
 import { createClient } from "@/lib/supabase/client";
 import { SYSTEM_FONT, TEAL, tokens, useTheme } from "./ThemeProvider";
 
-type NavItem = { label: string; href: string; Icon: LucideIcon };
+type NavItem = { label: string; href: string; Icon: LucideIcon; badge?: number };
+
+const PENDING_APPROVALS = 3;
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", Icon: LayoutDashboard },
-  { label: "Approvals", href: "/approvals", Icon: CheckCircle2 },
+  { label: "Approvals", href: "/approvals", Icon: CheckCircle2, badge: PENDING_APPROVALS },
   { label: "Marketplace", href: "/marketplace", Icon: Store },
   { label: "Analytics", href: "/analytics", Icon: LineChart },
   { label: "Agent Log", href: "/log", Icon: FileText },
@@ -68,7 +70,29 @@ function NavLink({
       }}
     >
       <item.Icon size={16} strokeWidth={1.5} />
-      <span>{item.label}</span>
+      <span style={{ flex: 1 }}>{item.label}</span>
+      {typeof item.badge === "number" && item.badge > 0 && (
+        <span
+          aria-label={`${item.badge} pending`}
+          style={{
+            minWidth: 18,
+            height: 18,
+            padding: "0 6px",
+            borderRadius: 999,
+            background: TEAL,
+            color: "#0a0a0a",
+            fontSize: 10,
+            fontWeight: 600,
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            lineHeight: 1,
+            flexShrink: 0,
+          }}
+        >
+          {item.badge}
+        </span>
+      )}
     </Link>
   );
 }
