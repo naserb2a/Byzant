@@ -64,6 +64,33 @@ This human-in-the-loop model is a feature, not a limitation.
 
 ---
 
+## TWO USER TYPES ARCHITECTURE
+
+Byzant serves two distinct user types who share the same infrastructure
+but differ in how the agent is provisioned. Both types use the same
+dashboard, approval queue, marketplace, analytics, and agent log. The
+fork happens only at onboarding step 3.
+
+### Type 1 — Hosted Agent User (Non-Technical)
+- No existing agent — Byzant provisions one via Anthropic's Claude
+  Managed Agents API
+- User selects model during onboarding (Claude, GPT-4, Gemini, Grok,
+  OpenClaw, Other)
+- Byzant manages runtime, system prompt, and module connections
+  entirely
+- Zero technical setup required
+- Target: retail traders who couldn't set up Claude+Alpaca themselves
+
+### Type 2 — BYO Agent User (Technical)
+- Has an existing agent built on any framework
+- Connects to Byzant's marketplace modules via MCP protocol
+- Byzant provides API key and MCP connection string at onboarding
+- Same dashboard, approval flow, modules — different runtime
+- Target: developers and technical traders buffing up their existing
+  agent
+
+---
+
 ## TARGET CUSTOMER
 
 Active retail traders who are already using or curious about AI agents.
@@ -106,6 +133,23 @@ answer is uncertain, flag it before building — not after.
 Friction, personal questions, or premature configuration requests
 will cost users before they've seen the value. Get them to the
 dashboard first. Let the product speak.
+
+---
+
+## ONBOARDING FLOW (UPDATED)
+
+- **Step 1** — Terms & Risk Disclaimer — mandatory checkbox
+- **Step 2** — Connect broker — Alpaca only at launch, OAuth not yet
+  wired, skip option available
+- **Step 3** — Fork:
+  - **(A) Hosted** — choose model for Byzant-hosted agent
+    (Claude, GPT-4, Gemini, Grok, OpenClaw, Other)
+  - **(B) BYO** — connect your own agent via MCP — shows API key +
+    MCP connection string
+
+The fork at step 3 is the single decision point that splits Type 1 and
+Type 2 users. Everything downstream (dashboard, approvals, marketplace,
+log, analytics) is identical for both.
 
 ---
 
@@ -243,6 +287,77 @@ byzant/
 - Partner data provider integrations
 - Referral and growth loops
 - Paid tier launch
+
+---
+
+## CURRENT LIVE STATE
+
+- **Landing page** — LIVE at byzant.ai
+- **Auth flow** — LIVE — `/auth`, `/auth/email`, `/signup`,
+  `/signup/email`, Supabase + Google OAuth
+- **Onboarding** — LIVE — 3 steps, Type 1 / Type 2 fork update pending
+- **Dashboard** — LIVE — 6 screens, light mode default, dark mode
+  toggle in Settings
+- **Approvals page** — TradingView chart embedded, ticker label
+  dynamic, price shows `—` pending Alpaca wire
+- **Marketplace** — placeholder modules, needs replacing with actual
+  planned modules
+- **Analytics** — interactive Coinbase-style chart with time range
+  selector (1W / 1M / 3M / 6M / 1Y / All)
+- **Agent Log** — filters, search, pagination, export CSV all built
+- **Whale Tracker** — 1001 real records from Apify, Apify webhook
+  pipeline not yet built
+- **+ New Agent modal** — built and working
+
+---
+
+## DECISIONS LOG (LOCKED)
+
+- Light mode is default for dashboard
+- Approval is always mandatory — toggle permanently removed
+- Submit Module button deferred to Phase 3 post-launch
+- Export Report and + New Agent buttons stay but need functional flows
+  before launch
+- TradingView widget used for chart visuals only — live price comes
+  from Alpaca in Phase 2
+- Approval card chart must switch ticker when user clicks a different
+  card (prompt ready, build at Alpaca phase)
+- Live Alpaca price must replace $118.40 hardcoded placeholder at
+  Alpaca phase
+- Analytics and Agent Log kept separate — Analytics is scorecard,
+  Agent Log is audit trail
+- Scenario Modeling deferred to Phase 2
+- Confidence score and New Forecast features deferred post-launch
+- "AI-generated forecasts · Confidence-weighted" subtitle removed from
+  Analytics
+
+---
+
+## PHASE 1 REMAINING BLOCKERS (PRIORITY ORDER)
+
+1. Alpaca OAuth wire-up — BLOCKER before real users
+2. Wire live Alpaca price feed to approval card price display
+3. Wire approval card click to switch TradingView chart ticker
+4. Update onboarding step 3 — Type 1 / Type 2 fork
+5. Apify schedule + webhook → Supabase pipeline for Whale Tracker
+6. Congressional Tracker — Apify actor + dashboard page
+7. Fix Marketplace — replace placeholder modules with actual planned
+   modules (Whale Tracker, Congressional Tracker, Risk Agent,
+   Trailing Stop Bot, Wheel Strategy Bot, Copy Trading Bot)
+8. Add empty states to all dashboard pages
+9. Fix Configure → dead links on Marketplace installed modules
+10. Get lawyer to review all legal/disclaimer language before public
+    launch
+
+---
+
+## POST-LAUNCH BACKLOG
+
+- Submit Module button + third-party developer submission pipeline
+- Confidence score feature
+- New Forecast feature
+- Scenario Modeling panel on Analytics
+- Mobile approval flow (PWA) — Phase 3
 
 ---
 
