@@ -3,7 +3,7 @@ import ScoreRing from "./ScoreRing";
 import MiniBarChart from "./MiniBarChart";
 import StatusPill from "./StatusPill";
 
-type AgentStatus = "active" | "paused";
+type AgentStatus = "active" | "paused" | "pending";
 
 interface AgentCardProps {
   id: string;
@@ -14,12 +14,13 @@ interface AgentCardProps {
   position: string;
   rr: string;
   status: AgentStatus;
+  statusLabel?: string;
   bars: number[];
   accentColor?: string;
 }
 
 export default function AgentCard({
-  id, name, category, score, signal, position, rr, status, bars, accentColor,
+  id, name, category, score, signal, position, rr, status, statusLabel, bars, accentColor,
 }: AgentCardProps) {
   const scoreColor = score >= 80 ? "var(--db-green)" : score >= 55 ? "var(--db-amber)" : "var(--db-red)";
   const ac = accentColor ?? scoreColor;
@@ -88,7 +89,7 @@ export default function AgentCard({
 
       {/* Footer */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <StatusPill status={status} />
+        <StatusPill status={status} label={statusLabel} />
         <span style={{ fontSize: 11, color: "var(--db-blue)", cursor: "pointer", fontFamily: "inherit", fontWeight: 400 }}>View full analysis →</span>
       </div>
     </div>
