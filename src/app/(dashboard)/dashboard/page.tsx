@@ -34,7 +34,9 @@ const AGENTS = [
   },
 ];
 
-const PORTFOLIO_PTS = [82, 85, 81, 88, 91, 89, 94, 97, 95, 102, 98, 106, 104, 110];
+const PORTFOLIO_PTS = [
+  8200, 8500, 8100, 8800, 9100, 8900, 9400, 9700, 9500, 10200, 9800, 10600, 10400, 11000,
+];
 
 const INSIGHTS = [
   { label: "Momentum Signal", text: "Alpha-1 detected sustained institutional buying in NVDA. Volume 2.4× average over 3 sessions.", accent: "blue" as const },
