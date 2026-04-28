@@ -49,9 +49,75 @@ function buildSeries(count: number, stepMs: number, startVal: number): Point[] {
   return pts;
 }
 
+// Monotone cubic Hermite interpolation (Fritsch–Carlson) — densifies a sparse
+// anchor series into a smooth, non-overshooting curve so the cursor can land on
+// every point in between. Dates are spaced linearly across the original span.
+function densifyPoints(anchors: Point[], target: number): Point[] {
+  const n = anchors.length;
+  if (n < 2 || target <= n) return anchors.slice();
+
+  const xs = anchors.map((a) => a.date.getTime());
+  const ys = anchors.map((a) => a.value);
+
+  const dx: number[] = new Array(n - 1);
+  const slope: number[] = new Array(n - 1);
+  for (let i = 0; i < n - 1; i++) {
+    dx[i] = xs[i + 1] - xs[i];
+    slope[i] = (ys[i + 1] - ys[i]) / dx[i];
+  }
+  const m: number[] = new Array(n);
+  m[0] = slope[0];
+  m[n - 1] = slope[n - 2];
+  for (let i = 1; i < n - 1; i++) {
+    m[i] = slope[i - 1] * slope[i] <= 0 ? 0 : (slope[i - 1] + slope[i]) / 2;
+  }
+  for (let i = 0; i < n - 1; i++) {
+    if (slope[i] === 0) {
+      m[i] = 0;
+      m[i + 1] = 0;
+    } else {
+      const a = m[i] / slope[i];
+      const b = m[i + 1] / slope[i];
+      const s = a * a + b * b;
+      if (s > 9) {
+        const tau = 3 / Math.sqrt(s);
+        m[i] = tau * a * slope[i];
+        m[i + 1] = tau * b * slope[i];
+      }
+    }
+  }
+
+  const out: Point[] = [];
+  const xMin = xs[0];
+  const xMax = xs[n - 1];
+  for (let k = 0; k < target; k++) {
+    const t = k / (target - 1);
+    const x = xMin + t * (xMax - xMin);
+    let i = 0;
+    while (i < n - 2 && xs[i + 1] < x) i++;
+    const localT = dx[i] === 0 ? 0 : (x - xs[i]) / dx[i];
+    const h00 = (1 + 2 * localT) * (1 - localT) * (1 - localT);
+    const h10 = localT * (1 - localT) * (1 - localT);
+    const h01 = localT * localT * (3 - 2 * localT);
+    const h11 = localT * localT * (localT - 1);
+    const v =
+      h00 * ys[i] +
+      h10 * dx[i] * m[i] +
+      h01 * ys[i + 1] +
+      h11 * dx[i] * m[i + 1];
+    out.push({ date: new Date(x), value: Math.round(v) });
+  }
+  out[0] = { date: anchors[0].date, value: anchors[0].value };
+  out[out.length - 1] = { date: anchors[n - 1].date, value: anchors[n - 1].value };
+  return out;
+}
+
+const DENSE_TARGET = 208;
+
 const SERIES: Record<RangeKey, Point[]> = RANGES.reduce(
   (acc, r) => {
-    acc[r.key] = buildSeries(r.count, r.stepMs, r.startVal);
+    const anchors = buildSeries(r.count, r.stepMs, r.startVal);
+    acc[r.key] = anchors.length >= DENSE_TARGET ? anchors : densifyPoints(anchors, DENSE_TARGET);
     return acc;
   },
   {} as Record<RangeKey, Point[]>
@@ -133,12 +199,14 @@ function InteractiveChart({
   hoveredIdx,
   onHover,
   lineColor,
+  granularity,
 }: {
   data: Point[];
   height: number;
   hoveredIdx: number | null;
   onHover: (idx: number | null) => void;
   lineColor: string;
+  granularity: Granularity;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
@@ -159,7 +227,7 @@ function InteractiveChart({
   const padL = 8, padR = 8, padT = 14, padB = 22;
 
   if (width <= 0 || data.length < 2) {
-    return <div ref={wrapRef} style={{ height, width: "100%" }} />;
+    return <div ref={wrapRef} style={{ height, width: "100%", position: "relative" }} />;
   }
 
   const chartW = width - padL - padR;
@@ -236,8 +304,27 @@ function InteractiveChart({
   const cursorX = showCursor ? xAt(hoveredIdx!) : 0;
   const cursorY = showCursor ? yAt(data[hoveredIdx!].value) : 0;
 
+  // Near-cursor tooltip — content + edge-aware horizontal positioning.
+  const startVal = data[0].value;
+  const activePoint = showCursor ? data[hoveredIdx!] : null;
+  const change = activePoint ? activePoint.value - startVal : 0;
+  const pct = activePoint && startVal !== 0 ? (change / startVal) * 100 : 0;
+  const positive = change >= 0;
+  const changeColor = positive ? TEAL : "#ff5a5a";
+
+  const TIP_W = 168;
+  const TIP_OFFSET = 14;
+  let tipLeft = 0;
+  if (showCursor) {
+    tipLeft =
+      cursorX + TIP_OFFSET + TIP_W <= width
+        ? cursorX + TIP_OFFSET
+        : Math.max(0, cursorX - TIP_OFFSET - TIP_W);
+  }
+  const tipTop = Math.max(8, Math.min(cursorY - 30, height - 78));
+
   return (
-    <div ref={wrapRef} style={{ height, width: "100%" }}>
+    <div ref={wrapRef} style={{ height, width: "100%", position: "relative" }}>
       <svg
         width={width}
         height={height}
@@ -283,6 +370,39 @@ function InteractiveChart({
           </>
         )}
       </svg>
+      {activePoint && (
+        <div
+          style={{
+            position: "absolute",
+            left: tipLeft,
+            top: tipTop,
+            width: TIP_W,
+            background: "var(--db-bg2)",
+            border: "0.5px solid var(--db-border)",
+            boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
+            borderRadius: 8,
+            padding: "8px 10px",
+            fontFamily: SANS,
+            color: "var(--db-ink)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            fontVariantNumeric: "tabular-nums",
+            pointerEvents: "none",
+            zIndex: 1,
+          }}
+        >
+          <div style={{ fontSize: 14, fontWeight: 600, color: "var(--db-ink)", lineHeight: 1.2 }}>
+            {fmtUsd(activePoint.value)}
+          </div>
+          <div style={{ fontSize: 11, fontWeight: 600, color: changeColor, lineHeight: 1.2 }}>
+            {`${fmtSignedUsd(change)} · ${fmtPct(pct)}`}
+          </div>
+          <div style={{ fontSize: 11, color: "var(--db-ink-muted)", lineHeight: 1.2 }}>
+            {fmtDate(activePoint.date, granularity)}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -431,6 +551,7 @@ export default function AnalyticsPage() {
           hoveredIdx={hoveredIdx}
           onHover={setHoveredIdx}
           lineColor={lineColor}
+          granularity={granularity}
         />
       </div>
     </div>
