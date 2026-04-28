@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 
@@ -18,6 +18,7 @@ const INK_MUTED = "#64748b";
 const SURFACE = "#111318";
 
 type AgentType = "claude" | "gpt-4" | "gemini" | "grok" | "openclaw" | "other";
+type SubStep = "fork" | "hosted" | "byo";
 
 const DISCLAIMER = `DISCLAIMER — NOT FINANCIAL ADVICE
 
@@ -187,6 +188,10 @@ export default function OnboardingPage() {
 
   // Step 2
   const [agent, setAgent] = useState<AgentType | null>(null);
+  const [subStep, setSubStep] = useState<SubStep>("fork");
+  const [mcpUserId, setMcpUserId] = useState<string | null>(null);
+  const [keyCopied, setKeyCopied] = useState(false);
+  const [urlCopied, setUrlCopied] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -194,7 +199,22 @@ export default function OnboardingPage() {
   const canContinueStep0 = agreed;
   const canFinish = agent !== null;
 
-  async function handleFinish() {
+  useEffect(() => {
+    if (subStep !== "byo" || mcpUserId) return;
+    let cancelled = false;
+    (async () => {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!cancelled && user) setMcpUserId(user.id);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [subStep, mcpUserId]);
+
+  async function handleFinish(agentTypeOverride: string | null = null) {
     setSubmitting(true);
     setError(null);
     const supabase = createClient();
@@ -211,7 +231,7 @@ export default function OnboardingPage() {
     const { error: upsertError } = await supabase.from("profiles").upsert(
       {
         id: user.id,
-        agent_type: agent,
+        agent_type: agentTypeOverride ?? agent,
         onboarding_complete: true,
         updated_at: new Date().toISOString(),
       },
@@ -508,134 +528,259 @@ export default function OnboardingPage() {
                 exit="exit"
                 transition={{ duration: 0.28, ease: "easeOut" }}
               >
-                <StepHeader
-                  eyebrow="Step 3 of 3"
-                  title="Which model powers your agent?"
-                  subtitle="Byzant modules work with any MCP-compatible AI agent."
-                />
+                <AnimatePresence mode="wait">
+                  {subStep === "fork" && (
+                    <motion.div
+                      key="sub-fork"
+                      variants={stepVariants()}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={{ duration: 0.22, ease: "easeOut" }}
+                    >
+                      <StepHeader
+                        eyebrow="Step 3 of 3"
+                        title="How do you want to run your agent?"
+                        subtitle="Choose the path that matches your setup. You can switch later from Settings."
+                      />
 
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 14,
-                    marginBottom: 40,
-                  }}
-                >
-                  {AGENT_OPTIONS.map((opt) => {
-                    const selected = agent === opt.key;
-                    return (
-                      <button
-                        key={opt.key}
-                        type="button"
-                        onClick={() => setAgent(opt.key)}
+                      <div
                         style={{
-                          textAlign: "left",
-                          background: selected ? TEAL_DIM : SURFACE,
-                          border:
-                            "1px solid " + (selected ? TEAL : BORDER),
-                          borderRadius: 8,
-                          padding: "18px 20px",
-                          cursor: "pointer",
-                          transition:
-                            "background 0.15s, border-color 0.15s",
                           display: "flex",
-                          alignItems: "flex-start",
-                          justifyContent: "space-between",
-                          gap: 16,
-                          fontFamily: SORA,
-                        }}
-                        onMouseEnter={(e) => {
-                          if (!selected)
-                            e.currentTarget.style.borderColor = BORDER_HI;
-                        }}
-                        onMouseLeave={(e) => {
-                          if (!selected)
-                            e.currentTarget.style.borderColor = BORDER;
+                          flexDirection: "column",
+                          gap: 14,
+                          marginBottom: 40,
                         }}
                       >
-                        <span style={{ flex: 1 }}>
-                          <span
-                            style={{
-                              display: "block",
-                              fontFamily: SORA,
-                              fontSize: 15,
-                              fontWeight: 500,
-                              color: INK,
-                              marginBottom: 4,
-                            }}
-                          >
-                            {opt.name}
-                          </span>
-                          <span
-                            style={{
-                              fontSize: 13,
-                              color: INK_MUTED,
-                              lineHeight: 1.5,
-                              display: "block",
-                            }}
-                          >
-                            {opt.desc}
-                          </span>
-                        </span>
-                        <span
+                        <ForkCard
+                          title="Start with a Byzant-powered agent"
+                          desc="Byzant provisions and hosts a Claude-powered agent for you. No setup required. Recommended for non-technical users."
+                          recommended
+                          onClick={() => setSubStep("hosted")}
+                        />
+                        <ForkCard
+                          title="Connect your own agent"
+                          desc="You have an existing agent. Connect it to Byzant's marketplace via the MCP protocol. Recommended for developers."
+                          onClick={() => setSubStep("byo")}
+                        />
+                      </div>
+
+                      <div style={{ display: "flex" }}>
+                        <BackButton onClick={() => setStep(1)} />
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {subStep === "hosted" && (
+                    <motion.div
+                      key="sub-hosted"
+                      variants={stepVariants()}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={{ duration: 0.22, ease: "easeOut" }}
+                    >
+                      <StepHeader
+                        eyebrow="Step 3 of 3"
+                        title="Which model powers your agent?"
+                        subtitle="Byzant modules work with any MCP-compatible AI agent."
+                      />
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 14,
+                          marginBottom: 40,
+                        }}
+                      >
+                        {AGENT_OPTIONS.map((opt) => {
+                          const selected = agent === opt.key;
+                          return (
+                            <button
+                              key={opt.key}
+                              type="button"
+                              onClick={() => setAgent(opt.key)}
+                              style={{
+                                textAlign: "left",
+                                background: selected ? TEAL_DIM : SURFACE,
+                                border:
+                                  "1px solid " + (selected ? TEAL : BORDER),
+                                borderRadius: 8,
+                                padding: "18px 20px",
+                                cursor: "pointer",
+                                transition:
+                                  "background 0.15s, border-color 0.15s",
+                                display: "flex",
+                                alignItems: "flex-start",
+                                justifyContent: "space-between",
+                                gap: 16,
+                                fontFamily: SORA,
+                              }}
+                              onMouseEnter={(e) => {
+                                if (!selected)
+                                  e.currentTarget.style.borderColor = BORDER_HI;
+                              }}
+                              onMouseLeave={(e) => {
+                                if (!selected)
+                                  e.currentTarget.style.borderColor = BORDER;
+                              }}
+                            >
+                              <span style={{ flex: 1 }}>
+                                <span
+                                  style={{
+                                    display: "block",
+                                    fontFamily: SORA,
+                                    fontSize: 15,
+                                    fontWeight: 500,
+                                    color: INK,
+                                    marginBottom: 4,
+                                  }}
+                                >
+                                  {opt.name}
+                                </span>
+                                <span
+                                  style={{
+                                    fontSize: 13,
+                                    color: INK_MUTED,
+                                    lineHeight: 1.5,
+                                    display: "block",
+                                  }}
+                                >
+                                  {opt.desc}
+                                </span>
+                              </span>
+                              <span
+                                style={{
+                                  width: 18,
+                                  height: 18,
+                                  borderRadius: 999,
+                                  border:
+                                    "1px solid " + (selected ? TEAL : BORDER_HI),
+                                  flexShrink: 0,
+                                  marginTop: 2,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                {selected && (
+                                  <span
+                                    style={{
+                                      width: 8,
+                                      height: 8,
+                                      borderRadius: 999,
+                                      background: TEAL,
+                                    }}
+                                  />
+                                )}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {error && (
+                        <div
                           style={{
-                            width: 18,
-                            height: 18,
-                            borderRadius: 999,
-                            border:
-                              "1px solid " + (selected ? TEAL : BORDER_HI),
-                            flexShrink: 0,
-                            marginTop: 2,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
+                            marginTop: 8,
+                            marginBottom: 12,
+                            padding: "10px 12px",
+                            borderRadius: 8,
+                            background: "rgba(239,68,68,0.08)",
+                            border: "1px solid rgba(239,68,68,0.2)",
+                            color: "#f87171",
+                            fontFamily: SORA,
+                            fontSize: 12,
                           }}
                         >
-                          {selected && (
-                            <span
-                              style={{
-                                width: 8,
-                                height: 8,
-                                borderRadius: 999,
-                                background: TEAL,
-                              }}
-                            />
-                          )}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
+                          {error}
+                        </div>
+                      )}
 
-                {error && (
-                  <div
-                    style={{
-                      marginTop: 8,
-                      marginBottom: 12,
-                      padding: "10px 12px",
-                      borderRadius: 8,
-                      background: "rgba(239,68,68,0.08)",
-                      border: "1px solid rgba(239,68,68,0.2)",
-                      color: "#f87171",
-                      fontFamily: SORA,
-                      fontSize: 12,
-                    }}
-                  >
-                    {error}
-                  </div>
-                )}
+                      <div style={{ display: "flex", gap: 12 }}>
+                        <BackButton onClick={() => setSubStep("fork")} />
+                        <PrimaryButton
+                          disabled={!canFinish}
+                          loading={submitting}
+                          onClick={() => handleFinish()}
+                        >
+                          Enter Byzant →
+                        </PrimaryButton>
+                      </div>
+                    </motion.div>
+                  )}
 
-                <div style={{ display: "flex", gap: 12 }}>
-                  <BackButton onClick={() => setStep(1)} />
-                  <PrimaryButton
-                    disabled={!canFinish}
-                    loading={submitting}
-                    onClick={handleFinish}
-                  >
-                    Enter Byzant →
-                  </PrimaryButton>
-                </div>
+                  {subStep === "byo" && (
+                    <motion.div
+                      key="sub-byo"
+                      variants={stepVariants()}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={{ duration: 0.22, ease: "easeOut" }}
+                    >
+                      <StepHeader
+                        eyebrow="Step 3 of 3"
+                        title="Connect your agent."
+                        subtitle="Use these credentials to wire your existing agent into Byzant's marketplace via MCP."
+                      />
+
+                      <MCPCredentialsCard
+                        userId={mcpUserId}
+                        keyCopied={keyCopied}
+                        urlCopied={urlCopied}
+                        onCopyKey={(value) => {
+                          if (typeof navigator !== "undefined" && navigator.clipboard) {
+                            navigator.clipboard.writeText(value);
+                          }
+                          setKeyCopied(true);
+                          setTimeout(() => setKeyCopied(false), 1500);
+                        }}
+                        onCopyUrl={(value) => {
+                          if (typeof navigator !== "undefined" && navigator.clipboard) {
+                            navigator.clipboard.writeText(value);
+                          }
+                          setUrlCopied(true);
+                          setTimeout(() => setUrlCopied(false), 1500);
+                        }}
+                      />
+
+                      {error && (
+                        <div
+                          style={{
+                            marginTop: 16,
+                            padding: "10px 12px",
+                            borderRadius: 8,
+                            background: "rgba(239,68,68,0.08)",
+                            border: "1px solid rgba(239,68,68,0.2)",
+                            color: "#f87171",
+                            fontFamily: SORA,
+                            fontSize: 12,
+                          }}
+                        >
+                          {error}
+                        </div>
+                      )}
+
+                      <div
+                        style={{
+                          marginTop: 32,
+                          display: "flex",
+                          gap: 12,
+                        }}
+                      >
+                        <BackButton onClick={() => setSubStep("fork")} />
+                        <PrimaryButton
+                          loading={submitting}
+                          onClick={() => handleFinish("custom-mcp")}
+                        >
+                          I&apos;ve connected my agent →
+                        </PrimaryButton>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )}
           </AnimatePresence>
@@ -796,6 +941,314 @@ function BrokerCard({
       >
         {available ? "Connect" : "Unavailable"}
       </button>
+    </div>
+  );
+}
+
+function ForkCard({
+  title,
+  desc,
+  recommended,
+  onClick,
+}: {
+  title: string;
+  desc: string;
+  recommended?: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        textAlign: "left",
+        background: SURFACE,
+        border: "1px solid " + BORDER,
+        borderRadius: 8,
+        padding: "18px 20px",
+        cursor: "pointer",
+        transition: "background 0.15s, border-color 0.15s",
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        gap: 16,
+        fontFamily: SORA,
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = BORDER_HI;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = BORDER;
+      }}
+    >
+      <span style={{ flex: 1 }}>
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginBottom: 4,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: SORA,
+              fontSize: 15,
+              fontWeight: 500,
+              color: INK,
+            }}
+          >
+            {title}
+          </span>
+          {recommended && (
+            <span
+              style={{
+                fontFamily: SORA,
+                fontSize: 10,
+                fontWeight: 500,
+                color: TEAL,
+                background: TEAL_DIM,
+                border: "1px solid " + TEAL_MID,
+                padding: "2px 8px",
+                borderRadius: 999,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+              }}
+            >
+              Recommended
+            </span>
+          )}
+        </span>
+        <span
+          style={{
+            fontSize: 13,
+            color: INK_MUTED,
+            lineHeight: 1.5,
+            display: "block",
+          }}
+        >
+          {desc}
+        </span>
+      </span>
+      <span
+        style={{
+          fontSize: 16,
+          color: INK_MUTED,
+          flexShrink: 0,
+          marginTop: 2,
+          fontFamily: SORA,
+        }}
+      >
+        →
+      </span>
+    </button>
+  );
+}
+
+function MCPCredentialsCard({
+  userId,
+  keyCopied,
+  urlCopied,
+  onCopyKey,
+  onCopyUrl,
+}: {
+  userId: string | null;
+  keyCopied: boolean;
+  urlCopied: boolean;
+  onCopyKey: (value: string) => void;
+  onCopyUrl: (value: string) => void;
+}) {
+  const apiKey = userId ? `byzant_sk_${userId.slice(0, 24)}` : "…";
+  const endpoint = userId ? `mcp://connect.byzant.ai/${userId}` : "…";
+  const ready = !!userId;
+
+  return (
+    <div
+      style={{
+        background: SURFACE,
+        border: "1px solid " + BORDER,
+        borderRadius: 10,
+        padding: 18,
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: SORA,
+          fontSize: 10,
+          fontWeight: 500,
+          color: INK_MUTED,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+        }}
+      >
+        Your MCP Credentials
+      </div>
+
+      <CredentialRow
+        label="API Key"
+        value={apiKey}
+        copied={keyCopied}
+        ready={ready}
+        onCopy={() => onCopyKey(apiKey)}
+      />
+      <CredentialRow
+        label="MCP Endpoint"
+        value={endpoint}
+        copied={urlCopied}
+        ready={ready}
+        onCopy={() => onCopyUrl(endpoint)}
+      />
+
+      <div
+        style={{
+          fontFamily: SORA,
+          fontSize: 12,
+          color: INK_MUTED,
+          lineHeight: 1.5,
+          paddingTop: 4,
+          borderTop: "1px solid " + BORDER,
+        }}
+      >
+        Need help wiring up MCP?{" "}
+        <Link
+          href="/docs/mcp"
+          style={{
+            color: TEAL,
+            textDecoration: "none",
+          }}
+        >
+          Read the integration guide →
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function CredentialRow({
+  label,
+  value,
+  copied,
+  ready,
+  onCopy,
+}: {
+  label: string;
+  value: string;
+  copied: boolean;
+  ready: boolean;
+  onCopy: () => void;
+}) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <div
+        style={{
+          fontFamily: SORA,
+          fontSize: 11,
+          fontWeight: 500,
+          color: INK_MUTED,
+          letterSpacing: "0.04em",
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          background: BG,
+          border: "1px solid " + BORDER,
+          borderRadius: 6,
+          padding: "8px 10px",
+          minWidth: 0,
+        }}
+      >
+        <span
+          style={{
+            fontFamily:
+              "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+            fontSize: 12,
+            color: ready ? INK : INK_MUTED,
+            flex: 1,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {value}
+        </span>
+        <button
+          type="button"
+          onClick={onCopy}
+          disabled={!ready}
+          aria-label={`Copy ${label}`}
+          style={{
+            width: 28,
+            height: 28,
+            borderRadius: 6,
+            border: "1px solid " + BORDER,
+            background: "transparent",
+            color: copied ? TEAL : INK_MUTED,
+            cursor: ready ? "pointer" : "not-allowed",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+            transition: "border-color 0.15s, color 0.15s",
+            fontFamily: SORA,
+            fontSize: 11,
+          }}
+          onMouseEnter={(e) => {
+            if (ready) e.currentTarget.style.borderColor = BORDER_HI;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = BORDER;
+          }}
+        >
+          {copied ? (
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path
+                d="M2.5 6.2 5 8.5l4.5-5"
+                stroke={TEAL}
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          ) : (
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <rect
+                x="3"
+                y="3"
+                width="7"
+                height="7"
+                rx="1.2"
+                stroke="currentColor"
+                strokeWidth="1.2"
+              />
+              <path
+                d="M2 7.5V2.2A1 1 0 0 1 3 1.2h5.3"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+              />
+            </svg>
+          )}
+        </button>
+      </div>
+      {copied && (
+        <div
+          style={{
+            fontFamily: SORA,
+            fontSize: 11,
+            color: TEAL,
+          }}
+        >
+          Copied
+        </div>
+      )}
     </div>
   );
 }
