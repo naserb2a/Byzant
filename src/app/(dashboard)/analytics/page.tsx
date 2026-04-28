@@ -6,50 +6,41 @@ const SANS = "inherit";
 const TEAL = "#99E1D9";
 
 type RangeKey = "1W" | "1M" | "3M" | "6M" | "1Y" | "All";
+type Granularity = "hour" | "day" | "week";
 type Point = { date: Date; value: number };
 
-const RANGES: { key: RangeKey; days: number; granularity: "day" | "week" | "month" }[] = [
-  { key: "1W",  days: 7,    granularity: "day"   },
-  { key: "1M",  days: 30,   granularity: "day"   },
-  { key: "3M",  days: 90,   granularity: "week"  },
-  { key: "6M",  days: 182,  granularity: "week"  },
-  { key: "1Y",  days: 365,  granularity: "month" },
-  { key: "All", days: 730,  granularity: "month" },
+const HOUR_MS = 3600 * 1000;
+const DAY_MS = 86400000;
+
+const RANGES: {
+  key: RangeKey;
+  count: number;
+  stepMs: number;
+  granularity: Granularity;
+  startVal: number;
+}[] = [
+  { key: "1W",  count: 35,  stepMs: HOUR_MS,     granularity: "hour", startVal: 11420 },
+  { key: "1M",  count: 22,  stepMs: DAY_MS,      granularity: "day",  startVal: 10780 },
+  { key: "3M",  count: 66,  stepMs: DAY_MS,      granularity: "day",  startVal: 10410 },
+  { key: "6M",  count: 132, stepMs: DAY_MS,      granularity: "day",  startVal: 9920  },
+  { key: "1Y",  count: 252, stepMs: DAY_MS,      granularity: "day",  startVal: 9400  },
+  { key: "All", count: 104, stepMs: 7 * DAY_MS,  granularity: "week", startVal: 8200  },
 ];
 
 const NOW = new Date(2026, 3, 25); // April 25, 2026 — fixed anchor for deterministic data
 const LATEST_VALUE = 11840;
 
-function buildSeries(days: number, granularity: "day" | "week" | "month"): Point[] {
-  const stepMs =
-    granularity === "day" ? 86400000 :
-    granularity === "week" ? 7 * 86400000 :
-    30 * 86400000;
-  const count =
-    granularity === "day" ? days :
-    granularity === "week" ? Math.max(8, Math.round(days / 7)) :
-    Math.max(8, Math.round(days / 30));
-
-  // Start values are tuned so the visible trend looks plausible at each window
-  const startMap: Record<string, number> = {
-    "7|day":   11420,
-    "30|day":  10780,
-    "90|week": 10410,
-    "182|week":  9920,
-    "365|month": 9400,
-    "730|month": 8200,
-  };
-  const startVal = startMap[`${days}|${granularity}`] ?? 10000;
-
+function buildSeries(count: number, stepMs: number, startVal: number): Point[] {
   const pts: Point[] = [];
   for (let i = 0; i < count; i++) {
     const t = i / (count - 1);
     const trend = startVal + (LATEST_VALUE - startVal) * t;
-    // deterministic wobble
+    // deterministic multi-frequency wobble for plausible micro-movement
     const w =
-      Math.sin(i * 0.62 + days * 0.011) * 0.012 * trend +
-      Math.cos(i * 0.31 + days * 0.027) * 0.008 * trend +
-      Math.sin(i * 1.13) * 0.005 * trend;
+      Math.sin(i * 0.62 + count * 0.011) * 0.012 * trend +
+      Math.cos(i * 0.31 + count * 0.027) * 0.008 * trend +
+      Math.sin(i * 1.13) * 0.005 * trend +
+      Math.cos(i * 2.07) * 0.003 * trend;
     const date = new Date(NOW.getTime() - (count - 1 - i) * stepMs);
     pts.push({ date, value: Math.round(trend + w) });
   }
@@ -60,7 +51,7 @@ function buildSeries(days: number, granularity: "day" | "week" | "month"): Point
 
 const SERIES: Record<RangeKey, Point[]> = RANGES.reduce(
   (acc, r) => {
-    acc[r.key] = buildSeries(r.days, r.granularity);
+    acc[r.key] = buildSeries(r.count, r.stepMs, r.startVal);
     return acc;
   },
   {} as Record<RangeKey, Point[]>
@@ -80,9 +71,15 @@ function fmtPct(v: number) {
   return `${sign}${Math.abs(v).toFixed(2)}%`;
 }
 
-function fmtDate(d: Date, granularity: "day" | "week" | "month") {
-  if (granularity === "month") {
-    return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+function fmtDate(d: Date, granularity: Granularity) {
+  if (granularity === "hour") {
+    return d.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
   }
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
@@ -177,11 +174,55 @@ function InteractiveChart({
   const xAt = (i: number) => padL + (i / (data.length - 1)) * chartW;
   const yAt = (v: number) => padT + (1 - (v - (min - yPad)) / (range + yPad * 2)) * chartH;
 
-  const linePoints = data.map((d, i) => `${xAt(i).toFixed(2)},${yAt(d.value).toFixed(2)}`).join(" ");
+  const n = data.length;
+  const xs = data.map((_, i) => xAt(i));
+  const ys = data.map((d) => yAt(d.value));
+
+  // Monotone cubic Hermite (Fritsch–Carlson) tangents — prevents overshoot.
+  const dxArr: number[] = new Array(n - 1);
+  const slope: number[] = new Array(n - 1);
+  for (let i = 0; i < n - 1; i++) {
+    dxArr[i] = xs[i + 1] - xs[i];
+    slope[i] = (ys[i + 1] - ys[i]) / dxArr[i];
+  }
+  const m: number[] = new Array(n);
+  m[0] = slope[0];
+  m[n - 1] = slope[n - 2];
+  for (let i = 1; i < n - 1; i++) {
+    m[i] = slope[i - 1] * slope[i] <= 0 ? 0 : (slope[i - 1] + slope[i]) / 2;
+  }
+  for (let i = 0; i < n - 1; i++) {
+    if (slope[i] === 0) {
+      m[i] = 0;
+      m[i + 1] = 0;
+    } else {
+      const a = m[i] / slope[i];
+      const b = m[i + 1] / slope[i];
+      const s = a * a + b * b;
+      if (s > 9) {
+        const tau = 3 / Math.sqrt(s);
+        m[i] = tau * a * slope[i];
+        m[i + 1] = tau * b * slope[i];
+      }
+    }
+  }
+  const segments: string[] = [];
+  for (let i = 0; i < n - 1; i++) {
+    const cp1x = xs[i] + dxArr[i] / 3;
+    const cp1y = ys[i] + (m[i] * dxArr[i]) / 3;
+    const cp2x = xs[i + 1] - dxArr[i] / 3;
+    const cp2y = ys[i + 1] - (m[i + 1] * dxArr[i]) / 3;
+    segments.push(
+      `C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${xs[i + 1].toFixed(2)} ${ys[i + 1].toFixed(2)}`
+    );
+  }
+  const baseY = padT + chartH;
+  const linePath = `M ${xs[0].toFixed(2)} ${ys[0].toFixed(2)} ${segments.join(" ")}`;
   const areaPath =
-    `M ${xAt(0).toFixed(2)} ${(padT + chartH).toFixed(2)} ` +
-    data.map((d, i) => `L ${xAt(i).toFixed(2)} ${yAt(d.value).toFixed(2)}`).join(" ") +
-    ` L ${xAt(data.length - 1).toFixed(2)} ${(padT + chartH).toFixed(2)} Z`;
+    `M ${xs[0].toFixed(2)} ${baseY.toFixed(2)} ` +
+    `L ${xs[0].toFixed(2)} ${ys[0].toFixed(2)} ` +
+    `${segments.join(" ")} ` +
+    `L ${xs[n - 1].toFixed(2)} ${baseY.toFixed(2)} Z`;
 
   const handleMove = (e: React.MouseEvent<SVGSVGElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -211,8 +252,8 @@ function InteractiveChart({
           </linearGradient>
         </defs>
         <path d={areaPath} fill={`url(#${gradId})`} />
-        <polyline
-          points={linePoints}
+        <path
+          d={linePath}
           fill="none"
           stroke={lineColor}
           strokeWidth={1.8}
