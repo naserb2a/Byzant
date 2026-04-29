@@ -147,6 +147,8 @@ export default function LineChart({
         />
         <Tooltip
           cursor={{ stroke: "var(--db-border-hi)", strokeWidth: 1 }}
+          isAnimationActive={false}
+          animationDuration={0}
           content={(p: TooltipContentInput) => {
             if (!p.active || !p.payload || p.payload.length === 0) return null;
             const row = p.payload[0].payload as Row | undefined;

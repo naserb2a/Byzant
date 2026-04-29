@@ -137,6 +137,27 @@ function fmtPct(v: number) {
   return `${sign}${Math.abs(v).toFixed(2)}%`;
 }
 
+function niceTicks(min: number, max: number, count = 5): number[] {
+  const range = max - min;
+  if (range <= 0) return [min];
+  const rough = range / (count - 1);
+  const exp = Math.floor(Math.log10(rough));
+  const f = rough / Math.pow(10, exp);
+  let nice: number;
+  if (f < 1.5) nice = 1;
+  else if (f < 3) nice = 2;
+  else if (f < 7) nice = 5;
+  else nice = 10;
+  const step = nice * Math.pow(10, exp);
+  const niceMin = Math.floor(min / step) * step;
+  const niceMax = Math.ceil(max / step) * step;
+  const ticks: number[] = [];
+  for (let v = niceMin; v <= niceMax + 0.5 * step; v += step) {
+    ticks.push(Math.round(v));
+  }
+  return ticks;
+}
+
 function fmtDate(d: Date, granularity: Granularity) {
   if (granularity === "hour") {
     return d.toLocaleString("en-US", {
@@ -224,7 +245,7 @@ function InteractiveChart({
     return () => ro.disconnect();
   }, []);
 
-  const padL = 8, padR = 8, padT = 14, padB = 22;
+  const padL = 56, padR = 8, padT = 14, padB = 22;
 
   if (width <= 0 || data.length < 2) {
     return <div ref={wrapRef} style={{ height, width: "100%", position: "relative" }} />;
@@ -241,6 +262,10 @@ function InteractiveChart({
 
   const xAt = (i: number) => padL + (i / (data.length - 1)) * chartW;
   const yAt = (v: number) => padT + (1 - (v - (min - yPad)) / (range + yPad * 2)) * chartH;
+
+  const yMin = min - yPad;
+  const yMax = max + yPad;
+  const yTicks = niceTicks(yMin, yMax, 5).filter((t) => t >= yMin && t <= yMax);
 
   const n = data.length;
   const xs = data.map((_, i) => xAt(i));
@@ -338,6 +363,29 @@ function InteractiveChart({
             <stop offset="100%" stopColor={lineColor} stopOpacity={0} />
           </linearGradient>
         </defs>
+        {yTicks.map((t, i) => (
+          <g key={`grid-${i}`}>
+            <line
+              x1={padL}
+              x2={padL + chartW}
+              y1={yAt(t)}
+              y2={yAt(t)}
+              stroke="var(--db-grid)"
+              strokeWidth={1}
+            />
+            <text
+              x={padL - 8}
+              y={yAt(t)}
+              fill="var(--db-ink-faint)"
+              fontSize={10}
+              fontFamily="inherit"
+              textAnchor="end"
+              dominantBaseline="middle"
+            >
+              {fmtUsd(t)}
+            </text>
+          </g>
+        ))}
         <path d={areaPath} fill={`url(#${gradId})`} />
         <path
           d={linePath}
