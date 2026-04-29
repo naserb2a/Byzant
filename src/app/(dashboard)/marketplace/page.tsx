@@ -3,12 +3,14 @@ import { useState } from "react";
 
 const MONO = "inherit";
 
-type ModuleCategory = "Data Feeds" | "Analytics" | "Risk" | "Execution" | "Memory";
+type ModuleCategory = "Data Feeds" | "Analytics" | "Risk" | "Execution";
+type ModuleTier = "Basic" | "Pro" | "Pro Add-on";
 
 interface Module {
   id: string;
   name: string;
   category: ModuleCategory;
+  tier: ModuleTier;
   desc: string;
   price: string;
   installed: boolean;
@@ -19,58 +21,53 @@ interface Module {
 
 const MODULES: Module[] = [
   {
-    id: "rtmd", name: "Real-Time Market Data", category: "Data Feeds",
-    desc: "Sub-millisecond quotes, level 2 order book, and options flow direct to your agent.",
-    price: "$9/mo", installed: true, usage: 72,
-    iconPath: "M2 12l4-4 3 3 5-6 4 4", iconColor: "#99E1D9",
+    id: "whale-tracker", name: "Whale Tracker", category: "Data Feeds", tier: "Pro",
+    desc: "Unusual options flow, dark pool activity, and volume anomaly detection.",
+    price: "$29/mo", installed: true, usage: 68,
+    iconPath: "M2 12c2-3 5-5 9-5s8 2 11 5c-3 3-7 5-11 5s-7-2-9-5z M9 12a1 1 0 1 0 0-0.01",
+    iconColor: "#99E1D9",
   },
   {
-    id: "tae", name: "Technical Analysis Engine", category: "Analytics",
-    desc: "200+ indicators, pattern recognition, and signal generation built for agent consumption.",
-    price: "$29/mo", installed: true, usage: 58,
-    iconPath: "M3 16l4-5 4 3 4-6 4 3", iconColor: "#B2EBE5",
+    id: "congressional-tracker", name: "Congressional Tracker", category: "Data Feeds", tier: "Pro",
+    desc: "Real-time congressional trade disclosures. Follow the smart money in Washington.",
+    price: "$29/mo", installed: true, usage: 54,
+    iconPath: "M3 21h18 M5 21V10l7-5 7 5v11 M9 21v-6h6v6",
+    iconColor: "#B2EBE5",
   },
   {
-    id: "rms", name: "Risk Management Suite", category: "Risk",
-    desc: "Dynamic position sizing, drawdown controls, and real-time portfolio risk scoring.",
-    price: "$29/mo", installed: true, usage: 45,
-    iconPath: "M12 3l9 7-9 7-9-7 9-7zM3 17l9 4 9-4", iconColor: "#f0b429",
-  },
-  {
-    id: "ael", name: "Alpaca Execution Layer", category: "Execution",
-    desc: "TWAP, VWAP, and iceberg order strategies with slippage optimization and fill reporting.",
-    price: "$9/mo", installed: true, usage: 31,
-    iconPath: "M13 2L3 14h9l-1 8 10-12h-9l1-8z", iconColor: "#99E1D9",
-  },
-  {
-    id: "dpm", name: "Dark Pool Monitor", category: "Analytics",
-    desc: "Institutional block trades, dark pool prints, and unusual activity alerts.",
+    id: "risk-agent", name: "Risk Agent", category: "Risk", tier: "Pro",
+    desc: "Always-on risk enforcement. Position sizing, loss limits, drawdown recovery, and rule override approval.",
     price: "$29/mo", installed: false,
-    iconPath: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6", iconColor: "#B2EBE5",
+    iconPath: "M12 3l9 7-9 7-9-7 9-7zM3 17l9 4 9-4",
+    iconColor: "#f0b429",
   },
   {
-    id: "nsf", name: "News & Sentiment Feed", category: "Data Feeds",
-    desc: "Real-time news parsing, sentiment scoring, and earnings signal detection.",
+    id: "trailing-stop-bot", name: "Trailing Stop Bot", category: "Execution", tier: "Basic",
+    desc: "Automated trailing stop loss management. Set the rules once, the agent enforces them.",
     price: "$9/mo", installed: false,
-    iconPath: "M4 6h16M4 10h16M4 14h10", iconColor: "#99E1D9",
+    iconPath: "M3 17l6-6 4 4 8-9",
+    iconColor: "#99E1D9",
   },
   {
-    id: "be", name: "Backtesting Engine", category: "Analytics",
-    desc: "Historical strategy validation with walk-forward testing and Monte Carlo simulation.",
-    price: "$99/mo", installed: false,
-    iconPath: "M3 3h18v18H3zM9 3v18M3 9h6M3 15h6", iconColor: "#B2EBE5",
-  },
-  {
-    id: "ofs", name: "Options Flow Scanner", category: "Analytics",
-    desc: "Unusual options activity, sweep detection, and institutional positioning signals.",
+    id: "wheel-strategy-bot", name: "Wheel Strategy Bot", category: "Execution", tier: "Pro",
+    desc: "Automated wheel options strategy. Sell puts, collect premiums, sell covered calls.",
     price: "$29/mo", installed: false,
-    iconPath: "M22 12h-4l-3 9L9 3l-3 9H2", iconColor: "#B2EBE5",
+    iconPath: "M12 2a10 10 0 1 0 10 10 M12 2v10l7 7",
+    iconColor: "#99E1D9",
   },
   {
-    id: "amc", name: "Agent Memory & Context", category: "Memory",
-    desc: "Persistent memory layer for your agents — learn from past trades, adapt over time.",
+    id: "copy-trading-bot", name: "Copy Trading Bot", category: "Execution", tier: "Pro",
+    desc: "Mirror the trades of top-performing politicians and institutional whales automatically.",
     price: "$29/mo", installed: false,
-    iconPath: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z", iconColor: "#94a3b8",
+    iconPath: "M8 3h11v11 M19 3L8 14 M5 21h11v-7 M16 21L5 10",
+    iconColor: "#B2EBE5",
+  },
+  {
+    id: "ai-research-brief", name: "AI Research Brief", category: "Analytics", tier: "Pro Add-on",
+    desc: "One-click investment memo. Ticker in, full research brief out. Powered by Claude.",
+    price: "$19/mo", installed: false,
+    iconPath: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M9 13h6 M9 17h6",
+    iconColor: "#B2EBE5",
   },
 ];
 
@@ -80,7 +77,6 @@ const TABS: Array<{ label: string; filter: ModuleCategory | null }> = [
   { label: "Analytics", filter: "Analytics" },
   { label: "Risk", filter: "Risk" },
   { label: "Execution", filter: "Execution" },
-  { label: "Memory", filter: "Memory" },
 ];
 
 const CATEGORY_COLOR: Record<ModuleCategory, string> = {
@@ -88,7 +84,6 @@ const CATEGORY_COLOR: Record<ModuleCategory, string> = {
   "Analytics": "var(--db-blue-bright)",
   "Risk": "var(--db-amber)",
   "Execution": "var(--db-blue)",
-  "Memory": "var(--db-ink-muted)",
 };
 
 function IconBox({ path, color, size = 40 }: { path: string; color: string; size?: number }) {
@@ -106,8 +101,24 @@ function IconBox({ path, color, size = 40 }: { path: string; color: string; size
   );
 }
 
+function TierBadge({ tier }: { tier: ModuleTier }) {
+  return (
+    <span style={{
+      fontSize: 10, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase",
+      color: "var(--db-ink-muted)",
+      padding: "2px 8px", borderRadius: 999, fontFamily: MONO,
+      border: "0.5px solid var(--db-border-mid)",
+      background: "var(--db-bg3)",
+    }}>
+      {tier}
+    </span>
+  );
+}
+
 function InstalledCard({ module: m }: { module: Module }) {
   const catColor = CATEGORY_COLOR[m.category];
+  const [showConfigMsg, setShowConfigMsg] = useState(false);
+
   return (
     <div style={{
       background: "var(--db-bg2)",
@@ -122,15 +133,18 @@ function InstalledCard({ module: m }: { module: Module }) {
             <div style={{ fontSize: 14, fontWeight: 500, color: "var(--db-ink)", marginBottom: 4 }}>
               {m.name}
             </div>
-            <span style={{
-              fontSize: 10, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase",
-              color: catColor,
-              padding: "2px 8px", borderRadius: 999, fontFamily: MONO,
-              border: "0.5px solid var(--db-border-mid)",
-              background: "var(--db-bg3)",
-            }}>
-              {m.category}
-            </span>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              <span style={{
+                fontSize: 10, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase",
+                color: catColor,
+                padding: "2px 8px", borderRadius: 999, fontFamily: MONO,
+                border: "0.5px solid var(--db-border-mid)",
+                background: "var(--db-bg3)",
+              }}>
+                {m.category}
+              </span>
+              <TierBadge tier={m.tier} />
+            </div>
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6, flexShrink: 0 }}>
@@ -162,14 +176,22 @@ function InstalledCard({ module: m }: { module: Module }) {
         </div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <button style={{
-          background: "none", border: "none", color: "var(--db-blue)", cursor: "pointer",
-          fontSize: 12, padding: 0,
-          transition: "color 0.15s",
-        }}
+      <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 12 }}>
+        {showConfigMsg && (
+          <span style={{ fontSize: 12, color: "var(--db-ink-muted)", fontFamily: MONO }}>
+            Configuration coming soon
+          </span>
+        )}
+        <button
+          onClick={() => setShowConfigMsg(true)}
+          style={{
+            background: "none", border: "none", color: "var(--db-blue)", cursor: "pointer",
+            fontSize: 12, padding: 0,
+            transition: "color 0.15s",
+          }}
           onMouseEnter={e => (e.currentTarget.style.color = "var(--db-blue-bright)")}
-          onMouseLeave={e => (e.currentTarget.style.color = "var(--db-blue)")}>
+          onMouseLeave={e => (e.currentTarget.style.color = "var(--db-blue)")}
+        >
           Configure →
         </button>
       </div>
@@ -196,16 +218,19 @@ function AvailableCard({ module: m }: { module: Module }) {
         <span style={{ fontSize: 13, color: "var(--db-ink)", fontFamily: MONO, fontWeight: 500 }}>{m.price}</span>
       </div>
 
-      <span style={{
-        fontSize: 10, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase",
-        color: catColor,
-        padding: "2px 8px", borderRadius: 999, fontFamily: MONO,
-        border: "0.5px solid var(--db-border-mid)",
-        background: "var(--db-bg3)",
-        display: "inline-block", marginBottom: 10, alignSelf: "flex-start",
-      }}>
-        {m.category}
-      </span>
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 10 }}>
+        <span style={{
+          fontSize: 10, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase",
+          color: catColor,
+          padding: "2px 8px", borderRadius: 999, fontFamily: MONO,
+          border: "0.5px solid var(--db-border-mid)",
+          background: "var(--db-bg3)",
+          display: "inline-block",
+        }}>
+          {m.category}
+        </span>
+        <TierBadge tier={m.tier} />
+      </div>
 
       <div style={{ fontSize: 14, fontWeight: 500, color: "var(--db-ink)", marginBottom: 8, lineHeight: 1.3 }}>
         {m.name}

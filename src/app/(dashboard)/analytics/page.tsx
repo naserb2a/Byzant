@@ -437,15 +437,12 @@ export default function AnalyticsPage() {
             fontWeight: 500,
             color: "var(--db-ink)",
             letterSpacing: "-0.02em",
-            margin: "0 0 4px",
+            margin: 0,
             fontFamily: SANS,
           }}
         >
           Analytics & Intelligence
         </h1>
-        <p style={{ fontSize: 13, fontWeight: 400, color: "var(--db-ink-muted)", margin: 0, fontFamily: SANS }}>
-          AI-generated forecasts · Confidence-weighted
-        </p>
       </div>
 
       {/* Stats */}

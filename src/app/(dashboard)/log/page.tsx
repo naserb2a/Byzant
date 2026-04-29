@@ -251,7 +251,7 @@ export default function LogPage() {
           onClick={() => downloadCsv(filtered)}
           style={{
             background: "rgba(153,225,217,0.10)",
-            border: "0.5px solid rgba(153,225,217,0.45)",
+            border: "1px solid #99E1D9",
             color: "var(--db-blue)",
             borderRadius: 6,
             padding: "8px 14px",
@@ -454,10 +454,10 @@ function ExpandableRow({
           borderBottom: !expanded && !isLast ? "1px solid var(--db-border)" : "none",
           transition: "background 0.15s",
           cursor: "pointer",
-          background: expanded ? "var(--db-blue-glow)" : "transparent",
+          background: expanded ? "var(--db-row-hover)" : "transparent",
         }}
         onMouseEnter={(e) => {
-          if (!expanded) e.currentTarget.style.background = "var(--db-blue-glow)";
+          if (!expanded) e.currentTarget.style.background = "var(--db-row-hover)";
         }}
         onMouseLeave={(e) => {
           if (!expanded) e.currentTarget.style.background = "transparent";
@@ -468,7 +468,7 @@ function ExpandableRow({
           <StatusPill status={row.status} />
         </td>
         <td style={{ padding: "11px 14px", fontSize: 13, fontWeight: 400, color: "var(--db-ink)", fontFamily: SYS, whiteSpace: "nowrap" }}>{row.type}</td>
-        <td style={{ padding: "11px 14px" }}>
+        <td style={{ padding: "11px 14px", maxWidth: 140 }}>
           <span
             style={{
               fontSize: 11,
@@ -478,7 +478,14 @@ function ExpandableRow({
               background: row.agent === "System" ? "var(--db-bg4)" : "var(--db-blue-dim)",
               padding: "2px 7px",
               borderRadius: 999,
+              display: "inline-block",
+              maxWidth: "100%",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              verticalAlign: "middle",
             }}
+            title={row.agent}
           >
             {row.agent}
           </span>

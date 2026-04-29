@@ -16,6 +16,7 @@
   --db-blue-dim:    rgba(153,225,217,0.10);
   --db-blue-mid:    rgba(153,225,217,0.18);
   --db-blue-glow:   rgba(153,225,217,0.06);
+  --db-row-hover:   rgba(255,255,255,0.04);
   --db-ink:         #ffffff;
   --db-ink-muted:   #94a3b8;
   --db-ink-faint:   rgba(255,255,255,0.4);
@@ -39,6 +40,7 @@
   --db-border:      rgba(0,0,0,0.08);
   --db-border-mid:  rgba(0,0,0,0.12);
   --db-border-hi:   rgba(0,0,0,0.20);
+  --db-row-hover:   #f5f5f5;
   --db-ink:         #111111;
   --db-ink-muted:   #666666;
   --db-ink-faint:   rgba(0,0,0,0.4);
