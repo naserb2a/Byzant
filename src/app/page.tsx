@@ -15,23 +15,6 @@ const MatrixBackground = dynamic(
 const MONO = "var(--font-geist-mono)";
 const SANS = "var(--font-geist-sans)";
 
-/* ─── Scroll reveal hook (native IntersectionObserver) ──────────── */
-function useScrollReveal(rootMargin = "-40px 0px") {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.08, rootMargin }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [rootMargin]);
-  return { ref, visible };
-}
-
 /* ─── Waitlist Form ─────────────────────────────────────────────── */
 function WaitlistForm({
   submitted, onSubmit, email, setEmail, size = "normal",
@@ -97,81 +80,6 @@ function WaitlistForm({
         </button>
       </div>
     </form>
-  );
-}
-
-/* ─── Count-up hook ─────────────────────────────────────────────── */
-function useCountUp(target: number, trigger: boolean, duration = 1200) {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!trigger) return;
-    let start: number | null = null;
-    const step = (ts: number) => {
-      if (!start) start = ts;
-      const p = Math.min((ts - start) / duration, 1);
-      const ease = 1 - Math.pow(1 - p, 3);
-      setCount(Math.floor(ease * target));
-      if (p < 1) requestAnimationFrame(step);
-      else setCount(target);
-    };
-    requestAnimationFrame(step);
-  }, [trigger, target, duration]);
-  return count;
-}
-
-/* ─── Stats Bar ─────────────────────────────────────────────────── */
-const STATS = [
-  { num: 500, suffix: "+", label: "Waitlist Members" },
-  { num: 9, suffix: "", label: "Capability Modules" },
-  { num: 3, suffix: "", label: "Active Agent Types" },
-  { num: 0, suffix: "", label: "Emotional Trades" },
-];
-
-function StatItem({ num, suffix, label, trigger }: { num: number; suffix: string; label: string; trigger: boolean }) {
-  const count = useCountUp(num, trigger);
-  return (
-    <div style={{ textAlign: "center", flex: 1 }}>
-      <div className="stat-num" style={{ fontSize: 36, fontWeight: 600, color: "#99E1D9", fontFamily: MONO, letterSpacing: "-0.02em", lineHeight: 1 }}>
-        {count}{suffix}
-      </div>
-      <div style={{ fontSize: 10, color: "#99E1D9", fontFamily: MONO, letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 8 }}>
-        {label}
-      </div>
-    </div>
-  );
-}
-
-function StatsBar() {
-  const { ref, visible } = useScrollReveal();
-  const inView = visible;
-  return (
-    <div
-      ref={ref}
-      className={visible ? "sr sr-in" : "sr"}
-      style={{
-        background: "transparent",
-        borderTop: "0.5px solid rgba(153,225,217,0.15)",
-        borderBottom: "0.5px solid rgba(153,225,217,0.15)",
-        padding: "32px 0",
-        width: "100%",
-        position: "relative",
-        zIndex: 1,
-      }}
-    >
-      <div style={{
-        maxWidth: 900, margin: "0 auto", padding: "0 2rem",
-        display: "flex", alignItems: "center", gap: 0,
-      }}>
-        {STATS.map((s, i) => (
-          <div key={s.label} style={{ display: "flex", flex: 1, alignItems: "center" }}>
-            <StatItem {...s} trigger={inView} />
-            {i < STATS.length - 1 && (
-              <div style={{ width: "0.5px", height: 40, background: "rgba(153,225,217,0.2)", flexShrink: 0 }} />
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -1760,9 +1668,6 @@ export default function HomePage() {
 
       {/* ── MCP COMPATIBILITY ───────────────────────────────────── */}
       <MCPCompatibilitySection />
-
-      {/* ── STATS BAR ───────────────────────────────────────────── */}
-      <StatsBar />
 
       {/* ── BENTO GRID ──────────────────────────────────────────── */}
       <BentoGrid />
