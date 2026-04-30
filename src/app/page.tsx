@@ -1123,6 +1123,183 @@ function MarketplacePreview() {
   );
 }
 
+/* ─── FAQ Section ───────────────────────────────────────────────── */
+const FAQ_ITEMS: { q: string; a: string }[] = [
+  {
+    q: "What is Byzant?",
+    a: "Byzant is an agentic trading infrastructure marketplace. It connects AI trading agents to institutional-grade data feeds, strategy bots, and risk modules — all built on the MCP (Model Context Protocol) standard. You activate the modules. Your agent does the work. You approve every decision.",
+  },
+  {
+    q: "Do I need to know how to code to use Byzant?",
+    a: "No. Byzant is built for both technical and non-technical traders. If you don't have an agent, Byzant provisions one for you — no setup, no terminals, no configuration required. If you're a developer with an existing agent, you connect it to Byzant's marketplace via MCP in minutes.",
+  },
+  {
+    q: "Which brokerages does Byzant support?",
+    a: "Byzant currently supports Alpaca Markets at launch, with Interactive Brokers coming in Phase 2. More brokerages are on the roadmap. If you only want access to data and intelligence modules, you can use Byzant without connecting a brokerage at all.",
+  },
+  {
+    q: "Will my agent trade without my approval?",
+    a: "Never. Every trade, every module activation, every agent action requires your explicit approval. You are always the arbiter. The agent surfaces the decision — you make it.",
+  },
+  {
+    q: "What AI models does Byzant support?",
+    a: "Byzant supports Claude (Anthropic), GPT-4 (OpenAI), Gemini (Google), Grok (xAI), OpenClaw, and custom/other frameworks via MCP. You choose which model powers your agent during onboarding.",
+  },
+  {
+    q: "What is MCP and why does it matter?",
+    a: "MCP (Model Context Protocol) is the standard that AI agents use to discover and consume external capabilities. Byzant is built on MCP from day one — meaning any MCP-compatible agent can plug into Byzant's marketplace instantly, with no custom integrations required.",
+  },
+  {
+    q: "How much does Byzant cost?",
+    a: "Byzant modules are priced at Basic ($9/mo), Pro ($29/mo), and Institutional ($99/mo). You only pay for the modules you activate. Stripe billing is coming in Phase 2 — early waitlist users will get priority access.",
+  },
+];
+
+function FAQSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+
+  return (
+    <section style={{
+      background: "#ffffff",
+      position: "relative",
+      zIndex: 1,
+      width: "100%",
+      padding: "140px 0",
+    }}>
+      <div ref={ref} style={{ maxWidth: 1160, margin: "0 auto", padding: "0 2rem" }}>
+        <div className="faq-grid" style={{
+          display: "grid",
+          gridTemplateColumns: "35fr 65fr",
+          gap: 80,
+          alignItems: "start",
+        }}>
+          {/* LEFT — sticky heading + contact button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            style={{ position: "sticky", top: 100 }}
+          >
+            <h2 style={{
+              fontSize: "clamp(40px, 5vw, 64px)",
+              fontWeight: 700,
+              letterSpacing: "-0.03em",
+              color: "#0a0f1a",
+              fontFamily: SANS,
+              lineHeight: 1.05,
+              margin: "0 0 32px",
+            }}>
+              FAQ&apos;s
+            </h2>
+            <a
+              href="mailto:hello@byzant.ai"
+              style={{
+                display: "inline-block",
+                padding: "12px 28px",
+                border: "1px solid #0a0f1a",
+                borderRadius: 999,
+                fontSize: 14,
+                fontWeight: 500,
+                color: "#0a0f1a",
+                background: "transparent",
+                textDecoration: "none",
+                fontFamily: SANS,
+                transition: "background 0.15s",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(10,15,26,0.05)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "transparent"; }}
+            >
+              Contact us
+            </a>
+          </motion.div>
+
+          {/* RIGHT — accordion */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+          >
+            <div style={{ width: "100%", height: 1, background: "rgba(0,0,0,0.08)" }} />
+            {FAQ_ITEMS.map((item, i) => {
+              const open = openIdx === i;
+              return (
+                <div key={item.q}>
+                  <button
+                    type="button"
+                    onClick={() => setOpenIdx(open ? null : i)}
+                    aria-expanded={open}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: 32,
+                      padding: "24px 0",
+                      background: "transparent",
+                      border: "none",
+                      cursor: "pointer",
+                      textAlign: "left",
+                      fontFamily: SANS,
+                      color: "#0a0f1a",
+                    }}
+                  >
+                    <span style={{
+                      fontSize: 18,
+                      fontWeight: 600,
+                      color: "#0a0f1a",
+                      fontFamily: SANS,
+                      lineHeight: 1.4,
+                    }}>
+                      {item.q}
+                    </span>
+                    <span style={{
+                      flexShrink: 0,
+                      width: 18,
+                      height: 18,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transform: `rotate(${open ? 45 : 0}deg)`,
+                      transition: "transform 0.3s ease",
+                    }}>
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                        <line x1="9" y1="2" x2="9" y2="16" stroke="#0a0f1a" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="2" y1="9" x2="16" y2="9" stroke="#0a0f1a" strokeWidth="1.5" strokeLinecap="round" />
+                      </svg>
+                    </span>
+                  </button>
+                  <div style={{
+                    overflow: "hidden",
+                    maxHeight: open ? 500 : 0,
+                    opacity: open ? 1 : 0,
+                    transition: "max-height 0.3s ease, opacity 0.2s ease",
+                  }}>
+                    <p style={{
+                      fontSize: 15,
+                      fontWeight: 400,
+                      color: "#94a3b8",
+                      lineHeight: 1.65,
+                      fontFamily: SANS,
+                      margin: 0,
+                      padding: "0 0 24px",
+                      maxWidth: "70ch",
+                    }}>
+                      {item.a}
+                    </p>
+                  </div>
+                  <div style={{ width: "100%", height: 1, background: "rgba(0,0,0,0.08)" }} />
+                </div>
+              );
+            })}
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ─── Teal CTA + Footer ─────────────────────────────────────────── */
 function CTASectionTeal({
   email, setEmail, submitted, onSubmit,
@@ -1599,6 +1776,9 @@ export default function HomePage() {
       <div id="marketplace">
         <MarketplacePreview />
       </div>
+
+      {/* ── FAQ ─────────────────────────────────────────────────── */}
+      <FAQSection />
 
       {/* ── TEAL CTA + FOOTER ───────────────────────────────────── */}
       <CTASectionTeal
