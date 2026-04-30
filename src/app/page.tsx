@@ -860,10 +860,25 @@ function MCPCompatibilitySection() {
       background: "#99E1D9",
       position: "relative",
       zIndex: 1,
-      overflowX: "clip",
+      overflow: "hidden",
       width: "100%",
       padding: "140px 0",
     }}>
+      <img
+        src="/icons/model-context-protocol-dark.svg"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: -60,
+          bottom: -60,
+          width: 200,
+          height: "auto",
+          opacity: 0.15,
+          pointerEvents: "none",
+          userSelect: "none",
+        }}
+      />
       <div ref={ref} style={{ maxWidth: 1160, margin: "0 auto", padding: "0 2rem" }}>
         <div className="mcp-grid" style={{
           display: "grid",
