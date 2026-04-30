@@ -872,9 +872,10 @@ function MCPCompatibilitySection() {
           position: "absolute",
           left: -60,
           bottom: -60,
-          width: 300,
+          width: 450,
           height: "auto",
-          opacity: 0.35,
+          opacity: 0.25,
+          filter: "brightness(0)",
           pointerEvents: "none",
           userSelect: "none",
         }}
