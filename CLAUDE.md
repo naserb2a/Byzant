@@ -330,6 +330,11 @@ byzant/
 - Confidence score and New Forecast features deferred post-launch
 - "AI-generated forecasts · Confidence-weighted" subtitle removed from
   Analytics
+- Landing page dark sections use #000000 (pure black) — applies to
+  navbar (scrolled state) and hero visualization elements that
+  previously used #080c12 / #0d1420 / #111b2e. Dashboard backgrounds
+  (--db-bg #080c12, --db-bg2 #0d1117, --db-bg3 #141a22, --db-bg4
+  #1a212b) are UNCHANGED — this rule applies to landing page only.
 
 ---
 

@@ -265,7 +265,7 @@ function OptionsFlowHeatmap({ active }: { active: boolean }) {
       <div style={{
         position: "relative",
         padding: PAD,
-        background: "#0d1420",
+        background: "#000000",
         borderRadius: 10,
         border: "0.5px solid rgba(153,225,217,0.1)",
       }}>
@@ -323,7 +323,7 @@ function OptionsFlowHeatmap({ active }: { active: boolean }) {
                 letterSpacing: "0.12em",
                 whiteSpace: "nowrap",
                 pointerEvents: "none",
-                background: "#0d1420",
+                background: "#000000",
                 padding: "3px 8px",
                 borderRadius: 4,
                 border: "0.5px solid rgba(77,159,255,0.3)",
@@ -1489,7 +1489,7 @@ export default function HomePage() {
       {/* ── NAV ─────────────────────────────────────────────────── */}
       <nav style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
-        background: scrolled || menuOpen ? "#080c12" : "transparent",
+        background: scrolled || menuOpen ? "#000000" : "transparent",
         borderBottom: scrolled ? "0.5px solid rgba(255,255,255,0.1)" : "0.5px solid transparent",
         backdropFilter: "none",
         WebkitBackdropFilter: "none",
