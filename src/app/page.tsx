@@ -765,7 +765,7 @@ function MCPCompatibilitySection() {
 
   return (
     <section style={{
-      background: "#99E1D9",
+      background: "#ffffff",
       position: "relative",
       zIndex: 1,
       overflow: "hidden",
@@ -778,8 +778,8 @@ function MCPCompatibilitySection() {
         aria-hidden="true"
         style={{
           position: "absolute",
-          left: -60,
-          bottom: -60,
+          left: -100,
+          bottom: -180,
           width: 450,
           height: "auto",
           opacity: 0.25,
