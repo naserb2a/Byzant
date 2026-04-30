@@ -361,6 +361,29 @@ byzant/
 
 ---
 
+## BROKERAGE ROADMAP
+
+- **Alpaca Markets** — Launch (Phase 1). Primary broker. Full OAuth,
+  paper + live trading, free tier. Clean API. Target: all user types.
+- **Interactive Brokers (IBKR)** — Phase 2. Secondary broker. Target:
+  Type 2 technical users who already have IBKR accounts. Use IBKR
+  Client Portal API (REST, no TWS desktop app required). More complex
+  implementation than Alpaca but critical for serious traders. Do not
+  use TWS API — requires local desktop app running, not viable for web
+  product.
+- **Robinhood** — Never. No public API. Unofficial libraries violate
+  ToS. Legal risk not worth it.
+- **Webull** — Phase 3 consideration. Invite-only developer API.
+  Pursue as partnership conversation only after launch traction is
+  established.
+- **TD Ameritrade / Schwab** — Phase 3 consideration. API in transition
+  post-merger. Monitor Schwab developer access rollout.
+
+"More brokerages coming soon" placeholder stays in onboarding UI until
+IBKR is built in Phase 2.
+
+---
+
 ## PHASE 3 KEY FEATURE: AI RESEARCH BRIEF
 
 One-click investment research memo generator on the Approvals page.
