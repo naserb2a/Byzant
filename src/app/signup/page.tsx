@@ -92,7 +92,7 @@ export default function SignupPage() {
           marginTop: 20,
           fontFamily: SORA,
           fontSize: 12,
-          color: "#64748b",
+          color: "#666666",
           lineHeight: 1.5,
           textAlign: "center",
         }}

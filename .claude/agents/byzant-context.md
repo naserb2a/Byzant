@@ -2,7 +2,7 @@
 name: "byzant-context"
 description: "Use this agent when starting any development session on the Byzant project, or when a task involves building, modifying, or reviewing any part of the Byzant codebase. This agent should be invoked first to establish full project context before any code is written or reviewed.\\n\\n<example>\\nContext: Developer is starting a new session to add a feature to the marketplace page.\\nuser: \"I need to add a new filter component to the marketplace page\"\\nassistant: \"Before I begin, let me invoke the Byzant context agent to load the full design system and architecture context.\"\\n<commentary>\\nSince this is a Byzant development task, use the Agent tool to launch the byzant-context agent first to establish project rules, design system, and constraints before writing any code.\\n</commentary>\\nassistant: \"Now let me use the byzant-context agent to load project context before writing code.\"\\n</example>\\n\\n<example>\\nContext: Developer asks to create a new dashboard component.\\nuser: \"Build me a new AgentStatusCard component for the dashboard\"\\nassistant: \"I'll launch the byzant-context agent to ensure I have the full design system loaded before building this component.\"\\n<commentary>\\nAny new component creation for Byzant requires the context agent to be invoked first so all design rules (colors, fonts, card styling, no orange, inline SVG charts, etc.) are enforced.\\n</commentary>\\nassistant: \"Let me use the byzant-context agent to establish context before building the component.\"\\n</example>\\n\\n<example>\\nContext: Developer is reviewing a PR or recently written code for the Byzant project.\\nuser: \"Review the new ApprovalCard changes\"\\nassistant: \"I'll invoke the byzant-context agent to load design system standards before reviewing.\"\\n<commentary>\\nCode review on Byzant must be done against the strict design system and architecture rules. Launch the context agent first.\\n</commentary>\\n</example>"
 model: sonnet
-color: blue
+color: teal
 memory: project
 ---
 
@@ -39,37 +39,42 @@ Business model: Module subscriptions ($9/$29/$99/mo), marketplace commission (15
 
 ## DESIGN SYSTEM — NON-NEGOTIABLE
 
-### Color Palette
+### Color Palette — THE BYZANT 6
+The three Byzant brand colors are **Black, White, and Teal (#99E1D9)**.
+Plus three supporting tones for muted text and elevated surfaces.
+
 ```
---db-bg:           #080c12   (page background)
---db-bg2:          #0d1420   (card background)
---db-bg3:          #111b2e   (nested/hover elements)
---db-bg4:          #162035   (deepest nesting)
---db-blue:         #4d9fff   (primary accent)
---db-blue-bright:  #6eb8ff   (hover/highlight blue)
---db-blue-dim:     rgba(77,159,255,0.10)
---db-blue-mid:     rgba(77,159,255,0.18)
---db-blue-glow:    rgba(77,159,255,0.06)
---db-border:       rgba(99,157,255,0.08)
---db-border-mid:   rgba(99,157,255,0.15)
---db-border-hi:    rgba(99,157,255,0.28)
---db-ink:          #eef2ff   (primary text)
---db-ink-muted:    #7a8aab   (secondary text)
---db-ink-faint:    #2e3d5a   (labels/disabled)
---db-green:        #3dd68c   (success/bullish)
---db-green-dim:    rgba(61,214,140,0.10)
---db-red:          #ff5a5a   (danger/bearish)
---db-red-dim:      rgba(255,90,90,0.10)
---db-amber:        #f0b429   (warning/neutral)
---db-amber-dim:    rgba(240,180,41,0.10)
+Primary black:    #000000   (primary dark background)
+Near black:       #0a0a0a   (card backgrounds)
+Elevated:         #111111   (elevated surfaces / nested / hover)
+Teal accent:      #99E1D9   (buttons, badges, highlights, active)
+White:            #ffffff   (text, light sections)
+Text muted:       #94a3b8   (secondary text)
+```
+
+CSS variable map:
+```
+--db-bg:           #000000   (page background)
+--db-bg2:          #0a0a0a   (card background)
+--db-bg3:          #111111   (nested/hover elements)
+--db-bg4:          #1a1a1a   (deepest nesting)
+--db-blue:         #99E1D9   (primary accent — teal)
+--db-blue-bright:  #B2EBE5   (hover/highlight teal)
+--db-ink:          #ffffff   (primary text)
+--db-ink-muted:    #94a3b8   (secondary text)
+--db-green:        #3dd68c   (semantic — bullish)
+--db-red:          #ff5a5a   (semantic — bearish)
+--db-amber:        #f0b429   (semantic — warning)
 ```
 
 ### ABSOLUTE COLOR RULES — ZERO EXCEPTIONS
-- **NO ORANGE** anywhere on the site. Not one instance. Ever. Any orange found must be replaced immediately with #4d9fff.
-- NO white backgrounds in the dashboard
-- NO purple gradients
-- NO hardcoded light colors in dashboard components
-- All CSS variables use the --db- prefix
+- **NO blue. NO navy.** Anywhere. Not `#080c12`, `#0d1420`, `#111b2e`, `#4d9fff`, `#3B82F6`, `#60a5fa`, `#0a0f1a`, `#64748b`, `#eef2ff`, or any other shade of blue or navy. Primary accent is teal `#99E1D9`.
+- **NO orange.** Not one instance. Ever.
+- **NO purple gradients.**
+- **NO hardcoded light colors** in dashboard components.
+- If you see blue, navy, or orange — replace it immediately: blue/navy → `#99E1D9` (accent) or `#000000` / `#0a0a0a` / `#111111` (background); orange → `#99E1D9`.
+- Semantic green/red/amber stay for status only — they are not brand colors.
+- All CSS variables use the `--db-` prefix.
 
 ### Typography Rules
 - **Sora**: ALL headings, body text, nav items, buttons, descriptions, page titles
@@ -81,7 +86,7 @@ Business model: Module subscriptions ($9/$29/$99/mo), marketplace commission (15
 - **NEVER** use system fonts, Inter, Roboto, or Arial as primary
 
 ### Card Styling
-- Background: var(--db-bg2) = #0d1420
+- Background: var(--db-bg2) = #0a0a0a
 - Border: 0.5px solid var(--db-border)
 - Border-radius: 14-16px
 - Hover: border-color shifts to var(--db-border-hi)
@@ -121,7 +126,7 @@ byzant/
 
 1. NEVER touch `app/page.tsx` unless explicitly asked
 2. NEVER touch `app/layout.tsx` unless explicitly asked
-3. NEVER use orange — replace any instance with #4d9fff immediately
+3. NEVER use blue, navy, or orange — replace blue/navy accents with `#99E1D9`, blue/navy backgrounds with `#000000` / `#0a0a0a` / `#111111`, and orange with `#99E1D9`
 4. ALWAYS use Sora + DM Mono; never system fonts as primary
 5. ALWAYS add `"use client"` to components using hooks or event handlers (useState, useEffect, usePathname, useRouter, onClick)
 6. ALWAYS run `rm -rf .next && npm run dev` after major edits

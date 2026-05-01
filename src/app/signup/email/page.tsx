@@ -66,7 +66,7 @@ export default function SignupEmailPage() {
           style={{
             fontFamily: SORA,
             fontSize: 14,
-            color: "#64748b",
+            color: "#666666",
             lineHeight: 1.6,
             textAlign: "center",
             margin: 0,

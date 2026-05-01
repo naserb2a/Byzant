@@ -13,11 +13,10 @@ const config: Config = {
         mono: ["var(--font-geist-mono)"],
       },
       colors: {
-        bg:      "#0a0a0a",
-        surface: "#111111",
-        raised:  "#1a1a1a",
-        blue:    "#3B82F6",
-        orange:  "#FF6B2B",
+        bg:      "#000000",
+        surface: "#0a0a0a",
+        raised:  "#111111",
+        teal:    "#99E1D9",
       },
       borderRadius: {
         "2xl": "16px",

@@ -58,7 +58,7 @@ export default function AuthShell({
             style={{
               fontFamily: SORA,
               fontSize: 14,
-              color: "#64748b",
+              color: "#666666",
               margin: "0 0 8px",
               textAlign: "center",
             }}
@@ -89,7 +89,7 @@ export default function AuthShell({
               marginTop: 28,
               fontFamily: SORA,
               fontSize: 13,
-              color: "#64748b",
+              color: "#666666",
             }}
           >
             {footer}

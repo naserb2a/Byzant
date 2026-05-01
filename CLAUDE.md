@@ -169,36 +169,47 @@ log, analytics) is identical for both.
 
 ## DESIGN SYSTEM (NON-NEGOTIABLE — NEVER DEVIATE)
 
-### Colors
---db-bg:           #0A0A0A   (page background — deep black)
---db-bg2:          #0F0F0F   (card background)
---db-bg3:          #141414   (nested/hover elements)
---db-bg4:          #1A1A1A   (deepest nesting)
---db-blue:         #99E1D9   (primary accent — mint teal)
---db-blue-bright:  #B2EBE5   (hover/highlight mint)
---db-blue-dim:     rgba(153,225,217,0.10)
---db-blue-mid:     rgba(153,225,217,0.18)
---db-blue-glow:    rgba(153,225,217,0.06)
---db-border:       rgba(255,255,255,0.06)
---db-border-mid:   rgba(255,255,255,0.08)
---db-border-hi:    rgba(255,255,255,0.15)
---db-ink:          #F5F5F5   (primary text)
---db-ink-muted:    #666666   (secondary text)
---db-ink-faint:    #444444   (labels/disabled)
---db-green:        #99E1D9   (success/bullish)
---db-green-dim:    rgba(61,214,140,0.10)
---db-red:          #ff5a5a   (danger/bearish)
---db-red-dim:      rgba(255,90,90,0.10)
---db-amber:        #f0b429   (warning/neutral)
---db-amber-dim:    rgba(240,180,41,0.10)
+### Colors — THE BYZANT 6
+The three Byzant brand colors are: **Black, White, and Teal (#99E1D9)**.
+That is the entire brand. Plus three supporting tones for muted text
+and elevated surfaces.
 
-### ABSOLUTE COLOR RULES
-- NO orange anywhere on the site. Not one instance. Ever.
-- NO white backgrounds in the dashboard
-- NO purple gradients
-- NO hardcoded light colors in dashboard components
-- If you see orange, replace it with #99E1D9 immediately
-- Primary accent is #99E1D9 (mint teal) — not blue, not green
+```
+Primary black:    #000000   (primary dark background)
+Near black:       #0a0a0a   (card backgrounds)
+Elevated:         #111111   (elevated surfaces / nested / hover)
+Teal accent:      #99E1D9   (buttons, badges, highlights, active states)
+White:            #ffffff   (text, light sections)
+Text muted:       #94a3b8   (secondary text)
+```
+
+### CSS variable map (globals.css)
+```
+--db-bg:           #000000   (page background)
+--db-bg2:          #0a0a0a   (card background)
+--db-bg3:          #111111   (nested/hover elements)
+--db-bg4:          #1a1a1a   (deepest nesting)
+--db-blue:         #99E1D9   (primary accent — teal)
+--db-blue-bright:  #B2EBE5   (hover/highlight teal)
+--db-ink:          #ffffff   (primary text)
+--db-ink-muted:    #94a3b8   (secondary text)
+--db-green:        #3dd68c   (semantic — bullish)
+--db-red:          #ff5a5a   (semantic — bearish)
+--db-amber:        #f0b429   (semantic — warning)
+```
+
+### ABSOLUTE COLOR RULES — ZERO EXCEPTIONS
+- **NO blue. NO navy. Anywhere.** Not `#080c12`, `#0d1420`, `#111b2e`,
+  `#4d9fff`, `#3B82F6`, `#60a5fa`, `#0a0f1a`, `#64748b`, `#eef2ff`, or
+  any other shade of blue or navy. The primary accent is teal `#99E1D9`.
+- **NO orange. Anywhere.** Not one instance. Ever.
+- **NO purple gradients.**
+- **NO hardcoded light colors** in dashboard components.
+- If you see blue, navy, or orange — replace it immediately:
+  blue/navy → `#99E1D9` (accent) or `#000000` / `#0a0a0a` / `#111111`
+  (background); orange → `#99E1D9`.
+- Semantic green (`#3dd68c`), red (`#ff5a5a`), amber (`#f0b429`) stay
+  for status indicators only — they are not brand colors.
 
 ### Typography
 - Sora: ALL headings, body text, nav items, buttons, descriptions
@@ -330,11 +341,13 @@ byzant/
 - Confidence score and New Forecast features deferred post-launch
 - "AI-generated forecasts · Confidence-weighted" subtitle removed from
   Analytics
-- Landing page dark sections use #000000 (pure black) — applies to
-  navbar (scrolled state) and hero visualization elements that
-  previously used #080c12 / #0d1420 / #111b2e. Dashboard backgrounds
-  (--db-bg #080c12, --db-bg2 #0d1117, --db-bg3 #141a22, --db-bg4
-  #1a212b) are UNCHANGED — this rule applies to landing page only.
+- Site-wide color system unified to Black + Near-black + Elevated +
+  Teal + White + Text-muted (`#94a3b8`). No blue, no navy anywhere —
+  zero exceptions. All previous navy tokens (`#080c12`, `#0d1420`,
+  `#111b2e`, `#0d1117`, `#141a22`, `#1a212b`) and blue accents
+  (`#4d9fff`, `#3B82F6`, `#60a5fa`, `#4f8ef7`, `#6eb8ff`) replaced.
+  Slate text (`#64748b`, `#eef2ff`) replaced with neutral
+  (`#666666`, `#ffffff`).
 
 ---
 

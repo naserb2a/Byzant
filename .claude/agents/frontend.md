@@ -13,21 +13,25 @@ Read the CLAUDE.md file in the root of the project before making any changes.
 
 ## Design System — ENFORCE STRICTLY
 
-### Colors (never deviate)
+### Colors — THE BYZANT 6 (never deviate)
+The three Byzant brand colors are **Black, White, and Teal (#99E1D9)**. Plus three supporting tones.
+
 ```css
---bg-deep:    #080c12;
---bg-main:    #0d1420;
---bg-surface: #111b2e;
---accent:     #4d9fff;
---accent-light: #6eb8ff;
---green:      #4ade80;
---amber:      #f59e0b;
---red:        #ef4444;
---text:       #e2e8f0;
---text-muted: #64748b;
---border:     rgba(255,255,255,0.08);
+--bg-deep:      #000000;   /* primary dark background */
+--bg-main:      #0a0a0a;   /* card background */
+--bg-surface:   #111111;   /* elevated / nested / hover */
+--accent:       #99E1D9;   /* teal — PRIMARY ACCENT */
+--accent-light: #B2EBE5;   /* teal hover/highlight */
+--green:        #3dd68c;   /* semantic — bullish */
+--amber:        #f0b429;   /* semantic — warning */
+--red:          #ff5a5a;   /* semantic — bearish */
+--text:         #ffffff;
+--text-muted:   #94a3b8;
+--text-faint:   #666666;
+--border:       rgba(255,255,255,0.08);
 ```
-**ZERO orange anywhere.** If you see `#FF6B2B`, `#f97316`, or any orange hex — replace with `#4d9fff`.
+
+**ZERO blue. ZERO navy. ZERO orange.** If you see `#080c12`, `#0d1420`, `#111b2e`, `#4d9fff`, `#3B82F6`, `#60a5fa`, `#0a0f1a`, `#64748b`, `#eef2ff`, `#FF6B2B`, `#f97316`, or any other shade of blue / navy / orange — replace with the appropriate teal accent (`#99E1D9`) or black/near-black/elevated (`#000000` / `#0a0a0a` / `#111111`).
 
 ### Fonts
 ```css
@@ -37,18 +41,18 @@ font-family: 'DM Mono', monospace;      /* ONLY: values, tickers, timestamps, ba
 ```
 
 ### Naming
-"Byzant" only — never "BYZANT" or "B2A Capital"
+"Byzant" only — never "BYZANT" (all caps) or "B2A Capital"
 
 ## Component Patterns
 
 ### Card surface
 ```tsx
-className="bg-[#111b2e] border border-white/8 rounded-xl"
+className="bg-[#0a0a0a] border border-white/8 rounded-xl"
 ```
 
 ### Primary button
 ```tsx
-className="bg-[#4d9fff] text-white font-sora font-medium rounded-lg hover:bg-[#6eb8ff] transition-colors"
+className="bg-[#99E1D9] text-black font-sora font-medium rounded-lg hover:bg-[#B2EBE5] transition-colors"
 ```
 
 ### Data label (DM Mono)
@@ -65,7 +69,7 @@ className="font-mono text-sm text-slate-200"
 - Landing page: `app/page.tsx` and `app/layout.tsx` — do not touch dashboard layout
 - Dashboard: `app/(dashboard)/` route group — separate layout from landing
 - Chart heights: Dashboard 260px, Approvals 240px, Analytics 280px
-- Sidebar logo: links to homepage `/`, no space between "B2A" and "CAPITAL", no "Intelligence" subtitle
+- Sidebar logo: links to homepage `/`
 
 ## Scroll Animations (Landing Page)
 Use Intersection Observer API — no external animation libraries:
@@ -76,7 +80,7 @@ Use Intersection Observer API — no external animation libraries:
 
 ## Common Bugs to Fix on Sight
 - Inter font anywhere → remove it
-- Orange color anywhere → replace with `#4d9fff`
+- Blue, navy, or orange color anywhere → replace blue/navy accent with `#99E1D9`, blue/navy background with `#000000` / `#0a0a0a` / `#111111`, orange with `#99E1D9`
 - "BYZANT" all caps → fix to "Byzant"
 - Sora font weight outside 400–500 range → correct it
 - DM Mono used for prose/body text → switch to Sora

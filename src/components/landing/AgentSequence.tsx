@@ -152,7 +152,7 @@ export default function AgentSequence() {
                 {/* Title */}
                 <div style={{
                   fontFamily: SANS, fontSize: 17, fontWeight: 500,
-                  color: "#eef2ff", letterSpacing: "-0.01em",
+                  color: "#ffffff", letterSpacing: "-0.01em",
                   lineHeight: 1.3, marginBottom: 10,
                 }}>
                   {it.title}
@@ -161,7 +161,7 @@ export default function AgentSequence() {
                 {/* Body */}
                 <div style={{
                   fontFamily: SANS, fontSize: 13,
-                  color: "#64748b", lineHeight: 1.6,
+                  color: "#666666", lineHeight: 1.6,
                 }}>
                   {it.body}
                 </div>

@@ -319,14 +319,14 @@ function OptionsFlowHeatmap({ active }: { active: boolean }) {
                 left: PAD + (flashCell % COLS) * (CELL + GAP) + CELL / 2,
                 transform: "translate(-50%, -100%)",
                 fontFamily: MONO, fontSize: 8,
-                color: "#4d9fff",
+                color: "#99E1D9",
                 letterSpacing: "0.12em",
                 whiteSpace: "nowrap",
                 pointerEvents: "none",
                 background: "#000000",
                 padding: "3px 8px",
                 borderRadius: 4,
-                border: "0.5px solid rgba(77,159,255,0.3)",
+                border: "0.5px solid rgba(153,225,217,0.3)",
               }}
             >
               UNUSUAL ACTIVITY DETECTED
@@ -339,7 +339,7 @@ function OptionsFlowHeatmap({ active }: { active: boolean }) {
         display: "flex", justifyContent: "space-between",
         width: GRID_W + PAD * 2, marginTop: 12,
         fontFamily: MONO, fontSize: 9,
-        color: "#4d9fff", letterSpacing: "0.14em",
+        color: "#99E1D9", letterSpacing: "0.14em",
       }}>
         <span>STRIKE SCAN</span>
         <span>LIVE FLOW</span>
@@ -805,13 +805,13 @@ function MCPCompatibilitySection() {
           >
             <h2 style={{
               fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 700,
-              letterSpacing: "-0.03em", color: "#0a0f1a",
+              letterSpacing: "-0.03em", color: "#000000",
               fontFamily: SANS, margin: "0 0 24px", lineHeight: 1.1,
             }}>
               Works with<br />your agent.
             </h2>
             <p style={{
-              fontSize: 16, color: "#1a2b3a", fontFamily: SANS,
+              fontSize: 16, color: "#111111", fontFamily: SANS,
               fontWeight: 400, lineHeight: 1.65, margin: 0, maxWidth: 280,
             }}>
               Byzant connects to any MCP-compatible agent or framework. No custom integrations. No setup required.
@@ -821,7 +821,7 @@ function MCPCompatibilitySection() {
           {/* RIGHT — item list */}
           <div>
             {/* Top divider */}
-            <div style={{ width: "100%", height: "1px", background: "rgba(10,15,26,0.15)" }} />
+            <div style={{ width: "100%", height: "1px", background: "rgba(0,0,0,0.15)" }} />
 
             {MCP_ITEMS.map((item, i) => (
               <motion.div
@@ -839,7 +839,7 @@ function MCPCompatibilitySection() {
                     width: 32, height: 32, borderRadius: 6, flexShrink: 0,
                     background: "transparent",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    color: "#0a0f1a", marginTop: 2,
+                    color: "#000000", marginTop: 2,
                   }}>
                     {item.icon}
                   </div>
@@ -847,13 +847,13 @@ function MCPCompatibilitySection() {
                   {/* Text */}
                   <div>
                     <div style={{
-                      fontSize: 16, fontWeight: 600, color: "#0a0f1a",
+                      fontSize: 16, fontWeight: 600, color: "#000000",
                       fontFamily: SANS, marginBottom: 4,
                     }}>
                       {item.title}
                     </div>
                     <div style={{
-                      fontSize: 14, color: "#1a2b3a", fontFamily: SANS,
+                      fontSize: 14, color: "#111111", fontFamily: SANS,
                       fontWeight: 400, lineHeight: 1.6,
                     }}>
                       {item.desc}
@@ -862,7 +862,7 @@ function MCPCompatibilitySection() {
                 </div>
 
                 {/* Row divider */}
-                <div style={{ width: "100%", height: "1px", background: "rgba(10,15,26,0.15)" }} />
+                <div style={{ width: "100%", height: "1px", background: "rgba(0,0,0,0.15)" }} />
               </motion.div>
             ))}
           </div>
@@ -1094,7 +1094,7 @@ function FAQSection() {
               fontSize: "clamp(40px, 5vw, 64px)",
               fontWeight: 700,
               letterSpacing: "-0.03em",
-              color: "#0a0f1a",
+              color: "#000000",
               fontFamily: SANS,
               lineHeight: 1.05,
               margin: "0 0 32px",
@@ -1106,17 +1106,17 @@ function FAQSection() {
               style={{
                 display: "inline-block",
                 padding: "12px 28px",
-                border: "1px solid #0a0f1a",
+                border: "1px solid #000000",
                 borderRadius: 999,
                 fontSize: 14,
                 fontWeight: 500,
-                color: "#0a0f1a",
+                color: "#000000",
                 background: "transparent",
                 textDecoration: "none",
                 fontFamily: SANS,
                 transition: "background 0.15s",
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(10,15,26,0.05)"; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.05)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "transparent"; }}
             >
               Contact us
@@ -1150,13 +1150,13 @@ function FAQSection() {
                       cursor: "pointer",
                       textAlign: "left",
                       fontFamily: SANS,
-                      color: "#0a0f1a",
+                      color: "#000000",
                     }}
                   >
                     <span style={{
                       fontSize: 18,
                       fontWeight: 600,
-                      color: "#0a0f1a",
+                      color: "#000000",
                       fontFamily: SANS,
                       lineHeight: 1.4,
                     }}>
@@ -1173,8 +1173,8 @@ function FAQSection() {
                       transition: "transform 0.3s ease",
                     }}>
                       <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                        <line x1="9" y1="2" x2="9" y2="16" stroke="#0a0f1a" strokeWidth="1.5" strokeLinecap="round" />
-                        <line x1="2" y1="9" x2="16" y2="9" stroke="#0a0f1a" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="9" y1="2" x2="9" y2="16" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" />
+                        <line x1="2" y1="9" x2="16" y2="9" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" />
                       </svg>
                     </span>
                   </button>
@@ -1234,7 +1234,7 @@ function CTASectionTeal({
           transition={{ duration: 0.7, delay: 0.1 }}
           style={{
             fontSize: "clamp(28px, 3vw, 38px)", fontWeight: 400,
-            letterSpacing: "-0.02em", color: "#0a0f1a",
+            letterSpacing: "-0.02em", color: "#000000",
             fontFamily: SANS, margin: "0 0 28px", lineHeight: 1.35,
           }}
         >
@@ -1245,7 +1245,7 @@ function CTASectionTeal({
           initial={{ opacity: 0, y: 12 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.25 }}
-          style={{ fontSize: 16, color: "#1a2b3a", fontFamily: SANS, fontWeight: 300, margin: "0 0 52px", lineHeight: 1.6 }}
+          style={{ fontSize: 16, color: "#111111", fontFamily: SANS, fontWeight: 300, margin: "0 0 52px", lineHeight: 1.6 }}
         >
           Join the waitlist. Be first when we launch.<br />
           No spam. No commitments. Just early access.
@@ -1261,14 +1261,14 @@ function CTASectionTeal({
             <div style={{
               display: "inline-flex", alignItems: "center", gap: 10,
               padding: "14px 24px",
-              background: "rgba(10,15,26,0.08)",
-              border: "0.5px solid rgba(10,15,26,0.3)",
+              background: "rgba(0,0,0,0.08)",
+              border: "0.5px solid rgba(0,0,0,0.3)",
               borderRadius: 14, fontSize: 14,
-              color: "#0a0f1a", fontFamily: SANS,
+              color: "#000000", fontFamily: SANS,
             }}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <circle cx="7" cy="7" r="6.5" stroke="#0a0f1a" strokeWidth="1" />
-                <path d="M4.5 7l1.8 1.8L9.5 4.5" stroke="#0a0f1a" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="7" cy="7" r="6.5" stroke="#000000" strokeWidth="1" />
+                <path d="M4.5 7l1.8 1.8L9.5 4.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               You&apos;re on the list. We&apos;ll be in touch.
             </div>
@@ -1277,7 +1277,7 @@ function CTASectionTeal({
               <div style={{
                 display: "flex", flex: 1,
                 background: "#ffffff",
-                border: "1px solid #0a0f1a",
+                border: "1px solid #000000",
                 borderRadius: 14, overflow: "hidden",
               }}>
                 <input
@@ -1289,21 +1289,21 @@ function CTASectionTeal({
                     flex: 1, background: "transparent", border: "none", outline: "none",
                     padding: "16px 20px",
                     fontSize: 15,
-                    color: "#0a0f1a", fontFamily: SANS, minWidth: 0,
+                    color: "#000000", fontFamily: SANS, minWidth: 0,
                   }}
                 />
                 <button
                   type="submit"
                   style={{
-                    background: "#0a0f1a", color: "#99E1D9", border: "none",
+                    background: "#000000", color: "#99E1D9", border: "none",
                     padding: "12px 28px",
                     fontSize: 13, fontWeight: 600, cursor: "pointer",
                     borderRadius: 11, margin: 4,
                     letterSpacing: "0.01em", transition: "background 0.15s",
                     fontFamily: SANS, whiteSpace: "nowrap",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "#1a2b3a")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = "#0a0f1a")}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#111111")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "#000000")}
                 >
                   Join Waitlist
                 </button>
@@ -1321,12 +1321,12 @@ function CTASectionTeal({
             aria-label="Byzant on X"
             style={{
               width: 44, height: 44, borderRadius: "50%",
-              border: "1px solid #0a0f1a",
+              border: "1px solid #000000",
               display: "flex", alignItems: "center", justifyContent: "center",
-              color: "#0a0f1a", textDecoration: "none",
+              color: "#000000", textDecoration: "none",
               transition: "background 0.15s, color 0.15s",
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(10,15,26,0.1)"; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.1)"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "transparent"; }}
           >
             {/* X (Twitter) logo */}
@@ -1348,7 +1348,7 @@ function CTASectionTeal({
             { label: "Sign In", href: "/auth" },
           ].map(l => (
             <Link key={l.label} href={l.href}
-              style={{ fontSize: 12, color: "#0a0f1a", textDecoration: "none", fontFamily: MONO, letterSpacing: "0.05em", opacity: 0.75, transition: "opacity 0.15s" }}
+              style={{ fontSize: 12, color: "#000000", textDecoration: "none", fontFamily: MONO, letterSpacing: "0.05em", opacity: 0.75, transition: "opacity 0.15s" }}
               onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
               onMouseLeave={e => (e.currentTarget.style.opacity = "0.75")}>
               {l.label}
@@ -1357,10 +1357,10 @@ function CTASectionTeal({
         </div>
 
         {/* Divider */}
-        <div style={{ width: "100%", height: "1px", background: "rgba(10,15,26,0.2)", marginBottom: 28 }} />
+        <div style={{ width: "100%", height: "1px", background: "rgba(0,0,0,0.2)", marginBottom: 28 }} />
 
         {/* Copyright */}
-        <p style={{ textAlign: "center", fontSize: 12, color: "#0a0f1a", fontFamily: MONO, letterSpacing: "0.04em", margin: "0 0 0" }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "#000000", fontFamily: MONO, letterSpacing: "0.04em", margin: "0 0 0" }}>
           © 2026 Byzant · All Rights Reserved
         </p>
       </div>
@@ -1379,12 +1379,12 @@ function CTASectionTeal({
           fontFamily: SANS,
           fontSize: "clamp(60px, 9vw, 110px)",
           fontWeight: 700,
-          color: "#0a0f1a",
+          color: "#000000",
           letterSpacing: "-0.04em",
           display: "block",
           userSelect: "none",
           opacity: 1,
-          WebkitTextFillColor: "#0a0f1a",
+          WebkitTextFillColor: "#000000",
         }}>
           Byzant
         </span>
@@ -1613,7 +1613,7 @@ export default function HomePage() {
               fontSize: "clamp(2.4rem, 4.5vw, 4rem)",
               fontWeight: 700, letterSpacing: "-0.04em",
               lineHeight: 1.05, margin: "0",
-              color: "#eef2ff", fontFamily: SANS,
+              color: "#ffffff", fontFamily: SANS,
             }}
           >
             Analysis without emotion.
@@ -1629,7 +1629,7 @@ export default function HomePage() {
               fontSize: "clamp(2.4rem, 4.5vw, 4rem)",
               fontWeight: 700, letterSpacing: "-0.04em",
               lineHeight: 1.05, margin: "0 0 56px",
-              color: "#eef2ff", fontFamily: SANS,
+              color: "#ffffff", fontFamily: SANS,
             }}
           >
             You are the arbiter.
@@ -1641,7 +1641,7 @@ export default function HomePage() {
             animate={{ opacity: heroVisible ? 1 : 0, y: heroVisible ? 0 : 16 }}
             transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
             style={{
-              fontSize: 16, color: "#64748b",
+              fontSize: 16, color: "#666666",
               fontFamily: SANS, fontWeight: 400,
               lineHeight: 1.65, maxWidth: 520,
               margin: "0 0 40px",

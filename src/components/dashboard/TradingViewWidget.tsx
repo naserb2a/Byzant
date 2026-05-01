@@ -61,7 +61,7 @@ export default function TradingViewWidget({
       save_image: false,
       calendar: false,
       withdateranges: true,
-      backgroundColor: theme === "dark" ? "#0d1117" : "#ffffff",
+      backgroundColor: theme === "dark" ? "#0a0a0a" : "#ffffff",
       gridColor: theme === "dark" ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)",
       support_host: "https://www.tradingview.com",
     };

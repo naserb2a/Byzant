@@ -14,8 +14,8 @@ const TEAL_MID = "rgba(153,225,217,0.35)";
 const BORDER = "rgba(255,255,255,0.08)";
 const BORDER_HI = "rgba(255,255,255,0.18)";
 const INK = "#F5F5F5";
-const INK_MUTED = "#64748b";
-const SURFACE = "#111318";
+const INK_MUTED = "#666666";
+const SURFACE = "#111111";
 
 type AgentType = "claude" | "gpt-4" | "gemini" | "grok" | "openclaw" | "other";
 type SubStep = "fork" | "hosted" | "byo";
@@ -440,7 +440,7 @@ export default function OnboardingPage() {
                     marginBottom: 32,
                     fontFamily: SORA,
                     fontSize: 13,
-                    color: "#64748b",
+                    color: "#666666",
                     textAlign: "center",
                     lineHeight: 1.5,
                   }}
