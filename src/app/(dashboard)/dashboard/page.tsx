@@ -267,7 +267,7 @@ export default function DashboardPage() {
               style={{
                 background: "none", border: "none", cursor: "pointer",
                 padding: "8px 16px", fontSize: 13, fontWeight: activeTab === i ? 500 : 400,
-                color: activeTab === i ? "var(--db-blue)" : "var(--db-ink-muted)",
+                color: activeTab === i ? "var(--db-accent-text)" : "var(--db-ink-muted)",
                 borderBottom: `2px solid ${activeTab === i ? "var(--db-blue)" : "transparent"}`,
                 marginBottom: -1, transition: "color 0.15s",
                 fontFamily: SANS,

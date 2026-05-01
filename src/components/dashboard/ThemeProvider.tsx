@@ -57,6 +57,7 @@ export function useTheme() {
 }
 
 export const TEAL = "#99E1D9";
+export const TEAL_DARK = "#0d9488";
 
 export function tokens(theme: Theme) {
   return theme === "dark"
@@ -72,6 +73,7 @@ export function tokens(theme: Theme) {
         hoverBg: "rgba(255,255,255,0.04)",
         activeTint: "rgba(153,225,217,0.08)",
         teal: TEAL,
+        accentText: TEAL,
       }
     : {
         sidebarBg: "#ffffff",
@@ -85,6 +87,7 @@ export function tokens(theme: Theme) {
         hoverBg: "rgba(0,0,0,0.04)",
         activeTint: "rgba(153,225,217,0.12)",
         teal: TEAL,
+        accentText: TEAL_DARK,
       };
 }
 

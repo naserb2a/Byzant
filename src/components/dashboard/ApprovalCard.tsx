@@ -46,7 +46,7 @@ export default function ApprovalCard({
             width: 36, height: 36, borderRadius: 10,
             background: "var(--db-blue-dim)", border: "1px solid var(--db-border-mid)",
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 11, fontWeight: 700, color: "var(--db-blue)",
+            fontSize: 11, fontWeight: 700, color: "var(--db-accent-text)",
             fontFamily: "inherit",
           }}>
             {agentId[0]}
@@ -58,7 +58,7 @@ export default function ApprovalCard({
         </div>
         <div style={{ textAlign: "right" }}>
           <div style={{ fontSize: 16, fontWeight: 700, color: "var(--db-ink)", fontFamily: "inherit" }}>{ticker}</div>
-          <div style={{ fontSize: 12, color: "var(--db-blue)", fontFamily: "inherit" }}>{price}</div>
+          <div style={{ fontSize: 12, color: "var(--db-accent-text)", fontFamily: "inherit" }}>{price}</div>
         </div>
       </div>
 
@@ -68,7 +68,7 @@ export default function ApprovalCard({
         border: "1px solid var(--db-border-mid)",
         borderRadius: 10, padding: "10px 12px",
       }}>
-        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--db-blue)", fontFamily: "inherit", marginBottom: 5 }}>
+        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--db-accent-text)", fontFamily: "inherit", marginBottom: 5 }}>
           Awaiting your approval
         </div>
         <p style={{ fontSize: 14, color: "var(--db-ink-muted)", lineHeight: 1.55, margin: 0, fontFamily: "inherit" }}>{desc}</p>

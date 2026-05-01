@@ -90,7 +90,7 @@ export default function AgentCard({
       {/* Footer */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <StatusPill status={status} label={statusLabel} />
-        <span style={{ fontSize: 11, color: "var(--db-blue)", cursor: "pointer", fontFamily: "inherit", fontWeight: 400 }}>View full analysis →</span>
+        <span style={{ fontSize: 11, color: "var(--db-accent-text)", cursor: "pointer", fontFamily: "inherit", fontWeight: 400 }}>View full analysis →</span>
       </div>
     </div>
   );

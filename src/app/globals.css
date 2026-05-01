@@ -13,6 +13,7 @@
   --db-border-hi:   rgba(255,255,255,0.18);
   --db-blue:        #99E1D9;
   --db-blue-bright: #B2EBE5;
+  --db-accent-text: #99E1D9;
   --db-blue-dim:    rgba(153,225,217,0.10);
   --db-blue-mid:    rgba(153,225,217,0.18);
   --db-blue-glow:   rgba(153,225,217,0.06);
@@ -52,6 +53,8 @@
   --db-red-dim:     rgba(217,56,56,0.10);
   --db-amber:       #b97800;
   --db-amber-dim:   rgba(185,120,0,0.10);
+
+  --db-accent-text: #0d9488;
 
   --db-sidebar-bg:  #ffffff;
   --db-topbar-bg:   #ffffff;

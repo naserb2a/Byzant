@@ -164,7 +164,7 @@ function ThemeSegment({
               border: "none",
               cursor: "pointer",
               background: active ? "rgba(153,225,217,0.12)" : "transparent",
-              color: active ? "#99E1D9" : "var(--db-ink-muted)",
+              color: active ? "var(--db-accent-text)" : "var(--db-ink-muted)",
               transition: "background 0.12s, color 0.12s",
             }}
           >

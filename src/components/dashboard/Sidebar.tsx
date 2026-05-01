@@ -37,11 +37,13 @@ function NavLink({
   active,
   textMuted,
   textPrimary,
+  accentText,
 }: {
   item: NavItem;
   active: boolean;
   textMuted: string;
   textPrimary: string;
+  accentText: string;
 }) {
   return (
     <Link
@@ -54,7 +56,7 @@ function NavLink({
         padding: "0 10px 0 8px",
         borderRadius: 6,
         textDecoration: "none",
-        color: active ? TEAL : textMuted,
+        color: active ? accentText : textMuted,
         background: active ? "rgba(153,225,217,0.08)" : "transparent",
         borderLeft: `2px solid ${active ? TEAL : "transparent"}`,
         fontSize: 13,
@@ -148,7 +150,7 @@ export default function Sidebar() {
         <Link
           href="/"
           style={{
-            color: TEAL,
+            color: t.accentText,
             fontSize: 13,
             fontWeight: 600,
             letterSpacing: 0,
@@ -178,6 +180,7 @@ export default function Sidebar() {
             active={isActive(pathname, item.href)}
             textMuted={t.textMuted}
             textPrimary={t.textPrimary}
+            accentText={t.accentText}
           />
         ))}
       </nav>
@@ -262,6 +265,7 @@ export default function Sidebar() {
           active={isActive(pathname, "/settings")}
           textMuted={t.textMuted}
           textPrimary={t.textPrimary}
+          accentText={t.accentText}
         />
       </div>
     </aside>

@@ -24,7 +24,7 @@ export default function ModuleCard({ name, badge, desc, price, installed }: Modu
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <span style={{
           fontSize: 10, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase",
-          color: "var(--db-blue)", background: "var(--db-blue-dim)",
+          color: "var(--db-accent-text)", background: "var(--db-blue-dim)",
           border: "1px solid var(--db-border-mid)",
           padding: "2px 8px", borderRadius: 999,
         }}>{badge}</span>

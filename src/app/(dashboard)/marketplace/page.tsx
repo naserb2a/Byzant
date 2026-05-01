@@ -148,7 +148,7 @@ function InstalledCard({ module: m }: { module: Module }) {
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6, flexShrink: 0 }}>
-          <span style={{ fontSize: 12, color: "var(--db-blue)", fontFamily: MONO }}>{m.price}</span>
+          <span style={{ fontSize: 12, color: "var(--db-accent-text)", fontFamily: MONO }}>{m.price}</span>
           <div style={{
             display: "flex", alignItems: "center", gap: 5,
             padding: "3px 10px", borderRadius: 999,
@@ -169,7 +169,7 @@ function InstalledCard({ module: m }: { module: Module }) {
           <span style={{ fontSize: 10, color: "var(--db-ink-faint)", fontFamily: MONO, letterSpacing: "0.08em", textTransform: "uppercase" }}>
             Usage this month
           </span>
-          <span style={{ fontSize: 10, color: "var(--db-blue)", fontFamily: MONO }}>{m.usage}%</span>
+          <span style={{ fontSize: 10, color: "var(--db-accent-text)", fontFamily: MONO }}>{m.usage}%</span>
         </div>
         <div style={{ height: 3, background: "var(--db-bg4)", borderRadius: 2, overflow: "hidden" }}>
           <div style={{ height: "100%", width: `${m.usage}%`, background: "var(--db-blue)", borderRadius: 2, transition: "width 0.6s ease" }} />
@@ -185,7 +185,7 @@ function InstalledCard({ module: m }: { module: Module }) {
         <button
           onClick={() => setShowConfigMsg(true)}
           style={{
-            background: "none", border: "none", color: "var(--db-blue)", cursor: "pointer",
+            background: "none", border: "none", color: "var(--db-accent-text)", cursor: "pointer",
             fontSize: 12, padding: 0,
             transition: "color 0.15s",
           }}

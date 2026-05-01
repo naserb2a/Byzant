@@ -16,7 +16,7 @@ interface RoadmapCardProps {
 
 const STATUS_STYLES: Record<string, { bg: string; color: string; label: string }> = {
   done:    { bg: "var(--db-green-dim)",  color: "var(--db-green)", label: "Complete" },
-  active:  { bg: "var(--db-blue-dim)",   color: "var(--db-blue)",  label: "Active"   },
+  active:  { bg: "var(--db-blue-dim)",   color: "var(--db-accent-text)",  label: "Active"   },
   planned: { bg: "var(--db-bg4)",        color: "var(--db-ink-muted)", label: "Planned" },
 };
 

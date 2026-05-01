@@ -75,8 +75,8 @@ function formatDate(iso: string): string {
 
 function SentimentBadge({ sentiment }: { sentiment: Flow["sentiment"] }) {
   const map: Record<Flow["sentiment"], { color: string; bg: string }> = {
-    bullish: { color: "#99E1D9", bg: "rgba(153,225,217,0.10)" },
-    bearish: { color: "#f87171", bg: "rgba(248,113,113,0.10)" },
+    bullish: { color: "var(--db-accent-text)", bg: "rgba(153,225,217,0.10)" },
+    bearish: { color: "var(--db-red)", bg: "rgba(248,113,113,0.10)" },
     neutral: { color: "var(--db-ink-muted)", bg: "var(--db-bg4)" },
   };
   const s = map[sentiment] ?? map.neutral;
@@ -107,7 +107,7 @@ function TypePill({ type }: { type: "call" | "put" }) {
         fontSize: 10,
         fontFamily: MONO,
         fontWeight: 700,
-        color: isCall ? "#99E1D9" : "#f87171",
+        color: isCall ? "var(--db-accent-text)" : "var(--db-red)",
         background: isCall ? "rgba(153,225,217,0.10)" : "rgba(248,113,113,0.10)",
         padding: "2px 7px",
         borderRadius: 4,
@@ -236,7 +236,7 @@ export default function WhaleTrackerPage() {
                 borderRadius: 999,
                 border: "1px solid " + (active ? "var(--db-blue)" : "var(--db-border)"),
                 background: active ? "var(--db-blue-dim)" : "var(--db-bg2)",
-                color: active ? "var(--db-blue)" : "var(--db-ink-muted)",
+                color: active ? "var(--db-accent-text)" : "var(--db-ink-muted)",
                 fontFamily: MONO,
                 fontSize: 11,
                 fontWeight: active ? 600 : 500,
@@ -338,7 +338,7 @@ export default function WhaleTrackerPage() {
                       style={{
                         ...TD_MONO,
                         fontWeight: 700,
-                        color: "var(--db-blue)",
+                        color: "var(--db-accent-text)",
                         fontSize: 13,
                         letterSpacing: "0.04em",
                       }}
