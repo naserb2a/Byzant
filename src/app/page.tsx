@@ -773,17 +773,16 @@ function MCPCompatibilitySection() {
       padding: "140px 0",
     }}>
       <img
-        src="/icons/model-context-protocol-dark.svg"
+        src="/icons/model-context-protocol-light.svg"
         alt=""
         aria-hidden="true"
         style={{
           position: "absolute",
           left: -100,
           bottom: -180,
-          width: 450,
+          width: 380,
           height: "auto",
           opacity: 0.25,
-          filter: "brightness(0) saturate(100%)",
           pointerEvents: "none",
           userSelect: "none",
         }}
