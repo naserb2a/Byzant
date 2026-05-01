@@ -773,7 +773,7 @@ function MCPCompatibilitySection() {
       padding: "140px 0",
     }}>
       <img
-        src="/icons/model-context-protocol-light.svg"
+        src="/icons/modelcontextprotocol.svg"
         alt=""
         aria-hidden="true"
         style={{
