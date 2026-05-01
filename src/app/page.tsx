@@ -778,11 +778,12 @@ function MCPCompatibilitySection() {
         aria-hidden="true"
         style={{
           position: "absolute",
-          left: -100,
-          bottom: -180,
+          left: 0,
+          bottom: 0,
           width: 380,
           height: "auto",
           opacity: 0.25,
+          filter: "brightness(0) saturate(100%)",
           pointerEvents: "none",
           userSelect: "none",
         }}
