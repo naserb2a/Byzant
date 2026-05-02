@@ -429,20 +429,53 @@ Inspiration: Perplexity Computer — but purpose-built for trading
 
 ## BUSINESS MODEL
 
-Module Subscriptions (per agent/month):
-- Basic: $9/mo — data feeds, basic analytics
-- Pro: $29/mo — advanced modules, dark pool, options flow
-- Institutional: $99/mo — full suite, priority, backtesting
+### PRICING MODEL — PAY PER MODULE (A LA CARTE)
 
-Pro Tier ($29-49/mo):
-- AI Research Brief generator
-- Unlimited approval history
-- Priority agent processing
-- Advanced analytics
+Byzant uses a pay-per-module model. Users activate only the modules
+they need and pay only for those. No bundled tiers. Every module sold
+individually at a fixed monthly rate. A full platform bundle ($149/mo)
+exists as the only plan option for power users who want everything at
+a discount.
 
-Marketplace Commission: 15-20% on third-party modules
-Usage-Based: Metered API calls for high-frequency data
-Agent Seat Pricing: Per-agent fee for multi-strategy users
+### MODULE PRICING & MARGINS
+
+- **Trailing Stop Bot** — $9/mo — data cost $0 (Alpaca) — ~100% margin
+- **Risk Agent** — $29/mo — data cost $0 (Alpaca) — ~100% margin
+- **Wheel Strategy Bot** — $29/mo — data cost $0 (Alpaca) — ~100% margin
+- **Copy Trading Bot** — $29/mo — data cost ~$3/mo (Apify) — ~90% margin
+- **Congressional Tracker** — $29/mo — data cost ~$3/mo (Apify) —
+  ~90% margin
+- **AI Research Brief** — $19/mo — data cost ~$5-15/mo (Claude API) —
+  20-75% margin, usage-dependent
+- **Real-time Options Flow** — $49/mo — data cost $50/mo (Unusual
+  Whales flat) — ~0% at 1 user, 95% at 20+ users
+- **Whale Tracker** — $29/mo — data cost ~$315/mo (Apify) —
+  NEGATIVE until 11 subscribers. UPGRADE to Unusual Whales API
+  ($50/mo flat) immediately at 10 subscribers — margin jumps to 83%+
+- **Full Platform Bundle** — $149/mo — all modules included —
+  negative until 3 bundle users, 96% margin at 50 users
+
+### REVENUE STREAMS
+
+- Pay-per-module subscriptions
+- Full platform bundle ($149/mo)
+- Marketplace Commission — 15-20% revenue share on third-party
+  modules (Phase 3)
+- Data Provider Revenue Share — negotiated rev-share with data
+  providers
+
+### CASH FLOW BREAKEVEN
+
+Byzant reaches cash flow positive at approximately 15-20 total paying
+users across all modules. High-margin modules (Trailing Stop Bot, Risk
+Agent, Wheel Strategy Bot, Congressional Tracker) subsidize Whale
+Tracker data costs during early growth.
+
+### WHALE TRACKER WARNING
+
+Data cost is $315/mo fixed via Apify regardless of subscriber count.
+Do not scale Whale Tracker marketing until upgraded to Unusual Whales
+API at 10+ subscribers.
 
 ---
 
