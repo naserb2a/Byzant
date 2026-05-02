@@ -1057,8 +1057,8 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
     a: "MCP (Model Context Protocol) is the standard that AI agents use to discover and consume external capabilities. Byzant is built on MCP from day one — meaning any MCP-compatible agent can plug into Byzant's marketplace instantly, with no custom integrations required.",
   },
   {
-    q: "How much does Byzant cost?",
-    a: "Byzant modules are priced at Basic ($9/mo), Pro ($29/mo), and Institutional ($99/mo). You only pay for the modules you activate. Stripe billing is coming in Phase 2 — early waitlist users will get priority access.",
+    q: "Is my brokerage account safe with Byzant?",
+    a: "Byzant never stores your brokerage credentials. When you connect Alpaca, the connection is made via secure OAuth — the same standard used by major financial apps. Byzant can only surface trade requests for your approval. It cannot withdraw funds, transfer money, or act without your explicit sign-off. You are always in control.",
   },
 ];
 
