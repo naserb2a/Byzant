@@ -783,7 +783,6 @@ function MCPCompatibilitySection() {
           width: 380,
           height: "auto",
           opacity: 0.25,
-          filter: "brightness(0) saturate(100%)",
           pointerEvents: "none",
           userSelect: "none",
         }}
