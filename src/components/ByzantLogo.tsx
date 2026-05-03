@@ -1,7 +1,3 @@
-import { Sora } from "next/font/google";
-
-const sora = Sora({ subsets: ["latin"], weight: ["600"] });
-
 interface ByzantLogoProps {
   size?: number | string;
   color?: string;
@@ -29,7 +25,7 @@ export default function ByzantLogo({
       <text
         x="0"
         y="17"
-        fontFamily={sora.style.fontFamily}
+        fontFamily="var(--font-sora), sans-serif"
         fontWeight={600}
         fontSize="20"
         letterSpacing="-0.01em"
