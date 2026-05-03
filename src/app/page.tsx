@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import AgentSequence from "@/components/landing/AgentSequence";
+import ByzantLogo from "@/components/ByzantLogo";
 
 const MatrixBackground = dynamic(
   () => import("@/components/landing/MatrixBackground"),
@@ -1366,27 +1367,16 @@ function CTASectionTeal({
 
       {/* ── Big Wordmark ── */}
       <div style={{
-        textAlign: "center",
-        lineHeight: 0.85,
+        display: "flex",
+        justifyContent: "center",
         marginTop: 48,
         background: "#99E1D9",
         paddingBottom: 100,
         position: "relative",
         zIndex: 2,
+        userSelect: "none",
       }}>
-        <span style={{
-          fontFamily: SANS,
-          fontSize: "clamp(60px, 9vw, 110px)",
-          fontWeight: 700,
-          color: "#000000",
-          letterSpacing: "-0.04em",
-          display: "block",
-          userSelect: "none",
-          opacity: 1,
-          WebkitTextFillColor: "#000000",
-        }}>
-          Byzant
-        </span>
+        <ByzantLogo size="clamp(60px, 9vw, 110px)" color="#000000" />
       </div>
     </section>
   );
@@ -1499,8 +1489,8 @@ export default function HomePage() {
           height: 64, display: "flex", alignItems: "center", justifyContent: "space-between",
           padding: "0 48px", position: "relative",
         }}>
-          <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "baseline", letterSpacing: 0 }}>
-            <span style={{ color: "#99E1D9", fontWeight: 500, fontSize: 21, fontFamily: "var(--font-geist-sans)", letterSpacing: 0, WebkitTextStroke: "0.8px white" }}>Byzant</span>
+          <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
+            <ByzantLogo size={22} color="#ffffff" />
           </Link>
 
           {/* Desktop nav links — absolutely centered */}
