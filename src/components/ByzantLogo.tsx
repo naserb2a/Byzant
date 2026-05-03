@@ -1,6 +1,6 @@
-import { Inter } from "next/font/google";
+import { Sora } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"], weight: ["600"] });
+const sora = Sora({ subsets: ["latin"], weight: ["600"] });
 
 interface ByzantLogoProps {
   size?: number | string;
@@ -29,7 +29,7 @@ export default function ByzantLogo({
       <text
         x="0"
         y="17"
-        fontFamily={inter.style.fontFamily}
+        fontFamily={sora.style.fontFamily}
         fontWeight={600}
         fontSize="20"
         letterSpacing="-0.01em"
