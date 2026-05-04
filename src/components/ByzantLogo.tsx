@@ -25,7 +25,7 @@ export default function ByzantLogo({
       <text
         x="0"
         y="17"
-        fontFamily="var(--font-sora), sans-serif"
+        fontFamily="var(--font-display), sans-serif"
         fontWeight={600}
         fontSize="20"
         letterSpacing="-0.01em"

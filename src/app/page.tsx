@@ -6,7 +6,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import ByzantLogo from "@/components/ByzantLogo";
 
 /* ─── Tokens ───────────────────────────────────────────────────── */
-const SORA = "var(--font-sora)";
+const DISPLAY = "var(--font-display)";
 const SYS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const TEAL = "#99E1D9";
 const BG = "#000000";
@@ -50,7 +50,7 @@ function TealPill({ href, children }: { href: string; children: React.ReactNode 
         alignItems: "center",
         background: TEAL,
         color: "#000000",
-        fontFamily: SORA,
+        fontFamily: DISPLAY,
         fontSize: 14,
         fontWeight: 500,
         padding: "10px 18px",
@@ -76,7 +76,7 @@ function GhostPill({ href, children }: { href: string; children: React.ReactNode
         alignItems: "center",
         background: "transparent",
         color: "#ffffff",
-        fontFamily: SORA,
+        fontFamily: DISPLAY,
         fontSize: 14,
         fontWeight: 500,
         padding: "10px 18px",
@@ -127,7 +127,7 @@ function Navbar() {
           <Link
             href="#features"
             style={{
-              fontFamily: SORA,
+              fontFamily: DISPLAY,
               fontSize: 14,
               fontWeight: 400,
               color: "rgba(255,255,255,0.85)",
@@ -139,7 +139,7 @@ function Navbar() {
           <Link
             href="#how-it-works"
             style={{
-              fontFamily: SORA,
+              fontFamily: DISPLAY,
               fontSize: 14,
               fontWeight: 400,
               color: "rgba(255,255,255,0.85)",
@@ -155,7 +155,7 @@ function Navbar() {
             href="/auth/login"
             className="nav-signin"
             style={{
-              fontFamily: SORA,
+              fontFamily: DISPLAY,
               fontSize: 14,
               fontWeight: 400,
               color: "rgba(255,255,255,0.85)",
@@ -177,14 +177,14 @@ function HeroHeadline() {
   return (
     <h1
       style={{
-        fontFamily: SORA,
-        fontSize: "clamp(52px, 7vw, 96px)",
+        fontFamily: DISPLAY,
+        fontSize: "clamp(38px, 5vw, 68px)",
         fontWeight: 600,
-        letterSpacing: "-0.04em",
-        lineHeight: 1.02,
+        letterSpacing: "-0.03em",
+        lineHeight: 1.05,
         color: INK,
         margin: 0,
-        maxWidth: 1100,
+        maxWidth: 980,
       }}
     >
       {words.map((w, i) => (
@@ -220,7 +220,7 @@ function DashboardMock() {
         <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#2a2a2a" }} />
         <span
           style={{
-            fontFamily: SORA,
+            fontFamily: DISPLAY,
             fontSize: 11,
             color: FAINT,
             marginLeft: 16,
@@ -258,12 +258,12 @@ function DashboardMock() {
                 marginBottom: 12,
               }}
             >
-              <span style={{ fontFamily: SORA, fontSize: 13, fontWeight: 600, color: INK }}>
+              <span style={{ fontFamily: DISPLAY, fontSize: 13, fontWeight: 600, color: INK }}>
                 {a.id}
               </span>
               <span
                 style={{
-                  fontFamily: SORA,
+                  fontFamily: DISPLAY,
                   fontSize: 9,
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
@@ -287,7 +287,7 @@ function DashboardMock() {
                   display: "flex",
                   justifyContent: "space-between",
                   padding: "5px 0",
-                  fontFamily: SORA,
+                  fontFamily: DISPLAY,
                   fontSize: 11,
                 }}
               >
@@ -299,11 +299,11 @@ function DashboardMock() {
         ))}
       </div>
 
-      {/* Portfolio chart */}
+      {/* Hero approval card */}
       <div
         style={{
           background: SURFACE_2,
-          border: "1px solid rgba(255,255,255,0.06)",
+          border: "1px solid rgba(255,255,255,0.08)",
           borderRadius: 10,
           padding: 18,
         }}
@@ -311,36 +311,129 @@ function DashboardMock() {
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: 12,
+            justifyContent: "space-between",
+            marginBottom: 14,
           }}
         >
-          <span style={{ fontFamily: SORA, fontSize: 12, color: MUTED }}>
-            Portfolio Performance
+          <span
+            style={{
+              fontFamily: DISPLAY,
+              fontSize: 12,
+              fontWeight: 600,
+              color: INK,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            Alpha-1 · NVDA · $118.40
           </span>
-          <span style={{ fontFamily: SORA, fontSize: 12, color: TEAL, fontWeight: 600 }}>
-            +12.4%
+          <span
+            style={{
+              fontFamily: DISPLAY,
+              fontSize: 9,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              fontWeight: 600,
+              color: TEAL,
+            }}
+          >
+            Awaiting your approval
           </span>
         </div>
-        <svg viewBox="0 0 600 100" width="100%" height="100" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="heroGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="rgba(153,225,217,0.35)" />
-              <stop offset="100%" stopColor="rgba(153,225,217,0)" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M0,80 L60,72 L120,76 L180,60 L240,55 L300,48 L360,52 L420,40 L480,30 L540,22 L600,18 L600,100 L0,100 Z"
-            fill="url(#heroGrad)"
-          />
-          <path
-            d="M0,80 L60,72 L120,76 L180,60 L240,55 L300,48 L360,52 L420,40 L480,30 L540,22 L600,18"
-            fill="none"
-            stroke={TEAL}
-            strokeWidth="1.5"
-          />
-        </svg>
+
+        <p
+          style={{
+            fontFamily: SYS,
+            fontSize: 13,
+            color: INK,
+            margin: "0 0 14px",
+            lineHeight: 1.55,
+          }}
+        >
+          Agent requests to open a long position in NVDA. 50 shares · Est. $5,920
+        </p>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr 1fr",
+            gap: 8,
+            marginBottom: 14,
+          }}
+        >
+          {[
+            ["ENTRY", "$118.40"],
+            ["STOP LOSS", "$113.20"],
+            ["R/R", "1:3.2"],
+            ["CONFIDENCE", "82%"],
+          ].map(([k, v]) => (
+            <div
+              key={k}
+              style={{
+                background: "#0a0a0a",
+                borderRadius: 8,
+                padding: "8px 10px",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: DISPLAY,
+                  fontSize: 8,
+                  letterSpacing: "0.12em",
+                  color: FAINT,
+                  marginBottom: 3,
+                }}
+              >
+                {k}
+              </div>
+              <div
+                style={{
+                  fontFamily: DISPLAY,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: INK,
+                }}
+              >
+                {v}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: "flex", gap: 8 }}>
+          <button
+            style={{
+              flex: 1,
+              background: TEAL,
+              color: "#000000",
+              border: "none",
+              borderRadius: 8,
+              padding: "9px 0",
+              fontFamily: DISPLAY,
+              fontSize: 12,
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            Approve
+          </button>
+          <button
+            style={{
+              flex: 1,
+              background: "#0a0a0a",
+              color: MUTED,
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: 8,
+              padding: "9px 0",
+              fontFamily: DISPLAY,
+              fontSize: 12,
+              fontWeight: 500,
+              cursor: "pointer",
+            }}
+          >
+            Decline
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -397,23 +490,108 @@ function Hero() {
 }
 
 /* ─── Trust logos ─────────────────────────────────────────────── */
+function OpenAIIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v3l-2.597 1.5-2.607-1.5z" />
+    </svg>
+  );
+}
+function GeminiIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path d="M12 0c0 6.627 5.373 12 12 12-6.627 0-12 5.373-12 12 0-6.627-5.373-12-12-12 6.627 0 12-5.373 12-12z" />
+    </svg>
+  );
+}
+function GrokIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path d="M3.005 8.858l8.783 12.544h3.904L6.908 8.858zM6.905 0L21.16 20.937h3.835L10.74 0zM21.197 0v18.84l-3.518-5.024V0zM3.005 17.951v6.05l3.515-2.467v-3.583z" />
+    </svg>
+  );
+}
+
+function TrustItem({
+  name,
+  iconSrc,
+  Icon,
+}: {
+  name: string;
+  iconSrc?: string;
+  Icon?: React.ComponentType;
+}) {
+  const tint = "rgba(255,255,255,0.7)";
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        color: tint,
+        opacity: 0.85,
+      }}
+    >
+      {iconSrc ? (
+        <img
+          src={iconSrc}
+          alt=""
+          style={{
+            height: 20,
+            width: "auto",
+            filter: "brightness(0) invert(1)",
+            opacity: 0.85,
+          }}
+        />
+      ) : Icon ? (
+        <span style={{ display: "inline-flex", color: tint }}>
+          <Icon />
+        </span>
+      ) : null}
+      <span
+        style={{
+          fontFamily: DISPLAY,
+          fontSize: 15,
+          fontWeight: 500,
+          color: tint,
+          letterSpacing: "-0.005em",
+        }}
+      >
+        {name}
+      </span>
+    </div>
+  );
+}
+
 function TrustLogos() {
-  const items: { name: string; src?: string; isText?: boolean }[] = [
-    { name: "OpenClaw", src: "/icons/openclaw.png" },
-    { name: "Anthropic", src: "/icons/anthropic.svg" },
-    { name: "OpenAI", isText: true },
-    { name: "Gemini", isText: true },
-    { name: "Grok", isText: true },
-    { name: "LangChain", src: "/icons/langchain.svg" },
-    { name: "Cursor", src: "/icons/cursor.png" },
-  ];
   return (
     <section style={{ background: BG, padding: "60px 80px 100px" }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <Reveal>
           <p
             style={{
-              fontFamily: SORA,
+              fontFamily: DISPLAY,
               fontSize: 11,
               letterSpacing: "0.16em",
               textTransform: "uppercase",
@@ -430,38 +608,17 @@ function TrustLogos() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              gap: 32,
+              gap: 28,
               flexWrap: "wrap",
             }}
           >
-            {items.map((item) =>
-              item.isText ? (
-                <span
-                  key={item.name}
-                  style={{
-                    fontFamily: SORA,
-                    fontSize: 18,
-                    fontWeight: 600,
-                    color: "rgba(255,255,255,0.5)",
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  {item.name}
-                </span>
-              ) : (
-                <img
-                  key={item.name}
-                  src={item.src}
-                  alt={item.name}
-                  style={{
-                    height: 26,
-                    width: "auto",
-                    opacity: 0.55,
-                    filter: "brightness(0) invert(1)",
-                  }}
-                />
-              )
-            )}
+            <TrustItem name="OpenClaw" iconSrc="/icons/openclaw.png" />
+            <TrustItem name="Claude" iconSrc="/icons/anthropic.svg" />
+            <TrustItem name="OpenAI" Icon={OpenAIIcon} />
+            <TrustItem name="Gemini" Icon={GeminiIcon} />
+            <TrustItem name="Grok" Icon={GrokIcon} />
+            <TrustItem name="LangChain" iconSrc="/icons/langchain.svg" />
+            <TrustItem name="Cursor" iconSrc="/icons/cursor.png" />
           </div>
         </Reveal>
       </div>
@@ -493,7 +650,7 @@ function FeatureHeader({
       <Reveal>
         <h2
           style={{
-            fontFamily: SORA,
+            fontFamily: DISPLAY,
             fontSize: "clamp(32px, 4vw, 52px)",
             fontWeight: 600,
             letterSpacing: "-0.03em",
@@ -534,7 +691,7 @@ function ReferenceLabel({ children, invert = false }: { children: React.ReactNod
     >
       <span
         style={{
-          fontFamily: SORA,
+          fontFamily: DISPLAY,
           fontSize: 11,
           letterSpacing: "0.08em",
           color: invert ? "#666666" : FAINT,
@@ -573,7 +730,7 @@ function FeatureOne() {
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <FeatureHeader
           headline="Institutional edge. Zero setup."
-          body="Byzant modules connect to your agent via MCP — the protocol agents already speak. Whale tracking, congressional flow, risk enforcement, strategy bots. Activate in one click. No terminals. No configuration. No 35-minute YouTube tutorial."
+          body="Byzant modules connect to your agent via MCP — the protocol agents already speak. Whale tracking, congressional flow, risk enforcement, strategy bots. Activate in one click. No terminals. No configuration."
         />
 
         <div
@@ -615,7 +772,7 @@ function FeatureOne() {
                 >
                   <span
                     style={{
-                      fontFamily: SORA,
+                      fontFamily: DISPLAY,
                       fontSize: 9,
                       letterSpacing: "0.14em",
                       textTransform: "uppercase",
@@ -629,11 +786,11 @@ function FeatureOne() {
                   >
                     {m.cat}
                   </span>
-                  <span style={{ fontFamily: SORA, fontSize: 12, color: MUTED }}>{m.price}</span>
+                  <span style={{ fontFamily: DISPLAY, fontSize: 12, color: MUTED }}>{m.price}</span>
                 </div>
                 <h3
                   style={{
-                    fontFamily: SORA,
+                    fontFamily: DISPLAY,
                     fontSize: 20,
                     fontWeight: 600,
                     color: INK,
@@ -672,6 +829,8 @@ function ApprovalCard() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-120px" });
   const [typed, setTyped] = useState("");
+  const [approved, setApproved] = useState(false);
+  const [pressing, setPressing] = useState(false);
 
   useEffect(() => {
     if (!inView) return;
@@ -716,7 +875,7 @@ function ApprovalCard() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontFamily: SORA,
+              fontFamily: DISPLAY,
               fontWeight: 700,
               fontSize: 12,
               color: TEAL,
@@ -725,17 +884,17 @@ function ApprovalCard() {
             A
           </div>
           <div>
-            <div style={{ fontFamily: SORA, fontSize: 13, fontWeight: 600, color: INK }}>
+            <div style={{ fontFamily: DISPLAY, fontSize: 13, fontWeight: 600, color: INK }}>
               Alpha-1
             </div>
-            <div style={{ fontFamily: SORA, fontSize: 11, color: FAINT, marginTop: 1 }}>
+            <div style={{ fontFamily: DISPLAY, fontSize: 11, color: FAINT, marginTop: 1 }}>
               NVDA · $118.40
             </div>
           </div>
         </div>
         <span
           style={{
-            fontFamily: SORA,
+            fontFamily: DISPLAY,
             fontSize: 9,
             letterSpacing: "0.14em",
             textTransform: "uppercase",
@@ -805,7 +964,7 @@ function ApprovalCard() {
           >
             <div
               style={{
-                fontFamily: SORA,
+                fontFamily: DISPLAY,
                 fontSize: 9,
                 letterSpacing: "0.1em",
                 color: FAINT,
@@ -814,7 +973,7 @@ function ApprovalCard() {
             >
               {k}
             </div>
-            <div style={{ fontFamily: SORA, fontSize: 13, fontWeight: 600, color: INK }}>
+            <div style={{ fontFamily: DISPLAY, fontSize: 13, fontWeight: 600, color: INK }}>
               {v}
             </div>
           </div>
@@ -823,20 +982,27 @@ function ApprovalCard() {
 
       <div style={{ display: "flex", gap: 8 }}>
         <button
+          disabled={approved}
+          onClick={() => setApproved(true)}
+          onMouseDown={() => !approved && setPressing(true)}
+          onMouseUp={() => setPressing(false)}
+          onMouseLeave={() => setPressing(false)}
           style={{
             flex: 1,
-            background: TEAL,
+            background: approved ? "#4ade80" : TEAL,
             color: "#000000",
             border: "none",
             borderRadius: 10,
             padding: "11px 0",
-            fontFamily: SORA,
+            fontFamily: DISPLAY,
             fontSize: 13,
             fontWeight: 600,
-            cursor: "pointer",
+            cursor: approved ? "default" : "pointer",
+            transform: pressing && !approved ? "scale(0.97)" : "scale(1)",
+            transition: "background 0.25s ease, transform 0.12s ease",
           }}
         >
-          Approve
+          {approved ? "Approved ✓" : "Approve"}
         </button>
         <button
           style={{
@@ -846,7 +1012,7 @@ function ApprovalCard() {
             border: "1px solid rgba(255,255,255,0.08)",
             borderRadius: 10,
             padding: "11px 0",
-            fontFamily: SORA,
+            fontFamily: DISPLAY,
             fontSize: 13,
             fontWeight: 500,
             cursor: "pointer",
@@ -888,15 +1054,18 @@ function FeatureTwo() {
 function WhaleJSON() {
   const records = [
     {
-      ticker: "GMAB",
+      ticker: "NVDA",
       type: "call",
-      strike: 30,
-      expiration: "2026-08-21",
-      volume: 15332,
-      openInterest: 145,
-      volumeOIRatio: 105.74,
-      impliedVolatility: 0.5341,
-      sentiment: "bearish",
+      strike: 125,
+      expiration: "2026-07-17",
+      volume: 18204,
+      openInterest: 412,
+      volumeOIRatio: 44.18,
+      impliedVolatility: 0.4118,
+      premium: 1842500,
+      underlyingPrice: 118.4,
+      tradeTime: "2026-05-04T14:32:18Z",
+      sentiment: "bullish",
     },
     {
       ticker: "PLTR",
@@ -907,18 +1076,94 @@ function WhaleJSON() {
       openInterest: 312,
       volumeOIRatio: 27.0,
       impliedVolatility: 0.6712,
+      premium: 612300,
+      underlyingPrice: 88.12,
+      tradeTime: "2026-05-04T14:18:02Z",
       sentiment: "bullish",
     },
     {
-      ticker: "NVDA",
+      ticker: "TSLA",
       type: "put",
-      strike: 110,
-      expiration: "2026-07-17",
-      volume: 12044,
-      openInterest: 488,
-      volumeOIRatio: 24.68,
-      impliedVolatility: 0.4118,
+      strike: 220,
+      expiration: "2026-06-19",
+      volume: 11540,
+      openInterest: 902,
+      volumeOIRatio: 12.79,
+      impliedVolatility: 0.5402,
+      premium: 988140,
+      underlyingPrice: 232.55,
+      tradeTime: "2026-05-04T14:05:41Z",
       sentiment: "bearish",
+    },
+    {
+      ticker: "GMAB",
+      type: "call",
+      strike: 30,
+      expiration: "2026-08-21",
+      volume: 15332,
+      openInterest: 145,
+      volumeOIRatio: 105.74,
+      impliedVolatility: 0.5341,
+      premium: 224800,
+      underlyingPrice: 28.4,
+      tradeTime: "2026-05-04T13:58:09Z",
+      sentiment: "bullish",
+    },
+    {
+      ticker: "AAPL",
+      type: "put",
+      strike: 175,
+      expiration: "2026-07-17",
+      volume: 9820,
+      openInterest: 1244,
+      volumeOIRatio: 7.89,
+      impliedVolatility: 0.2991,
+      premium: 412600,
+      underlyingPrice: 184.22,
+      tradeTime: "2026-05-04T13:42:30Z",
+      sentiment: "bearish",
+    },
+    {
+      ticker: "AMD",
+      type: "call",
+      strike: 160,
+      expiration: "2026-09-18",
+      volume: 7115,
+      openInterest: 288,
+      volumeOIRatio: 24.7,
+      impliedVolatility: 0.5208,
+      premium: 502100,
+      underlyingPrice: 142.88,
+      tradeTime: "2026-05-04T13:21:54Z",
+      sentiment: "bullish",
+    },
+    {
+      ticker: "META",
+      type: "put",
+      strike: 480,
+      expiration: "2026-06-19",
+      volume: 6290,
+      openInterest: 410,
+      volumeOIRatio: 15.34,
+      impliedVolatility: 0.3782,
+      premium: 1304800,
+      underlyingPrice: 502.18,
+      tradeTime: "2026-05-04T13:08:11Z",
+      sentiment: "bearish",
+    },
+    {
+      ticker: "COIN",
+      type: "call",
+      strike: 285,
+      expiration: "2026-08-21",
+      volume: 5481,
+      openInterest: 162,
+      volumeOIRatio: 33.83,
+      impliedVolatility: 0.7912,
+      premium: 738400,
+      underlyingPrice: 248.6,
+      tradeTime: "2026-05-04T12:55:47Z",
+      sentiment: "bullish",
     },
   ];
 
@@ -932,6 +1177,9 @@ function WhaleJSON() {
       ["openInterest", r.openInterest, "number"],
       ["volumeOIRatio", r.volumeOIRatio, "number"],
       ["impliedVolatility", r.impliedVolatility, "number"],
+      ["premium", r.premium, "number"],
+      ["underlyingPrice", r.underlyingPrice, "number"],
+      ["tradeTime", `"${r.tradeTime}"`, "string"],
       ["sentiment", `"${r.sentiment}"`, "string"],
     ];
     return (
@@ -983,16 +1231,17 @@ function WhaleJSON() {
               animation: "pulse-dot 1.4s ease-in-out infinite",
             }}
           />
-          <span style={{ fontFamily: SORA, fontSize: 12, color: MUTED }}>
+          <span style={{ fontFamily: DISPLAY, fontSize: 12, color: MUTED }}>
             Live · Updating every 60 minutes during market hours
           </span>
         </div>
-        <span style={{ fontFamily: SORA, fontSize: 11, color: FAINT, letterSpacing: "0.04em" }}>
+        <span style={{ fontFamily: DISPLAY, fontSize: 11, color: FAINT, letterSpacing: "0.04em" }}>
           whale_tracker.json
         </span>
       </div>
 
       <div
+        className="whale-scroll"
         style={{
           position: "relative",
           padding: "24px 28px",
@@ -1000,8 +1249,9 @@ function WhaleJSON() {
           fontSize: 13,
           lineHeight: 1.7,
           color: INK,
-          maxHeight: 540,
-          overflow: "hidden",
+          height: 420,
+          overflowY: "scroll",
+          overflowX: "hidden",
         }}
       >
         <div style={{ color: "#888888" }}>[</div>
@@ -1046,7 +1296,7 @@ function FeatureThree() {
   );
 }
 
-/* ─── Feature 4 — Step accordion ──────────────────────────────── */
+/* ─── Feature 4 — Sticky-scroll signal-to-execution ─────────────── */
 const STEPS = [
   {
     cat: "01 · MCP Protocol",
@@ -1070,13 +1320,543 @@ const STEPS = [
   },
 ];
 
+function McpVisual() {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 0,
+        padding: "60px 40px",
+      }}
+    >
+      <div
+        style={{
+          background: SURFACE,
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: 14,
+          padding: "24px 28px",
+          minWidth: 180,
+          textAlign: "center",
+        }}
+      >
+        <div
+          style={{
+            fontFamily: DISPLAY,
+            fontSize: 9,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: FAINT,
+            marginBottom: 8,
+          }}
+        >
+          Source
+        </div>
+        <div style={{ fontFamily: DISPLAY, fontSize: 16, fontWeight: 600, color: INK }}>
+          Your Agent
+        </div>
+      </div>
+
+      <div
+        style={{
+          flex: 1,
+          maxWidth: 240,
+          position: "relative",
+          height: 2,
+          background: "rgba(153,225,217,0.25)",
+          margin: "0 -1px",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(90deg, rgba(153,225,217,0) 0%, rgba(153,225,217,1) 50%, rgba(153,225,217,0) 100%)",
+            animation: "mcp-flow 2.4s linear infinite",
+          }}
+        />
+        <span
+          style={{
+            position: "absolute",
+            top: -22,
+            left: "50%",
+            transform: "translateX(-50%)",
+            fontFamily: DISPLAY,
+            fontSize: 10,
+            fontWeight: 600,
+            color: TEAL,
+            letterSpacing: "0.18em",
+          }}
+        >
+          MCP
+        </span>
+      </div>
+
+      <div
+        style={{
+          background: SURFACE,
+          border: "1px solid rgba(153,225,217,0.3)",
+          borderRadius: 14,
+          padding: "24px 28px",
+          minWidth: 200,
+          textAlign: "center",
+          boxShadow: "0 0 40px rgba(153,225,217,0.12)",
+        }}
+      >
+        <div
+          style={{
+            fontFamily: DISPLAY,
+            fontSize: 9,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: TEAL,
+            marginBottom: 8,
+          }}
+        >
+          Marketplace
+        </div>
+        <div style={{ fontFamily: DISPLAY, fontSize: 16, fontWeight: 600, color: INK }}>
+          Byzant
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SignalVisual() {
+  return (
+    <div
+      style={{
+        background: SURFACE,
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 14,
+        padding: 28,
+        maxWidth: 480,
+        margin: "0 auto",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 20,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: DISPLAY,
+            fontSize: 9,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: TEAL,
+            background: "rgba(153,225,217,0.1)",
+            padding: "4px 8px",
+            borderRadius: 999,
+            fontWeight: 600,
+          }}
+        >
+          Signal
+        </span>
+        <span style={{ fontFamily: DISPLAY, fontSize: 11, color: FAINT }}>
+          14:32:18 · Live
+        </span>
+      </div>
+
+      <div style={{ display: "grid", gap: 10, marginBottom: 20 }}>
+        {[
+          ["TICKER", "NVDA"],
+          ["SIGNAL", "Bullish +0.82"],
+          ["CONFIDENCE", "82%"],
+          ["SOURCE", "Whale Flow + Technical"],
+        ].map(([k, v]) => (
+          <div
+            key={k}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "10px 12px",
+              background: "#0a0a0a",
+              borderRadius: 8,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: DISPLAY,
+                fontSize: 10,
+                letterSpacing: "0.1em",
+                color: FAINT,
+              }}
+            >
+              {k}
+            </span>
+            <span
+              style={{
+                fontFamily: DISPLAY,
+                fontSize: 13,
+                fontWeight: 600,
+                color: k === "SIGNAL" ? TEAL : INK,
+              }}
+            >
+              {v}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div
+        style={{
+          background: "#0a0a0a",
+          borderRadius: 8,
+          padding: "12px 14px",
+        }}
+      >
+        <div
+          style={{
+            fontFamily: DISPLAY,
+            fontSize: 10,
+            letterSpacing: "0.1em",
+            color: FAINT,
+            marginBottom: 6,
+          }}
+        >
+          1H TREND
+        </div>
+        <svg viewBox="0 0 400 60" width="100%" height="50" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="signalGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="rgba(153,225,217,0.35)" />
+              <stop offset="100%" stopColor="rgba(153,225,217,0)" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M0,48 L40,46 L80,42 L120,38 L160,40 L200,32 L240,28 L280,22 L320,18 L360,12 L400,8 L400,60 L0,60 Z"
+            fill="url(#signalGrad)"
+          />
+          <path
+            d="M0,48 L40,46 L80,42 L120,38 L160,40 L200,32 L240,28 L280,22 L320,18 L360,12 L400,8"
+            fill="none"
+            stroke={TEAL}
+            strokeWidth="1.5"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function ApprovalVisual() {
+  return (
+    <div
+      style={{
+        background: SURFACE,
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 14,
+        padding: 28,
+        maxWidth: 540,
+        margin: "0 auto",
+        boxShadow: "0 30px 80px rgba(0,0,0,0.5), 0 0 50px rgba(153,225,217,0.05)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 16,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              background: "rgba(153,225,217,0.12)",
+              border: "1px solid rgba(153,225,217,0.25)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontFamily: DISPLAY,
+              fontWeight: 700,
+              fontSize: 11,
+              color: TEAL,
+            }}
+          >
+            A
+          </div>
+          <div>
+            <div style={{ fontFamily: DISPLAY, fontSize: 13, fontWeight: 600, color: INK }}>
+              Alpha-1
+            </div>
+            <div style={{ fontFamily: DISPLAY, fontSize: 11, color: FAINT, marginTop: 1 }}>
+              NVDA · $118.40
+            </div>
+          </div>
+        </div>
+        <span
+          style={{
+            fontFamily: DISPLAY,
+            fontSize: 9,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            fontWeight: 600,
+            color: TEAL,
+          }}
+        >
+          Awaiting your approval
+        </span>
+      </div>
+
+      <div
+        style={{
+          background: "rgba(153,225,217,0.04)",
+          border: "1px solid rgba(153,225,217,0.15)",
+          borderRadius: 10,
+          padding: "12px 14px",
+          marginBottom: 16,
+        }}
+      >
+        <p style={{ fontFamily: SYS, fontSize: 13, color: INK, margin: 0, lineHeight: 1.55 }}>
+          Agent requests to open a long position in NVDA. 50 shares · Est. $5,920
+        </p>
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr 1fr",
+          gap: 8,
+          marginBottom: 16,
+        }}
+      >
+        {[
+          ["ENTRY", "$118.40"],
+          ["STOP", "$113.20"],
+          ["R/R", "1:3.2"],
+          ["CONF", "82%"],
+        ].map(([k, v]) => (
+          <div key={k} style={{ background: SURFACE_2, borderRadius: 8, padding: "8px 10px" }}>
+            <div
+              style={{
+                fontFamily: DISPLAY,
+                fontSize: 8,
+                letterSpacing: "0.12em",
+                color: FAINT,
+                marginBottom: 3,
+              }}
+            >
+              {k}
+            </div>
+            <div style={{ fontFamily: DISPLAY, fontSize: 12, fontWeight: 600, color: INK }}>
+              {v}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display: "flex", gap: 8 }}>
+        <div
+          style={{
+            flex: 1,
+            background: TEAL,
+            color: "#000000",
+            borderRadius: 8,
+            padding: "9px 0",
+            fontFamily: DISPLAY,
+            fontSize: 12,
+            fontWeight: 600,
+            textAlign: "center",
+          }}
+        >
+          Approve
+        </div>
+        <div
+          style={{
+            flex: 1,
+            background: SURFACE_2,
+            color: MUTED,
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: 8,
+            padding: "9px 0",
+            fontFamily: DISPLAY,
+            fontSize: 12,
+            fontWeight: 500,
+            textAlign: "center",
+          }}
+        >
+          Decline
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ExecutionVisual() {
+  const GREEN = "#4ade80";
+  return (
+    <div
+      style={{
+        background: SURFACE,
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 14,
+        padding: 28,
+        maxWidth: 480,
+        margin: "0 auto",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          marginBottom: 20,
+        }}
+      >
+        <div
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: "50%",
+            background: "rgba(74,222,128,0.12)",
+            border: "1px solid rgba(74,222,128,0.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: GREEN,
+            flexShrink: 0,
+          }}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div>
+          <div
+            style={{
+              fontFamily: DISPLAY,
+              fontSize: 9,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: GREEN,
+              fontWeight: 600,
+              marginBottom: 4,
+            }}
+          >
+            Filled
+          </div>
+          <div
+            style={{
+              fontFamily: DISPLAY,
+              fontSize: 18,
+              fontWeight: 600,
+              color: INK,
+              letterSpacing: "-0.01em",
+            }}
+          >
+            NVDA · 50 shares @ $118.40
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gap: 8 }}>
+        {[
+          ["P&L", "+$138.50 (+2.34%)", GREEN],
+          ["SHARES", "50", INK],
+          ["BROKER", "Alpaca", INK],
+          ["ORDER ID", "#A-7142", INK],
+          ["TIMESTAMP", "2026-05-04 14:42:08 UTC", INK],
+        ].map(([k, v, c]) => (
+          <div
+            key={k}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "10px 12px",
+              background: "#0a0a0a",
+              borderRadius: 8,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: DISPLAY,
+                fontSize: 10,
+                letterSpacing: "0.1em",
+                color: FAINT,
+              }}
+            >
+              {k}
+            </span>
+            <span style={{ fontFamily: DISPLAY, fontSize: 13, fontWeight: 600, color: c }}>
+              {v}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const STEP_VISUALS = [McpVisual, SignalVisual, ApprovalVisual, ExecutionVisual];
+
 function FeatureFour() {
-  const [open, setOpen] = useState<number | null>(null);
+  const [activeStep, setActiveStep] = useState(0);
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
+            const idx = stepRefs.current.findIndex((el) => el === entry.target);
+            if (idx >= 0) setActiveStep(idx);
+          }
+        });
+      },
+      { threshold: [0.4, 0.6, 0.8], rootMargin: "-20% 0px -30% 0px" }
+    );
+    stepRefs.current.forEach((el) => el && obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const section = sectionRef.current;
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
+      const total = section.offsetHeight - window.innerHeight;
+      const scrolled = Math.min(Math.max(-rect.top, 0), total);
+      setProgress(total > 0 ? scrolled / total : 0);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const active = STEPS[activeStep];
+
   return (
     <section
+      ref={sectionRef}
       style={{
         background: "linear-gradient(180deg, #000000 0%, #000000 30%, #1a1a1a 70%, #2a2a2a 100%)",
-        padding: "120px 80px",
+        padding: "120px 80px 0",
+        position: "relative",
       }}
     >
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
@@ -1084,98 +1864,150 @@ function FeatureFour() {
           headline="From signal to execution."
           body="Four steps. Zero emotion. Every trade ends in the arbiter's hands."
         />
+      </div>
 
-        <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
-          {STEPS.map((step, i) => {
-            const isOpen = open === i;
-            return (
-              <Reveal key={step.cat} delay={i * 0.04}>
-                <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
-                  <button
-                    onClick={() => setOpen(isOpen ? null : i)}
-                    style={{
-                      width: "100%",
-                      background: "transparent",
-                      border: "none",
-                      padding: "26px 0",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: 24,
-                      cursor: "pointer",
-                      textAlign: "left",
-                      color: INK,
-                      fontFamily: SORA,
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 24, flex: 1 }}>
-                      <span
-                        style={{
-                          fontFamily: SORA,
-                          fontSize: 12,
-                          letterSpacing: "0.06em",
-                          color: TEAL,
-                          minWidth: 160,
-                        }}
-                      >
-                        {step.cat}
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: SORA,
-                          fontSize: 22,
-                          fontWeight: 500,
-                          letterSpacing: "-0.02em",
-                          color: INK,
-                        }}
-                      >
-                        {step.head}
-                      </span>
-                    </div>
-                    <span
-                      style={{
-                        fontFamily: SORA,
-                        fontSize: 22,
-                        fontWeight: 300,
-                        color: MUTED,
-                        transition: "transform 0.25s ease",
-                        transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
-                      }}
-                    >
-                      +
-                    </span>
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-                        style={{ overflow: "hidden" }}
-                      >
-                        <p
-                          style={{
-                            fontFamily: SYS,
-                            fontSize: 16,
-                            lineHeight: 1.6,
-                            color: MUTED,
-                            margin: "0 0 26px",
-                            paddingLeft: 184,
-                            maxWidth: 720,
-                          }}
-                        >
-                          {step.body}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+      <div
+        className="signal-scroll"
+        style={{
+          maxWidth: 1280,
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 0.4fr) minmax(0, 0.6fr)",
+          gap: 60,
+          position: "relative",
+        }}
+      >
+        {/* Vertical progress rail (far left of grid) */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: -28,
+            top: 0,
+            bottom: 0,
+            width: 2,
+            background: "rgba(255,255,255,0.08)",
+            borderRadius: 999,
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              height: `${progress * 100}%`,
+              background: TEAL,
+              borderRadius: 999,
+              transition: "height 0.15s linear",
+            }}
+          />
+        </div>
+
+        {/* LEFT — sticky */}
+        <div className="signal-left" style={{ position: "relative" }}>
+          <div
+            style={{
+              position: "sticky",
+              top: 0,
+              height: "100vh",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active.cat}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div
+                  style={{
+                    fontFamily: DISPLAY,
+                    fontSize: 12,
+                    letterSpacing: "0.14em",
+                    color: TEAL,
+                    fontWeight: 600,
+                    marginBottom: 18,
+                  }}
+                >
+                  {active.cat}
                 </div>
-              </Reveal>
+                <h3
+                  style={{
+                    fontFamily: DISPLAY,
+                    fontSize: "clamp(28px, 3.4vw, 44px)",
+                    fontWeight: 600,
+                    letterSpacing: "-0.025em",
+                    lineHeight: 1.05,
+                    color: INK,
+                    margin: "0 0 20px",
+                    maxWidth: 420,
+                  }}
+                >
+                  {active.head}
+                </h3>
+                <p
+                  style={{
+                    fontFamily: SYS,
+                    fontSize: 16,
+                    lineHeight: 1.6,
+                    color: MUTED,
+                    margin: 0,
+                    maxWidth: 420,
+                  }}
+                >
+                  {active.body}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Step dots */}
+            <div style={{ display: "flex", gap: 8, marginTop: 40 }}>
+              {STEPS.map((s, i) => (
+                <span
+                  key={s.cat}
+                  style={{
+                    width: 22,
+                    height: 2,
+                    borderRadius: 999,
+                    background: i <= activeStep ? TEAL : "rgba(255,255,255,0.15)",
+                    transition: "background 0.3s ease",
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT — scrolling visuals */}
+        <div className="signal-right" style={{ display: "flex", flexDirection: "column" }}>
+          {STEPS.map((s, i) => {
+            const Visual = STEP_VISUALS[i];
+            return (
+              <div
+                key={s.cat}
+                ref={(el) => {
+                  stepRefs.current[i] = el;
+                }}
+                style={{
+                  minHeight: "100vh",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "40px 0",
+                }}
+              >
+                <div style={{ width: "100%" }}>
+                  <Visual />
+                </div>
+              </div>
             );
           })}
         </div>
+      </div>
 
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "60px 0 120px" }}>
         <ReferenceLabel>04 · Signal to Execution →</ReferenceLabel>
       </div>
     </section>
@@ -1206,8 +2038,8 @@ function TealPop() {
             >
               <p
                 style={{
-                  fontFamily: SORA,
-                  fontSize: "clamp(36px, 4.4vw, 56px)",
+                  fontFamily: DISPLAY,
+                  fontSize: "clamp(32px, 4vw, 52px)",
                   fontWeight: 600,
                   letterSpacing: "-0.03em",
                   lineHeight: 1.05,
@@ -1245,7 +2077,7 @@ function TealPop() {
               <div>
                 <p
                   style={{
-                    fontFamily: SORA,
+                    fontFamily: DISPLAY,
                     fontSize: "clamp(96px, 14vw, 180px)",
                     fontWeight: 600,
                     letterSpacing: "-0.05em",
@@ -1258,7 +2090,7 @@ function TealPop() {
                 </p>
                 <p
                   style={{
-                    fontFamily: SORA,
+                    fontFamily: DISPLAY,
                     fontSize: "clamp(20px, 2vw, 26px)",
                     fontWeight: 500,
                     letterSpacing: "-0.02em",
@@ -1332,7 +2164,7 @@ function FAQSection() {
             <div>
               <h2
                 style={{
-                  fontFamily: SORA,
+                  fontFamily: DISPLAY,
                   fontSize: "clamp(48px, 6vw, 80px)",
                   fontWeight: 600,
                   letterSpacing: "-0.03em",
@@ -1370,7 +2202,7 @@ function FAQSection() {
                     >
                       <span
                         style={{
-                          fontFamily: SORA,
+                          fontFamily: DISPLAY,
                           fontSize: 18,
                           fontWeight: 500,
                           color: INK,
@@ -1381,7 +2213,7 @@ function FAQSection() {
                       </span>
                       <span
                         style={{
-                          fontFamily: SORA,
+                          fontFamily: DISPLAY,
                           fontSize: 22,
                           fontWeight: 300,
                           color: MUTED,
@@ -1436,7 +2268,7 @@ function ClosingCTA() {
         <Reveal>
           <h2
             style={{
-              fontFamily: SORA,
+              fontFamily: DISPLAY,
               fontSize: "clamp(44px, 6vw, 84px)",
               fontWeight: 600,
               letterSpacing: "-0.04em",
@@ -1549,7 +2381,7 @@ function Footer() {
             <div key={col.title}>
               <div
                 style={{
-                  fontFamily: SORA,
+                  fontFamily: DISPLAY,
                   fontSize: 12,
                   fontWeight: 500,
                   color: INK,
@@ -1646,8 +2478,25 @@ function GlobalStyles() {
           transform: translateY(-60px);
         }
         100% {
-          transform: translateY(540px);
+          transform: translateY(420px);
         }
+      }
+      .whale-scroll::-webkit-scrollbar {
+        width: 6px;
+      }
+      .whale-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .whale-scroll::-webkit-scrollbar-thumb {
+        background: rgba(153, 225, 217, 0.35);
+        border-radius: 999px;
+      }
+      .whale-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(153, 225, 217, 0.55);
+      }
+      .whale-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(153, 225, 217, 0.35) transparent;
       }
       @keyframes blink {
         0%,
@@ -1657,6 +2506,14 @@ function GlobalStyles() {
         51%,
         100% {
           opacity: 0;
+        }
+      }
+      @keyframes mcp-flow {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
         }
       }
 
@@ -1705,6 +2562,15 @@ function GlobalStyles() {
         .trust-row {
           gap: 24px !important;
           justify-content: center !important;
+        }
+        .signal-scroll {
+          grid-template-columns: 1fr !important;
+          gap: 24px !important;
+        }
+        .signal-left > div {
+          position: relative !important;
+          height: auto !important;
+          padding-bottom: 32px !important;
         }
       }
 
