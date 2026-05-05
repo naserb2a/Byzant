@@ -6,7 +6,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import ByzantLogo from "@/components/ByzantLogo";
 
 /* ─── Tokens ───────────────────────────────────────────────────── */
-const DISPLAY = "var(--font-display)";
+const DISPLAY = "var(--font-inter)";
 const SYS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const TEAL = "#99E1D9";
 const BG = "#000000";
@@ -876,7 +876,7 @@ function ApprovalCard() {
               alignItems: "center",
               justifyContent: "center",
               fontFamily: DISPLAY,
-              fontWeight: 700,
+              fontWeight: 600,
               fontSize: 12,
               color: TEAL,
             }}
@@ -1581,7 +1581,7 @@ function ApprovalVisual() {
               alignItems: "center",
               justifyContent: "center",
               fontFamily: DISPLAY,
-              fontWeight: 700,
+              fontWeight: 600,
               fontSize: 11,
               color: TEAL,
             }}

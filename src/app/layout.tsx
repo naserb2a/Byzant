@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import { Playfair_Display, Sora, DM_Mono, DM_Sans } from "next/font/google";
+import { Playfair_Display, Sora, DM_Mono, DM_Sans, Inter } from "next/font/google";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -24,6 +24,13 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
 const dmMono = DM_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -41,7 +48,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} ${playfair.variable} ${sora.variable} ${dmSans.variable} ${dmMono.variable}`}>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} ${playfair.variable} ${sora.variable} ${dmSans.variable} ${inter.variable} ${dmMono.variable}`}>
       <body>{children}</body>
     </html>
   );
