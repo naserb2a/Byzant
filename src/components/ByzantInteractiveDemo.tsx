@@ -268,20 +268,21 @@ const DASHBOARD_AGENTS: {
 ];
 
 /* portfolio chart 600x180 viewBox · y inverts so smaller y = higher value */
-const DASHBOARD_CHART: [number, number][] = [
-  [0, 150],
-  [50, 142],
-  [100, 148],
-  [150, 122],
-  [200, 132],
-  [250, 105],
-  [300, 115],
-  [350, 88],
-  [400, 78],
-  [450, 92],
-  [500, 64],
-  [550, 42],
-  [600, 28],
+type DashboardChartPoint = { x: number; y: number; value: number; date: string };
+const DASHBOARD_CHART_DATA: DashboardChartPoint[] = [
+  { x: 0, y: 150, value: 9790, date: "Feb 5, 2026" },
+  { x: 50, y: 142, value: 9870, date: "Feb 12, 2026" },
+  { x: 100, y: 148, value: 9810, date: "Feb 19, 2026" },
+  { x: 150, y: 122, value: 10070, date: "Feb 26, 2026" },
+  { x: 200, y: 132, value: 9970, date: "Mar 5, 2026" },
+  { x: 250, y: 105, value: 10240, date: "Mar 12, 2026" },
+  { x: 300, y: 115, value: 10140, date: "Mar 19, 2026" },
+  { x: 350, y: 88, value: 10410, date: "Mar 26, 2026" },
+  { x: 400, y: 78, value: 10500, date: "Apr 2, 2026" },
+  { x: 450, y: 92, value: 10370, date: "Apr 9, 2026" },
+  { x: 500, y: 64, value: 10640, date: "Apr 16, 2026" },
+  { x: 550, y: 42, value: 10860, date: "Apr 23, 2026" },
+  { x: 600, y: 28, value: 11000, date: "May 5, 2026" },
 ];
 
 const MODULES: ModuleRow[] = [
@@ -1320,14 +1321,45 @@ function RowLine({
 }
 
 function PortfolioChart() {
-  const linePath = smoothPath(DASHBOARD_CHART);
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  const data = DASHBOARD_CHART_DATA;
+  const points: [number, number][] = data.map((p) => [p.x, p.y]);
+  const linePath = smoothPath(points);
   const fillPath = `${linePath} L600,180 L0,180 Z`;
+  const VIEW_W = 600;
+  const VIEW_H = 180;
   const yTicks = [
     { y: 25, label: "$11,000" },
     { y: 70, label: "$10,350" },
     { y: 115, label: "$9,600" },
     { y: 160, label: "$8,850" },
   ];
+
+  const first = data[0];
+  const last = data[data.length - 1];
+  const active = hoverIdx === null ? last : data[hoverIdx];
+  const delta = active.value - first.value;
+  const deltaPct = (delta / first.value) * 100;
+
+  function onMouseMove(e: React.MouseEvent<SVGSVGElement>) {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const rect = svg.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+    const x = Math.max(0, Math.min(VIEW_W, ratio * VIEW_W));
+    let nearest = 0;
+    let bestDist = Infinity;
+    for (let i = 0; i < data.length; i++) {
+      const d = Math.abs(data[i].x - x);
+      if (d < bestDist) {
+        bestDist = d;
+        nearest = i;
+      }
+    }
+    setHoverIdx(nearest);
+  }
 
   return (
     <div
@@ -1347,15 +1379,60 @@ function PortfolioChart() {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 8,
-          paddingLeft: 0,
+          alignItems: "flex-start",
+          marginBottom: 10,
+          gap: 12,
         }}
       >
-        <span style={{ fontSize: 11, color: MUTED, letterSpacing: "0.04em", fontWeight: 600 }}>
-          Portfolio Performance
-        </span>
-        <span style={{ fontSize: 13, color: TEAL, fontWeight: 600 }}>+12.4%</span>
+        <div>
+          <div
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.14em",
+              color: FAINT,
+              fontWeight: 600,
+              marginBottom: 5,
+            }}
+          >
+            PORTFOLIO PERFORMANCE
+          </div>
+          <div
+            style={{
+              fontSize: 22,
+              fontWeight: 600,
+              color: INK,
+              letterSpacing: "-0.02em",
+              lineHeight: 1,
+              fontVariantNumeric: "tabular-nums",
+            }}
+          >
+            ${active.value.toLocaleString()}
+          </div>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <div
+            style={{
+              fontSize: 10,
+              color: MUTED,
+              marginBottom: 5,
+              fontVariantNumeric: "tabular-nums",
+            }}
+          >
+            {active.date}
+          </div>
+          <div
+            style={{
+              fontSize: 12,
+              color: TEAL,
+              fontWeight: 600,
+              fontVariantNumeric: "tabular-nums",
+            }}
+          >
+            {delta >= 0 ? "+" : "−"}${Math.abs(delta).toLocaleString()} ·{" "}
+            {delta >= 0 ? "+" : "−"}
+            {Math.abs(deltaPct).toFixed(1)}%
+          </div>
+        </div>
       </div>
 
       {/* Y-axis labels */}
@@ -1363,7 +1440,7 @@ function PortfolioChart() {
         style={{
           position: "absolute",
           left: 14,
-          top: 38,
+          top: 56,
           bottom: 12,
           width: 50,
           fontSize: 10,
@@ -1386,11 +1463,14 @@ function PortfolioChart() {
       </div>
 
       <svg
-        viewBox="0 0 600 180"
+        ref={svgRef}
+        viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         preserveAspectRatio="none"
         width="100%"
         height="100%"
-        style={{ flex: 1, minHeight: 140 }}
+        style={{ flex: 1, minHeight: 140, display: "block", cursor: "crosshair" }}
+        onMouseMove={onMouseMove}
+        onMouseLeave={() => setHoverIdx(null)}
       >
         <defs>
           <linearGradient id="bzd-portfolio-grad" x1="0" y1="0" x2="0" y2="1">
@@ -1402,7 +1482,7 @@ function PortfolioChart() {
           <line
             key={t.y}
             x1="0"
-            x2="600"
+            x2={VIEW_W}
             y1={t.y}
             y2={t.y}
             stroke={GRID_LINE}
@@ -1411,7 +1491,36 @@ function PortfolioChart() {
           />
         ))}
         <path d={fillPath} fill="url(#bzd-portfolio-grad)" />
-        <path d={linePath} fill="none" stroke={TEAL} strokeWidth="1.6" vectorEffect="non-scaling-stroke" />
+        <path
+          d={linePath}
+          fill="none"
+          stroke={TEAL}
+          strokeWidth="1.6"
+          vectorEffect="non-scaling-stroke"
+        />
+
+        {hoverIdx !== null && (
+          <>
+            <line
+              x1={data[hoverIdx].x}
+              x2={data[hoverIdx].x}
+              y1={0}
+              y2={VIEW_H}
+              stroke="rgba(153,225,217,0.6)"
+              strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
+            />
+            <circle
+              cx={data[hoverIdx].x}
+              cy={data[hoverIdx].y}
+              r={6}
+              fill={TEAL}
+              stroke={INK}
+              strokeWidth="1.5"
+              vectorEffect="non-scaling-stroke"
+            />
+          </>
+        )}
       </svg>
     </div>
   );
