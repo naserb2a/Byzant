@@ -6,7 +6,6 @@ import { useRef, useState } from "react";
 const SYS =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const TEAL = "#99E1D9";
-const TEAL_DIM = "rgba(153,225,217,0.18)";
 const GREEN = "#4ade80";
 const YELLOW = "#fbbf24";
 const AMBER = "#f0b429";
@@ -15,7 +14,6 @@ const SHELL = "#0a0a0a";
 const SIDEBAR = "#111111";
 const CONTENT = "#0d0d0d";
 const SURFACE = "#161616";
-const SURFACE_2 = "#1c1c1c";
 const BORDER = "rgba(255,255,255,0.06)";
 const BORDER_STRONG = "rgba(255,255,255,0.1)";
 const INK = "#ffffff";
