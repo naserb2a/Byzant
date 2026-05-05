@@ -1007,7 +1007,6 @@ function WhaleJSON() {
       <div
         className="whale-scroll"
         style={{
-          position: "relative",
           padding: "24px 28px",
           fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, monospace",
           fontSize: 13,
@@ -1018,25 +1017,27 @@ function WhaleJSON() {
           overflowX: "hidden",
         }}
       >
-        <div style={{ color: "#888888" }}>[</div>
-        <div style={{ paddingLeft: 16 }}>{records.map(renderRecord)}</div>
-        <div style={{ color: "#888888" }}>]</div>
+        <div style={{ position: "relative" }}>
+          <div style={{ color: "#888888" }}>[</div>
+          <div style={{ paddingLeft: 16 }}>{records.map(renderRecord)}</div>
+          <div style={{ color: "#888888" }}>]</div>
 
-        {/* Scanline */}
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 60,
-            background:
-              "linear-gradient(180deg, rgba(153,225,217,0) 0%, rgba(153,225,217,0.18) 50%, rgba(153,225,217,0) 100%)",
-            pointerEvents: "none",
-            animation: "scanline 3.5s linear infinite",
-          }}
-        />
+          {/* Scanline */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 60,
+              background:
+                "linear-gradient(180deg, rgba(153,225,217,0) 0%, rgba(153,225,217,0.18) 50%, rgba(153,225,217,0) 100%)",
+              pointerEvents: "none",
+              animation: "scanline 14s linear infinite",
+            }}
+          />
+        </div>
       </div>
     </div>
   );
@@ -2242,7 +2243,7 @@ function GlobalStyles() {
           transform: translateY(0);
         }
         100% {
-          transform: translateY(360px);
+          transform: translateY(1200px);
         }
       }
       .whale-scroll::-webkit-scrollbar {
