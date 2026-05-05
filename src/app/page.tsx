@@ -282,29 +282,17 @@ function GeminiIcon() {
     </svg>
   );
 }
-function GrokIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-    >
-      <path d="M3.005 8.858l8.783 12.544h3.904L6.908 8.858zM6.905 0L21.16 20.937h3.835L10.74 0zM21.197 0v18.84l-3.518-5.024V0zM3.005 17.951v6.05l3.515-2.467v-3.583z" />
-    </svg>
-  );
-}
 
 function TrustItem({
   name,
   iconSrc,
   Icon,
+  hideName = false,
 }: {
   name: string;
   iconSrc?: string;
   Icon?: React.ComponentType;
+  hideName?: boolean;
 }) {
   const tint = "rgba(255,255,255,0.7)";
   return (
@@ -320,7 +308,7 @@ function TrustItem({
       {iconSrc ? (
         <img
           src={iconSrc}
-          alt=""
+          alt={hideName ? name : ""}
           style={{
             height: 20,
             width: "auto",
@@ -333,17 +321,19 @@ function TrustItem({
           <Icon />
         </span>
       ) : null}
-      <span
-        style={{
-          fontFamily: DISPLAY,
-          fontSize: 15,
-          fontWeight: 500,
-          color: tint,
-          letterSpacing: "-0.005em",
-        }}
-      >
-        {name}
-      </span>
+      {!hideName && (
+        <span
+          style={{
+            fontFamily: DISPLAY,
+            fontSize: 15,
+            fontWeight: 500,
+            color: tint,
+            letterSpacing: "-0.005em",
+          }}
+        >
+          {name}
+        </span>
+      )}
     </div>
   );
 }
@@ -376,13 +366,13 @@ function TrustLogos() {
               flexWrap: "wrap",
             }}
           >
-            <TrustItem name="OpenClaw" iconSrc="/icons/openclaw.png" />
+            <TrustItem name="OpenClaw" iconSrc="/icons/openclaw.svg" />
             <TrustItem name="Claude" iconSrc="/icons/anthropic.svg" />
-            <TrustItem name="OpenAI" Icon={OpenAIIcon} />
+            <TrustItem name="GPT 5.5" Icon={OpenAIIcon} />
             <TrustItem name="Gemini" Icon={GeminiIcon} />
-            <TrustItem name="Grok" Icon={GrokIcon} />
-            <TrustItem name="LangChain" iconSrc="/icons/langchain.svg" />
-            <TrustItem name="Cursor" iconSrc="/icons/cursor.png" />
+            <TrustItem name="Grok" iconSrc="/icons/grok-wordmark-dark.svg" hideName />
+            <TrustItem name="LangChain" iconSrc="/icons/langchain.svg" hideName />
+            <TrustItem name="Cursor" iconSrc="/icons/cursor_dark.svg" />
           </div>
         </Reveal>
       </div>
