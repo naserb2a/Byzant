@@ -1034,7 +1034,7 @@ function WhaleJSON() {
             background:
               "linear-gradient(180deg, rgba(153,225,217,0) 0%, rgba(153,225,217,0.18) 50%, rgba(153,225,217,0) 100%)",
             pointerEvents: "none",
-            animation: "scanline 4s linear infinite",
+            animation: "scanline 3.5s linear infinite",
           }}
         />
       </div>
@@ -2239,10 +2239,10 @@ function GlobalStyles() {
       }
       @keyframes scanline {
         0% {
-          transform: translateY(-60px);
+          transform: translateY(0);
         }
         100% {
-          transform: translateY(420px);
+          transform: translateY(360px);
         }
       }
       .whale-scroll::-webkit-scrollbar {
