@@ -1321,9 +1321,6 @@ function RowLine({
 }
 
 function PortfolioChart() {
-  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
-
   const data = DASHBOARD_CHART_DATA;
   const points: [number, number][] = data.map((p) => [p.x, p.y]);
   const linePath = smoothPath(points);
@@ -1337,11 +1334,35 @@ function PortfolioChart() {
     { y: 160, label: "$8,850" },
   ];
 
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const cursorLineRef = useRef<SVGLineElement>(null);
+  const cursorDotRef = useRef<SVGCircleElement>(null);
+  const linePathRef = useRef<SVGPathElement>(null);
+  const mouseXRef = useRef<number>(VIEW_W);
+  const mouseYRef = useRef<number>(data[data.length - 1].y);
+  const hoverIdxRef = useRef<number | null>(null);
+
   const first = data[0];
   const last = data[data.length - 1];
   const active = hoverIdx === null ? last : data[hoverIdx];
   const delta = active.value - first.value;
   const deltaPct = (delta / first.value) * 100;
+
+  function pathYAtX(x: number): number {
+    const path = linePathRef.current;
+    if (!path) return 0;
+    let lo = 0;
+    let hi = path.getTotalLength();
+    let pt = path.getPointAtLength(hi);
+    for (let i = 0; i < 20; i++) {
+      const mid = (lo + hi) / 2;
+      pt = path.getPointAtLength(mid);
+      if (pt.x < x) lo = mid;
+      else hi = mid;
+    }
+    return pt.y;
+  }
 
   function onMouseMove(e: React.MouseEvent<SVGSVGElement>) {
     const svg = svgRef.current;
@@ -1349,6 +1370,23 @@ function PortfolioChart() {
     const rect = svg.getBoundingClientRect();
     const ratio = (e.clientX - rect.left) / rect.width;
     const x = Math.max(0, Math.min(VIEW_W, ratio * VIEW_W));
+    const y = pathYAtX(x);
+    mouseXRef.current = x;
+    mouseYRef.current = y;
+
+    const lineEl = cursorLineRef.current;
+    const dotEl = cursorDotRef.current;
+    if (lineEl) {
+      lineEl.setAttribute("x1", String(x));
+      lineEl.setAttribute("x2", String(x));
+      lineEl.style.display = "";
+    }
+    if (dotEl) {
+      dotEl.setAttribute("cx", String(x));
+      dotEl.setAttribute("cy", String(y));
+      dotEl.style.display = "";
+    }
+
     let nearest = 0;
     let bestDist = Infinity;
     for (let i = 0; i < data.length; i++) {
@@ -1358,7 +1396,17 @@ function PortfolioChart() {
         nearest = i;
       }
     }
-    setHoverIdx(nearest);
+    if (nearest !== hoverIdxRef.current) {
+      hoverIdxRef.current = nearest;
+      setHoverIdx(nearest);
+    }
+  }
+
+  function onMouseLeave() {
+    if (cursorLineRef.current) cursorLineRef.current.style.display = "none";
+    if (cursorDotRef.current) cursorDotRef.current.style.display = "none";
+    hoverIdxRef.current = null;
+    setHoverIdx(null);
   }
 
   return (
@@ -1470,7 +1518,7 @@ function PortfolioChart() {
         height="100%"
         style={{ flex: 1, minHeight: 140, display: "block", cursor: "crosshair" }}
         onMouseMove={onMouseMove}
-        onMouseLeave={() => setHoverIdx(null)}
+        onMouseLeave={onMouseLeave}
       >
         <defs>
           <linearGradient id="bzd-portfolio-grad" x1="0" y1="0" x2="0" y2="1">
@@ -1492,6 +1540,7 @@ function PortfolioChart() {
         ))}
         <path d={fillPath} fill="url(#bzd-portfolio-grad)" />
         <path
+          ref={linePathRef}
           d={linePath}
           fill="none"
           stroke={TEAL}
@@ -1499,28 +1548,30 @@ function PortfolioChart() {
           vectorEffect="non-scaling-stroke"
         />
 
-        {hoverIdx !== null && (
-          <>
-            <line
-              x1={data[hoverIdx].x}
-              x2={data[hoverIdx].x}
-              y1={0}
-              y2={VIEW_H}
-              stroke="rgba(153,225,217,0.6)"
-              strokeWidth="1"
-              vectorEffect="non-scaling-stroke"
-            />
-            <circle
-              cx={data[hoverIdx].x}
-              cy={data[hoverIdx].y}
-              r={6}
-              fill={TEAL}
-              stroke={INK}
-              strokeWidth="1.5"
-              vectorEffect="non-scaling-stroke"
-            />
-          </>
-        )}
+        <line
+          ref={cursorLineRef}
+          x1={mouseXRef.current}
+          x2={mouseXRef.current}
+          y1={0}
+          y2={VIEW_H}
+          stroke="rgba(153,225,217,0.6)"
+          strokeWidth="1"
+          vectorEffect="non-scaling-stroke"
+          style={{ display: hoverIdx === null ? "none" : "" }}
+          pointerEvents="none"
+        />
+        <circle
+          ref={cursorDotRef}
+          cx={mouseXRef.current}
+          cy={mouseYRef.current}
+          r={6}
+          fill={TEAL}
+          stroke={INK}
+          strokeWidth="1.5"
+          vectorEffect="non-scaling-stroke"
+          style={{ display: hoverIdx === null ? "none" : "" }}
+          pointerEvents="none"
+        />
       </svg>
     </div>
   );
