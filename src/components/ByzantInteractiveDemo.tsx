@@ -1,24 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 /* ─── Tokens ──────────────────────────────────────────────────── */
 const SYS =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const TEAL = "#99E1D9";
+const TEAL_DIM = "rgba(153,225,217,0.18)";
 const GREEN = "#4ade80";
-const RED = "#ef4444";
+const YELLOW = "#fbbf24";
+const AMBER = "#f0b429";
+const RED = "#f87171";
 const SHELL = "#0a0a0a";
 const SIDEBAR = "#111111";
 const CONTENT = "#0d0d0d";
 const SURFACE = "#161616";
+const SURFACE_2 = "#1c1c1c";
 const BORDER = "rgba(255,255,255,0.06)";
 const BORDER_STRONG = "rgba(255,255,255,0.1)";
 const INK = "#ffffff";
 const MUTED = "#94a3b8";
 const FAINT = "#666666";
+const GRID_LINE = "rgba(255,255,255,0.04)";
 
-/* ─── Inline icons (no external deps) ─────────────────────────── */
+const DEMO_HEIGHT = 720;
+const TOPBAR_HEIGHT = 36;
+
+/* ─── Smooth bezier path through points ───────────────────────── */
+function smoothPath(points: [number, number][], tension = 0.18): string {
+  if (points.length < 2) return "";
+  let d = `M${points[0][0]},${points[0][1]}`;
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = i === 0 ? points[0] : points[i - 1];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = i === points.length - 2 ? points[i + 1] : points[i + 2];
+    const cp1x = p1[0] + (p2[0] - p0[0]) * tension;
+    const cp1y = p1[1] + (p2[1] - p0[1]) * tension;
+    const cp2x = p2[0] - (p3[0] - p1[0]) * tension;
+    const cp2y = p2[1] - (p3[1] - p1[1]) * tension;
+    d += ` C${cp1x.toFixed(2)},${cp1y.toFixed(2)} ${cp2x.toFixed(2)},${cp2y.toFixed(2)} ${p2[0]},${p2[1]}`;
+  }
+  return d;
+}
+
+/* ─── Inline icons ────────────────────────────────────────────── */
 type IconProps = { size?: number; color?: string };
 const baseSvg = (size: number, color: string) => ({
   width: size,
@@ -78,27 +104,63 @@ function ListIcon({ size = 14, color = "currentColor" }: IconProps) {
     </svg>
   );
 }
+function ArrowRightIcon({ size = 11, color = "currentColor" }: IconProps) {
+  return (
+    <svg {...baseSvg(size, color)}>
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="13 6 19 12 13 18" />
+    </svg>
+  );
+}
 
-/* ─── Types & data ────────────────────────────────────────────── */
-type ViewKey = "dashboard" | "approvals" | "marketplace" | "analytics" | "log";
+/* ─── Types ───────────────────────────────────────────────────── */
+type ViewKey = "approvals" | "dashboard" | "marketplace" | "analytics" | "log";
 type AgentKey = "alpha" | "gamma" | "beta";
 type ApprovalStatus = "pending" | "approved" | "declined";
 
-const NAV: { key: ViewKey; label: string; Icon: React.ComponentType<IconProps> }[] = [
-  { key: "dashboard", label: "Dashboard", Icon: GridIcon },
-  { key: "approvals", label: "Approvals", Icon: CheckIcon },
-  { key: "marketplace", label: "Marketplace", Icon: StoreIcon },
-  { key: "analytics", label: "Analytics", Icon: ChartIcon },
-  { key: "log", label: "Agent Log", Icon: ListIcon },
-];
-
-const AGENTS: {
+type Agent = {
   key: AgentKey;
   label: string;
   header: string;
   description: string;
   metrics: [string, string][];
-}[] = [
+  spark: [number, number][];
+  reasoning: { observation: string; pattern: string; action: string };
+};
+
+type ModuleCategory = "DATA FEEDS" | "RISK" | "EXECUTION" | "ANALYTICS";
+type ModuleRow = {
+  id: string;
+  name: string;
+  category: ModuleCategory;
+  price: string;
+  desc: string;
+  usage?: number;
+  installedByDefault: boolean;
+};
+
+type RangeKey = "1W" | "1M" | "3M" | "6M";
+type ChartPoint = { x: number; y: number; value: number };
+
+type LogEvent = {
+  time: string;
+  status: "Success" | "Pending" | "Declined";
+  action: string;
+  agent: string;
+  ticker: string;
+  details: string;
+};
+
+/* ─── Static data ─────────────────────────────────────────────── */
+const NAV: { key: ViewKey; label: string; Icon: React.ComponentType<IconProps>; badge?: number }[] = [
+  { key: "dashboard", label: "Dashboard", Icon: GridIcon },
+  { key: "approvals", label: "Approvals", Icon: CheckIcon, badge: 3 },
+  { key: "marketplace", label: "Marketplace", Icon: StoreIcon },
+  { key: "analytics", label: "Analytics", Icon: ChartIcon },
+  { key: "log", label: "Agent Log", Icon: ListIcon },
+];
+
+const AGENTS: Agent[] = [
   {
     key: "alpha",
     label: "Alpha-1",
@@ -111,6 +173,22 @@ const AGENTS: {
       ["R/R", "1:3.2"],
       ["CONFIDENCE", "82%"],
     ],
+    spark: [
+      [0, 26],
+      [28, 22],
+      [56, 18],
+      [84, 14],
+      [112, 10],
+      [140, 4],
+    ],
+    reasoning: {
+      observation:
+        "Whale tracker flagged $1.84M call volume on NVDA Jul-17 $125 strike at 14:32 UTC. 44.18 vol-to-OI ratio.",
+      pattern:
+        "Aligns with bullish momentum breakout — last 3 setups returned avg +5.2% within 7 sessions.",
+      action:
+        "Long 50sh @ $118.40, $113.20 stop, $134 target. R/R 1:3.2 · sized to 4% portfolio.",
+    },
   },
   {
     key: "gamma",
@@ -124,6 +202,22 @@ const AGENTS: {
       ["IMPACT", "+11% edge"],
       ["PRIORITY", "High"],
     ],
+    spark: [
+      [0, 12],
+      [28, 18],
+      [56, 10],
+      [84, 14],
+      [112, 6],
+      [140, 8],
+    ],
+    reasoning: {
+      observation:
+        "Dark pool prints exceeded 2.5σ on 4 of last 7 sessions. Current data feed misses ~38% of institutional flow.",
+      pattern:
+        "Module-augmented agents historically gained +11% edge on Russell-3000 names with high block activity.",
+      action:
+        "Activate Dark Pool Monitor for $29/mo. Integrates immediately into the signal pipeline.",
+    },
   },
   {
     key: "beta",
@@ -137,32 +231,294 @@ const AGENTS: {
       ["PREMIUM", "$2.75"],
       ["CONFIDENCE", "60%"],
     ],
+    spark: [
+      [0, 14],
+      [28, 16],
+      [56, 13],
+      [84, 17],
+      [112, 14],
+      [140, 12],
+    ],
+    reasoning: {
+      observation:
+        "SPY range-bound 480–505 over the last 20 sessions. IV percentile 38th. Dividend cycle current.",
+      pattern:
+        "Covered calls at 0.30 delta with 14–21 DTE returned avg +1.2% per cycle in similar regimes.",
+      action:
+        "Sell 3 contracts @ $485 strike, Apr 18 expiry, $2.75 premium. Collateral $8,250.",
+    },
   },
 ];
 
-const DASHBOARD_AGENTS = [
-  { id: "Alpha-1", signal: "Bullish +0.82", pos: "NVDA Long 50sh" },
-  { id: "Beta-2", signal: "Neutral 0.41", pos: "SPY Covered Call" },
-  { id: "Gamma-3", signal: "Bullish +0.94", pos: "XLK Long 30sh" },
+const DASHBOARD_STATS: { label: string; value: string; valueColor: string; sub: string }[] = [
+  { label: "AGENT CONSENSUS", value: "Bullish", valueColor: TEAL, sub: "Composite score 0.87" },
+  { label: "ACTIVE AGENTS", value: "3", valueColor: GREEN, sub: "All systems nominal" },
+  { label: "PENDING APPROVALS", value: "3", valueColor: TEAL, sub: "Require your review" },
+  { label: "MODULES ACTIVE", value: "7", valueColor: INK, sub: "Across all agents" },
 ];
 
-type ModuleRow = {
+const DASHBOARD_AGENTS: {
   id: string;
-  name: string;
-  tier: "Pro" | "Basic";
-  price: string;
-  installedByDefault: boolean;
-};
+  signal: string;
+  signalColor: string;
+  pos: string;
+  rr: string;
+}[] = [
+  { id: "Alpha-1", signal: "Bullish +0.82", signalColor: TEAL, pos: "NVDA Long 50sh", rr: "1:3.2" },
+  { id: "Beta-2", signal: "Neutral 0.41", signalColor: YELLOW, pos: "SPY Covered Call", rr: "1:1.8" },
+  { id: "Gamma-3", signal: "Bullish +0.94", signalColor: TEAL, pos: "XLK Long 30sh", rr: "1:4.1" },
+];
+
+/* portfolio chart 600x180 viewBox · y inverts so smaller y = higher value */
+const DASHBOARD_CHART: [number, number][] = [
+  [0, 150],
+  [50, 142],
+  [100, 148],
+  [150, 122],
+  [200, 132],
+  [250, 105],
+  [300, 115],
+  [350, 88],
+  [400, 78],
+  [450, 92],
+  [500, 64],
+  [550, 42],
+  [600, 28],
+];
 
 const MODULES: ModuleRow[] = [
-  { id: "whale", name: "Whale Tracker", tier: "Pro", price: "$29/mo", installedByDefault: true },
-  { id: "congress", name: "Congressional Tracker", tier: "Pro", price: "$29/mo", installedByDefault: true },
-  { id: "risk", name: "Risk Agent", tier: "Pro", price: "$29/mo", installedByDefault: false },
-  { id: "trailing", name: "Trailing Stop Bot", tier: "Basic", price: "$9/mo", installedByDefault: false },
-  { id: "wheel", name: "Wheel Strategy Bot", tier: "Pro", price: "$29/mo", installedByDefault: false },
+  {
+    id: "whale",
+    name: "Whale Tracker",
+    category: "DATA FEEDS",
+    price: "$29/mo",
+    desc: "Real-time options flow and dark pool activity.",
+    usage: 72,
+    installedByDefault: true,
+  },
+  {
+    id: "congress",
+    name: "Congressional Tracker",
+    category: "DATA FEEDS",
+    price: "$29/mo",
+    desc: "Live disclosures from US lawmakers, parsed.",
+    usage: 45,
+    installedByDefault: true,
+  },
+  {
+    id: "risk",
+    name: "Risk Agent",
+    category: "RISK",
+    price: "$29/mo",
+    desc: "Always-on risk enforcement.",
+    installedByDefault: false,
+  },
+  {
+    id: "trailing",
+    name: "Trailing Stop Bot",
+    category: "EXECUTION",
+    price: "$9/mo",
+    desc: "Automated stop loss management.",
+    installedByDefault: false,
+  },
+  {
+    id: "wheel",
+    name: "Wheel Strategy Bot",
+    category: "EXECUTION",
+    price: "$29/mo",
+    desc: "Automated wheel options strategy.",
+    installedByDefault: false,
+  },
+  {
+    id: "copy",
+    name: "Copy Trading Bot",
+    category: "EXECUTION",
+    price: "$29/mo",
+    desc: "Mirror top trader moves.",
+    installedByDefault: false,
+  },
+  {
+    id: "research",
+    name: "AI Research Brief",
+    category: "ANALYTICS",
+    price: "$19/mo",
+    desc: "One-click investment memo.",
+    installedByDefault: false,
+  },
 ];
 
-/* ─── Component ───────────────────────────────────────────────── */
+function categoryStyle(cat: ModuleCategory): { color: string; bg: string; border: string } {
+  switch (cat) {
+    case "DATA FEEDS":
+      return {
+        color: TEAL,
+        bg: "rgba(153,225,217,0.1)",
+        border: "rgba(153,225,217,0.25)",
+      };
+    case "RISK":
+      return {
+        color: AMBER,
+        bg: "rgba(240,180,41,0.1)",
+        border: "rgba(240,180,41,0.3)",
+      };
+    case "EXECUTION":
+      return {
+        color: "#cbd5e1",
+        bg: "rgba(255,255,255,0.05)",
+        border: "rgba(255,255,255,0.16)",
+      };
+    case "ANALYTICS":
+      return {
+        color: TEAL,
+        bg: "rgba(153,225,217,0.06)",
+        border: "rgba(153,225,217,0.18)",
+      };
+  }
+}
+
+/* analytics chart datasets · 600x200 viewBox */
+const ANALYTICS_DATA: Record<RangeKey, ChartPoint[]> = {
+  "1W": [
+    { x: 0, y: 150, value: 10980 },
+    { x: 100, y: 142, value: 11050 },
+    { x: 200, y: 132, value: 11150 },
+    { x: 300, y: 110, value: 11400 },
+    { x: 400, y: 95, value: 11580 },
+    { x: 500, y: 80, value: 11700 },
+    { x: 600, y: 56, value: 11840 },
+  ],
+  "1M": [
+    { x: 0, y: 162, value: 10780 },
+    { x: 50, y: 158, value: 10820 },
+    { x: 100, y: 148, value: 10920 },
+    { x: 150, y: 134, value: 11020 },
+    { x: 200, y: 142, value: 10960 },
+    { x: 250, y: 122, value: 11160 },
+    { x: 300, y: 108, value: 11320 },
+    { x: 350, y: 118, value: 11220 },
+    { x: 400, y: 92, value: 11460 },
+    { x: 450, y: 78, value: 11580 },
+    { x: 500, y: 88, value: 11500 },
+    { x: 550, y: 64, value: 11700 },
+    { x: 600, y: 50, value: 11840 },
+  ],
+  "3M": [
+    { x: 0, y: 178, value: 10080 },
+    { x: 50, y: 162, value: 10260 },
+    { x: 100, y: 168, value: 10180 },
+    { x: 150, y: 142, value: 10520 },
+    { x: 200, y: 152, value: 10380 },
+    { x: 250, y: 124, value: 10720 },
+    { x: 300, y: 132, value: 10620 },
+    { x: 350, y: 108, value: 10920 },
+    { x: 400, y: 116, value: 10840 },
+    { x: 450, y: 92, value: 11140 },
+    { x: 500, y: 76, value: 11400 },
+    { x: 550, y: 60, value: 11620 },
+    { x: 600, y: 50, value: 11840 },
+  ],
+  "6M": [
+    { x: 0, y: 188, value: 9760 },
+    { x: 50, y: 182, value: 9820 },
+    { x: 100, y: 168, value: 10020 },
+    { x: 150, y: 174, value: 9940 },
+    { x: 200, y: 156, value: 10220 },
+    { x: 250, y: 138, value: 10460 },
+    { x: 300, y: 148, value: 10340 },
+    { x: 350, y: 122, value: 10620 },
+    { x: 400, y: 134, value: 10500 },
+    { x: 450, y: 108, value: 10880 },
+    { x: 500, y: 88, value: 11220 },
+    { x: 550, y: 70, value: 11540 },
+    { x: 600, y: 50, value: 11840 },
+  ],
+};
+
+const LOG_EVENTS: LogEvent[] = [
+  {
+    time: "09:31:04",
+    status: "Success",
+    action: "Trade Executed",
+    agent: "Alpha-1",
+    ticker: "NVDA",
+    details: "Long 50sh @ $118.40 · Filled",
+  },
+  {
+    time: "09:30:18",
+    status: "Pending",
+    action: "Approval Request",
+    agent: "Gamma-3",
+    ticker: "XLK",
+    details: "Long 30sh @ $214.60 · Awaiting",
+  },
+  {
+    time: "09:28:55",
+    status: "Success",
+    action: "Module Activated",
+    agent: "Beta-2",
+    ticker: "—",
+    details: "Risk Management Suite v2.1",
+  },
+  {
+    time: "09:22:40",
+    status: "Declined",
+    action: "Trade Declined",
+    agent: "Beta-2",
+    ticker: "QQQ",
+    details: "Put spread rejected by user",
+  },
+  {
+    time: "09:18:11",
+    status: "Success",
+    action: "Signal Generated",
+    agent: "Alpha-1",
+    ticker: "NVDA",
+    details: "Bullish momentum · Score 82",
+  },
+  {
+    time: "09:12:04",
+    status: "Success",
+    action: "Data Sync",
+    agent: "System",
+    ticker: "—",
+    details: "Polygon.io · 1,240 instruments",
+  },
+  {
+    time: "09:09:33",
+    status: "Pending",
+    action: "Approval Request",
+    agent: "Alpha-1",
+    ticker: "NVDA",
+    details: "50sh long position · $5,920",
+  },
+  {
+    time: "09:05:17",
+    status: "Success",
+    action: "Agent Started",
+    agent: "Gamma-3",
+    ticker: "—",
+    details: "Macro Sector Rotation v3.0",
+  },
+];
+
+/* ─── Component-scoped keyframes ──────────────────────────────── */
+const SCOPED_STYLES = `
+  @keyframes demo-fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes demo-pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.55; transform: scale(0.85); }
+  }
+  @keyframes demo-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .bzd-row:hover { background: rgba(255,255,255,0.025) !important; }
+`;
+
+/* ─── Main component ──────────────────────────────────────────── */
 export default function ByzantInteractiveDemo() {
   const [view, setView] = useState<ViewKey>("approvals");
   const [agentTab, setAgentTab] = useState<AgentKey>("alpha");
@@ -174,6 +530,27 @@ export default function ByzantInteractiveDemo() {
   const [installed, setInstalled] = useState<Set<string>>(
     () => new Set(MODULES.filter((m) => m.installedByDefault).map((m) => m.id))
   );
+  const [installing, setInstalling] = useState<Set<string>>(() => new Set());
+
+  const handleInstall = (id: string) => {
+    setInstalling((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+    setTimeout(() => {
+      setInstalling((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+      setInstalled((prev) => {
+        const next = new Set(prev);
+        next.add(id);
+        return next;
+      });
+    }, 800);
+  };
 
   const allApproved =
     approvals.alpha === "approved" &&
@@ -185,7 +562,7 @@ export default function ByzantInteractiveDemo() {
       style={{
         position: "relative",
         overflow: "hidden",
-        height: 580,
+        height: DEMO_HEIGHT,
         background: SHELL,
         border: `1px solid ${BORDER_STRONG}`,
         borderRadius: 12,
@@ -197,34 +574,50 @@ export default function ByzantInteractiveDemo() {
         flexDirection: "column",
       }}
     >
+      <style>{SCOPED_STYLES}</style>
       <TopBar />
       <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
         <SidebarPanel view={view} onSelect={setView} />
-        <div style={{ flex: 1, background: CONTENT, minWidth: 0, display: "flex", flexDirection: "column" }}>
-          {view === "approvals" && (
-            <ApprovalsView
-              agentTab={agentTab}
-              setAgentTab={setAgentTab}
-              approvals={approvals}
-              setApprovals={setApprovals}
-              allApproved={allApproved}
-            />
-          )}
-          {view === "dashboard" && <DashboardView />}
-          {view === "marketplace" && (
-            <MarketplaceView
-              installed={installed}
-              onInstall={(id) =>
-                setInstalled((prev) => {
-                  const next = new Set(prev);
-                  next.add(id);
-                  return next;
-                })
-              }
-            />
-          )}
-          {view === "analytics" && <Placeholder label="Analytics" />}
-          {view === "log" && <Placeholder label="Agent Log" />}
+        <div
+          style={{
+            flex: 1,
+            background: CONTENT,
+            minWidth: 0,
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            key={view}
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              minHeight: 0,
+              animation: "demo-fade-in 200ms ease both",
+            }}
+          >
+            {view === "approvals" && (
+              <ApprovalsView
+                agentTab={agentTab}
+                setAgentTab={setAgentTab}
+                approvals={approvals}
+                setApprovals={setApprovals}
+                allApproved={allApproved}
+              />
+            )}
+            {view === "dashboard" && <DashboardView />}
+            {view === "marketplace" && (
+              <MarketplaceView
+                installed={installed}
+                installing={installing}
+                onInstall={handleInstall}
+              />
+            )}
+            {view === "analytics" && <AnalyticsView />}
+            {view === "log" && <AgentLogView />}
+          </div>
         </div>
       </div>
     </div>
@@ -236,7 +629,7 @@ function TopBar() {
   return (
     <div
       style={{
-        height: 36,
+        height: TOPBAR_HEIGHT,
         flexShrink: 0,
         background: SHELL,
         borderBottom: `1px solid ${BORDER}`,
@@ -291,7 +684,7 @@ function SidebarPanel({
     >
       <div
         style={{
-          padding: "0 8px 14px",
+          padding: "0 8px 16px",
           fontSize: 12,
           fontWeight: 600,
           color: INK,
@@ -301,7 +694,7 @@ function SidebarPanel({
         Byzant
       </div>
       <nav style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        {NAV.map(({ key, label, Icon }) => {
+        {NAV.map(({ key, label, Icon, badge }) => {
           const active = view === key;
           return (
             <button
@@ -335,35 +728,31 @@ function SidebarPanel({
             >
               <Icon size={13} color={active ? TEAL : MUTED} />
               <span style={{ flex: 1 }}>{label}</span>
-              {key === "approvals" && <PendingBadge />}
+              {badge !== undefined && (
+                <span
+                  style={{
+                    minWidth: 16,
+                    height: 16,
+                    padding: "0 5px",
+                    borderRadius: 999,
+                    background: TEAL,
+                    color: "#000",
+                    fontSize: 9,
+                    fontWeight: 600,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    lineHeight: 1,
+                  }}
+                >
+                  {badge}
+                </span>
+              )}
             </button>
           );
         })}
       </nav>
     </aside>
-  );
-}
-
-function PendingBadge() {
-  return (
-    <span
-      style={{
-        minWidth: 16,
-        height: 16,
-        padding: "0 5px",
-        borderRadius: 999,
-        background: TEAL,
-        color: "#000",
-        fontSize: 9,
-        fontWeight: 600,
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        lineHeight: 1,
-      }}
-    >
-      3
-    </span>
   );
 }
 
@@ -385,108 +774,99 @@ function ApprovalsView({
   const status = approvals[agentTab];
 
   return (
-    <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 14, minHeight: 0, flex: 1 }}>
-      <StatsRow />
+    <div
+      style={{
+        padding: 22,
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+        flex: 1,
+        minHeight: 0,
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+        <BigStatCard label="PENDING" value="3" valueColor={TEAL} sub="Require your review" />
+        <BigStatCard label="APPROVED TODAY" value="8" valueColor={GREEN} sub="Executed successfully" />
+        <BigStatCard label="EST. POSITION VALUE" value="$14.2k" valueColor={INK} sub="Total if all approved" />
+      </div>
+
       <AgentTabs active={agentTab} onSelect={setAgentTab} approvals={approvals} />
 
       {allApproved ? (
+        <SuccessBanner />
+      ) : (
         <div
           style={{
-            background: "rgba(153,225,217,0.08)",
-            border: `1px solid rgba(153,225,217,0.3)`,
-            borderRadius: 10,
-            padding: "20px 22px",
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 0.6fr) minmax(0, 0.4fr)",
+            gap: 10,
             flex: 1,
+            minHeight: 0,
           }}
         >
-          <div
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: "50%",
-              background: "rgba(153,225,217,0.15)",
-              border: `1px solid ${TEAL}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: TEAL,
-              flexShrink: 0,
-            }}
-          >
-            <CheckIcon size={14} color={TEAL} />
-          </div>
-          <div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: INK }}>
-              All approvals complete · 3 trades queued
-            </div>
-            <div style={{ fontSize: 11, color: MUTED, marginTop: 2 }}>
-              Your agents will execute on the next market open.
-            </div>
-          </div>
+          <ApprovalCard
+            key={active.key}
+            agent={active}
+            status={status}
+            onApprove={() =>
+              setApprovals((prev) => ({ ...prev, [active.key]: "approved" }))
+            }
+            onDecline={() =>
+              setApprovals((prev) => ({ ...prev, [active.key]: "declined" }))
+            }
+          />
+          <ReasoningPanel agent={active} />
         </div>
-      ) : (
-        <ApprovalCard
-          key={active.key}
-          agent={active}
-          status={status}
-          onApprove={() =>
-            setApprovals((prev) => ({ ...prev, [active.key]: "approved" }))
-          }
-          onDecline={() =>
-            setApprovals((prev) => ({ ...prev, [active.key]: "declined" }))
-          }
-        />
       )}
     </div>
   );
 }
 
-function StatsRow() {
-  const stats: { label: string; value: string; sub: string; valueColor?: string }[] = [
-    { label: "PENDING", value: "3", sub: "Require your review", valueColor: TEAL },
-    { label: "APPROVED TODAY", value: "8", sub: "Executed successfully" },
-    { label: "EST. POSITION VALUE", value: "$14.2k", sub: "Total if all approved" },
-  ];
+function BigStatCard({
+  label,
+  value,
+  valueColor,
+  sub,
+}: {
+  label: string;
+  value: string;
+  valueColor: string;
+  sub: string;
+}) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-      {stats.map((s) => (
-        <div
-          key={s.label}
-          style={{
-            background: SURFACE,
-            border: `1px solid ${BORDER}`,
-            borderRadius: 8,
-            padding: "10px 12px",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 9,
-              letterSpacing: "0.12em",
-              color: FAINT,
-              marginBottom: 4,
-              fontWeight: 500,
-            }}
-          >
-            {s.label}
-          </div>
-          <div
-            style={{
-              fontSize: 20,
-              fontWeight: 600,
-              color: s.valueColor ?? INK,
-              letterSpacing: "-0.01em",
-              marginBottom: 2,
-            }}
-          >
-            {s.value}
-          </div>
-          <div style={{ fontSize: 10, color: MUTED }}>{s.sub}</div>
-        </div>
-      ))}
+    <div
+      style={{
+        background: SURFACE,
+        border: `1px solid ${BORDER}`,
+        borderRadius: 8,
+        padding: "12px 14px",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 9,
+          letterSpacing: "0.14em",
+          color: FAINT,
+          marginBottom: 6,
+          fontWeight: 600,
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          fontSize: 26,
+          fontWeight: 600,
+          color: valueColor,
+          letterSpacing: "-0.02em",
+          lineHeight: 1.1,
+          marginBottom: 4,
+        }}
+      >
+        {value}
+      </div>
+      <div style={{ fontSize: 10.5, color: MUTED }}>{sub}</div>
     </div>
   );
 }
@@ -501,19 +881,11 @@ function AgentTabs({
   approvals: Record<AgentKey, ApprovalStatus>;
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: 18,
-        borderBottom: `1px solid ${BORDER}`,
-        paddingBottom: 0,
-      }}
-    >
+    <div style={{ display: "flex", gap: 18, borderBottom: `1px solid ${BORDER}` }}>
       {AGENTS.map((a) => {
         const isActive = active === a.key;
         const status = approvals[a.key];
-        const dotColor =
-          status === "approved" ? GREEN : status === "declined" ? RED : null;
+        const dot = status === "approved" ? GREEN : status === "declined" ? RED : null;
         return (
           <button
             key={a.key}
@@ -537,13 +909,13 @@ function AgentTabs({
             }}
           >
             {a.label}
-            {dotColor && (
+            {dot && (
               <span
                 style={{
                   width: 6,
                   height: 6,
                   borderRadius: "50%",
-                  background: dotColor,
+                  background: dot,
                   display: "inline-block",
                 }}
               />
@@ -555,13 +927,55 @@ function AgentTabs({
   );
 }
 
+function SuccessBanner() {
+  return (
+    <div
+      style={{
+        background: "rgba(153,225,217,0.08)",
+        border: `1px solid rgba(153,225,217,0.3)`,
+        borderRadius: 10,
+        padding: "20px 22px",
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        flex: 1,
+      }}
+    >
+      <div
+        style={{
+          width: 30,
+          height: 30,
+          borderRadius: "50%",
+          background: "rgba(153,225,217,0.15)",
+          border: `1px solid ${TEAL}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: TEAL,
+          flexShrink: 0,
+        }}
+      >
+        <CheckIcon size={14} color={TEAL} />
+      </div>
+      <div>
+        <div style={{ fontSize: 13, fontWeight: 600, color: INK }}>
+          All approvals complete · 3 trades queued
+        </div>
+        <div style={{ fontSize: 11, color: MUTED, marginTop: 2 }}>
+          Your agents will execute on the next market open.
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ApprovalCard({
   agent,
   status,
   onApprove,
   onDecline,
 }: {
-  agent: typeof AGENTS[number];
+  agent: Agent;
   status: ApprovalStatus;
   onApprove: () => void;
   onDecline: () => void;
@@ -569,6 +983,7 @@ function ApprovalCard({
   const declined = status === "declined";
   const approved = status === "approved";
   const [pressing, setPressing] = useState(false);
+  const sparkPath = smoothPath(agent.spark);
 
   return (
     <div
@@ -576,14 +991,14 @@ function ApprovalCard({
         background: SURFACE,
         border: `1px solid ${BORDER}`,
         borderRadius: 10,
-        padding: 18,
+        padding: 16,
         opacity: declined ? 0.4 : 1,
         transform: declined ? "translateY(4px)" : "translateY(0)",
         transition: "opacity 200ms ease, transform 200ms ease",
-        flex: 1,
         display: "flex",
         flexDirection: "column",
         minHeight: 0,
+        overflow: "hidden",
       }}
     >
       <div
@@ -591,7 +1006,7 @@ function ApprovalCard({
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          marginBottom: 12,
+          marginBottom: 10,
         }}
       >
         <span style={{ fontSize: 13, fontWeight: 600, color: INK, letterSpacing: "-0.005em" }}>
@@ -610,14 +1025,34 @@ function ApprovalCard({
         </span>
       </div>
 
-      <p
+      <div
         style={{
-          fontSize: 12.5,
-          color: INK,
-          margin: "0 0 14px",
-          lineHeight: 1.55,
+          height: 32,
+          marginBottom: 12,
+          padding: "0 2px",
+          borderBottom: `1px solid ${BORDER}`,
+          paddingBottom: 8,
         }}
       >
+        <svg
+          viewBox="0 0 140 32"
+          preserveAspectRatio="none"
+          width="100%"
+          height="100%"
+          style={{ display: "block" }}
+        >
+          <defs>
+            <linearGradient id="bzd-spark-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="rgba(153,225,217,0.4)" />
+              <stop offset="100%" stopColor="rgba(153,225,217,0)" />
+            </linearGradient>
+          </defs>
+          <path d={`${sparkPath} L140,32 L0,32 Z`} fill="url(#bzd-spark-grad)" />
+          <path d={sparkPath} fill="none" stroke={TEAL} strokeWidth="1.2" />
+        </svg>
+      </div>
+
+      <p style={{ fontSize: 12.5, color: INK, margin: "0 0 12px", lineHeight: 1.55 }}>
         {agent.description}
       </p>
 
@@ -625,8 +1060,8 @@ function ApprovalCard({
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr 1fr",
-          gap: 8,
-          marginBottom: 14,
+          gap: 6,
+          marginBottom: 12,
         }}
       >
         {agent.metrics.map(([k, v]) => (
@@ -645,7 +1080,7 @@ function ApprovalCard({
                 letterSpacing: "0.12em",
                 color: FAINT,
                 marginBottom: 3,
-                fontWeight: 500,
+                fontWeight: 600,
               }}
             >
               {k}
@@ -687,7 +1122,7 @@ function ApprovalCard({
             if (!approved && !declined) e.currentTarget.style.background = "#1c1c1c";
           }}
           onMouseLeave={(e) => {
-            if (!approved && !declined) e.currentTarget.style.background = "#161616";
+            if (!approved && !declined) e.currentTarget.style.background = SURFACE;
           }}
           style={{
             flex: 1,
@@ -710,108 +1145,276 @@ function ApprovalCard({
   );
 }
 
+function ReasoningPanel({ agent }: { agent: Agent }) {
+  return (
+    <div
+      key={agent.key}
+      style={{
+        background: SURFACE,
+        border: `1px solid ${BORDER}`,
+        borderRadius: 10,
+        padding: 16,
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+        animation: "demo-fade-in 200ms ease both",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 11,
+          color: MUTED,
+          letterSpacing: "0.06em",
+          fontWeight: 600,
+          paddingBottom: 8,
+          borderBottom: `1px solid ${BORDER}`,
+        }}
+      >
+        Agent Reasoning
+      </div>
+      <ReasonBlock label="OBSERVATION" body={agent.reasoning.observation} />
+      <ReasonBlock label="PATTERN MATCH" body={agent.reasoning.pattern} />
+      <ReasonBlock label="ACTION PROPOSED" body={agent.reasoning.action} />
+    </div>
+  );
+}
+
+function ReasonBlock({ label, body }: { label: string; body: string }) {
+  return (
+    <div>
+      <div
+        style={{
+          fontSize: 9,
+          letterSpacing: "0.14em",
+          color: TEAL,
+          fontWeight: 600,
+          marginBottom: 5,
+        }}
+      >
+        {label}
+      </div>
+      <p style={{ fontSize: 12, color: INK, lineHeight: 1.55, margin: 0 }}>{body}</p>
+    </div>
+  );
+}
+
 /* ─── Dashboard view ──────────────────────────────────────────── */
 function DashboardView() {
   return (
-    <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 14 }}>
+    <div
+      style={{
+        padding: 22,
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+        flex: 1,
+        minHeight: 0,
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
+        {DASHBOARD_STATS.map((s) => (
+          <BigStatCard key={s.label} {...s} />
+        ))}
+      </div>
+
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
         {DASHBOARD_AGENTS.map((a) => (
-          <div
-            key={a.id}
+          <DashboardAgentCard key={a.id} {...a} />
+        ))}
+      </div>
+
+      <PortfolioChart />
+    </div>
+  );
+}
+
+function DashboardAgentCard({
+  id,
+  signal,
+  signalColor,
+  pos,
+  rr,
+}: {
+  id: string;
+  signal: string;
+  signalColor: string;
+  pos: string;
+  rr: string;
+}) {
+  return (
+    <div
+      style={{
+        background: SURFACE,
+        border: `1px solid ${BORDER}`,
+        borderRadius: 8,
+        padding: 12,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 10,
+        }}
+      >
+        <span style={{ fontSize: 12, fontWeight: 600, color: INK }}>{id}</span>
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 5,
+            fontSize: 9,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: GREEN,
+            fontWeight: 600,
+          }}
+        >
+          <span
             style={{
-              background: SURFACE,
-              border: `1px solid ${BORDER}`,
-              borderRadius: 8,
-              padding: 12,
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              background: GREEN,
+              boxShadow: `0 0 6px ${GREEN}`,
+              animation: "demo-pulse-dot 1.6s ease-in-out infinite",
+            }}
+          />
+          Active
+        </span>
+      </div>
+      <RowLine k="SIGNAL" v={signal} vColor={signalColor} />
+      <RowLine k="POSITION" v={pos} />
+      <RowLine k="R/R" v={rr} last />
+    </div>
+  );
+}
+
+function RowLine({
+  k,
+  v,
+  vColor,
+  last,
+}: {
+  k: string;
+  v: string;
+  vColor?: string;
+  last?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "5px 0",
+        borderBottom: last ? "none" : `1px solid ${BORDER}`,
+        fontSize: 11,
+      }}
+    >
+      <span style={{ color: FAINT, letterSpacing: "0.06em", fontWeight: 600 }}>{k}</span>
+      <span style={{ color: vColor ?? INK, fontWeight: vColor ? 600 : 400 }}>{v}</span>
+    </div>
+  );
+}
+
+function PortfolioChart() {
+  const linePath = smoothPath(DASHBOARD_CHART);
+  const fillPath = `${linePath} L600,180 L0,180 Z`;
+  const yTicks = [
+    { y: 25, label: "$11,000" },
+    { y: 70, label: "$10,350" },
+    { y: 115, label: "$9,600" },
+    { y: 160, label: "$8,850" },
+  ];
+
+  return (
+    <div
+      style={{
+        background: SURFACE,
+        border: `1px solid ${BORDER}`,
+        borderRadius: 8,
+        padding: "14px 14px 12px 64px",
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        minHeight: 0,
+        position: "relative",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 8,
+          paddingLeft: 0,
+        }}
+      >
+        <span style={{ fontSize: 11, color: MUTED, letterSpacing: "0.04em", fontWeight: 600 }}>
+          Portfolio Performance
+        </span>
+        <span style={{ fontSize: 13, color: TEAL, fontWeight: 600 }}>+12.4%</span>
+      </div>
+
+      {/* Y-axis labels */}
+      <div
+        style={{
+          position: "absolute",
+          left: 14,
+          top: 38,
+          bottom: 12,
+          width: 50,
+          fontSize: 10,
+          color: FAINT,
+          fontVariantNumeric: "tabular-nums",
+        }}
+      >
+        {yTicks.map((t) => (
+          <div
+            key={t.label}
+            style={{
+              position: "absolute",
+              top: `${(t.y / 180) * 100}%`,
+              transform: "translateY(-50%)",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: 10,
-              }}
-            >
-              <span style={{ fontSize: 12, fontWeight: 600, color: INK }}>{a.id}</span>
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 5,
-                  fontSize: 9,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  color: GREEN,
-                  fontWeight: 600,
-                }}
-              >
-                <span
-                  style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: "50%",
-                    background: GREEN,
-                    boxShadow: `0 0 6px ${GREEN}`,
-                  }}
-                />
-                Active
-              </span>
-            </div>
-            <div style={{ fontSize: 11, color: MUTED, marginBottom: 4 }}>
-              SIGNAL · <span style={{ color: INK }}>{a.signal}</span>
-            </div>
-            <div style={{ fontSize: 11, color: MUTED }}>
-              POSITION · <span style={{ color: INK }}>{a.pos}</span>
-            </div>
+            {t.label}
           </div>
         ))}
       </div>
 
-      <div
-        style={{
-          background: SURFACE,
-          border: `1px solid ${BORDER}`,
-          borderRadius: 8,
-          padding: 14,
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          minHeight: 0,
-        }}
+      <svg
+        viewBox="0 0 600 180"
+        preserveAspectRatio="none"
+        width="100%"
+        height="100%"
+        style={{ flex: 1, minHeight: 140 }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 8,
-          }}
-        >
-          <span style={{ fontSize: 11, color: MUTED, letterSpacing: "0.04em" }}>
-            Portfolio Performance
-          </span>
-          <span style={{ fontSize: 12, color: TEAL, fontWeight: 600 }}>+12.4%</span>
-        </div>
-        <svg viewBox="0 0 600 100" width="100%" height="100%" preserveAspectRatio="none" style={{ flex: 1, minHeight: 120 }}>
-          <defs>
-            <linearGradient id="bzd-grad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="rgba(153,225,217,0.35)" />
-              <stop offset="100%" stopColor="rgba(153,225,217,0)" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M0,80 L60,72 L120,76 L180,60 L240,55 L300,48 L360,52 L420,40 L480,30 L540,22 L600,18 L600,100 L0,100 Z"
-            fill="url(#bzd-grad)"
+        <defs>
+          <linearGradient id="bzd-portfolio-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="rgba(153,225,217,0.32)" />
+            <stop offset="100%" stopColor="rgba(153,225,217,0)" />
+          </linearGradient>
+        </defs>
+        {yTicks.map((t) => (
+          <line
+            key={t.y}
+            x1="0"
+            x2="600"
+            y1={t.y}
+            y2={t.y}
+            stroke={GRID_LINE}
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
           />
-          <path
-            d="M0,80 L60,72 L120,76 L180,60 L240,55 L300,48 L360,52 L420,40 L480,30 L540,22 L600,18"
-            fill="none"
-            stroke={TEAL}
-            strokeWidth="1.5"
-          />
-        </svg>
-      </div>
+        ))}
+        <path d={fillPath} fill="url(#bzd-portfolio-grad)" />
+        <path d={linePath} fill="none" stroke={TEAL} strokeWidth="1.6" vectorEffect="non-scaling-stroke" />
+      </svg>
     </div>
   );
 }
@@ -819,9 +1422,11 @@ function DashboardView() {
 /* ─── Marketplace view ────────────────────────────────────────── */
 function MarketplaceView({
   installed,
+  installing,
   onInstall,
 }: {
   installed: Set<string>;
+  installing: Set<string>;
   onInstall: (id: string) => void;
 }) {
   const installedRows = MODULES.filter((m) => installed.has(m.id));
@@ -830,93 +1435,119 @@ function MarketplaceView({
   return (
     <div
       style={{
-        padding: 20,
+        padding: 22,
         display: "flex",
         flexDirection: "column",
         gap: 14,
-        overflow: "hidden",
         flex: 1,
+        minHeight: 0,
+        overflowY: "auto",
       }}
     >
-      <SectionLabel>Installed</SectionLabel>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <SectionHeader label="Installed" count={installedRows.length} />
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {installedRows.map((m) => (
-          <ModuleCard key={m.id} mod={m} installed onInstall={onInstall} />
+          <InstalledModuleCard key={m.id} mod={m} />
         ))}
       </div>
 
-      <SectionLabel>Available</SectionLabel>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <SectionHeader label="Available" count={availableRows.length} />
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
         {availableRows.map((m) => (
-          <ModuleCard key={m.id} mod={m} installed={false} onInstall={onInstall} />
+          <AvailableModuleCard
+            key={m.id}
+            mod={m}
+            isInstalling={installing.has(m.id)}
+            onInstall={onInstall}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionHeader({ label, count }: { label: string; count: number }) {
   return (
-    <div
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <span
+        style={{
+          fontSize: 9,
+          letterSpacing: "0.14em",
+          color: FAINT,
+          fontWeight: 600,
+          textTransform: "uppercase",
+        }}
+      >
+        {label}
+      </span>
+      <span
+        style={{
+          minWidth: 18,
+          height: 18,
+          padding: "0 6px",
+          borderRadius: 999,
+          background: "rgba(255,255,255,0.06)",
+          color: MUTED,
+          fontSize: 10,
+          fontWeight: 600,
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          lineHeight: 1,
+        }}
+      >
+        {count}
+      </span>
+    </div>
+  );
+}
+
+function CategoryBadge({ cat }: { cat: ModuleCategory }) {
+  const s = categoryStyle(cat);
+  return (
+    <span
       style={{
         fontSize: 9,
-        letterSpacing: "0.14em",
-        color: FAINT,
-        fontWeight: 600,
+        letterSpacing: "0.12em",
         textTransform: "uppercase",
+        color: s.color,
+        background: s.bg,
+        border: `1px solid ${s.border}`,
+        padding: "2px 7px",
+        borderRadius: 999,
+        fontWeight: 600,
       }}
     >
-      {children}
-    </div>
+      {cat}
+    </span>
   );
 }
 
-function ModuleCard({
-  mod,
-  installed,
-  onInstall,
-}: {
-  mod: ModuleRow;
-  installed: boolean;
-  onInstall: (id: string) => void;
-}) {
+function InstalledModuleCard({ mod }: { mod: ModuleRow }) {
+  const usage = mod.usage ?? 0;
   return (
     <div
       style={{
         background: SURFACE,
         border: `1px solid ${BORDER}`,
         borderRadius: 8,
-        padding: "10px 14px",
-        display: "flex",
+        padding: "12px 14px",
+        display: "grid",
+        gridTemplateColumns: "minmax(0, 1fr) 220px auto",
         alignItems: "center",
-        justifyContent: "space-between",
-        gap: 12,
-        transition: "background 200ms ease, opacity 200ms ease",
+        gap: 16,
+        transition: "background 200ms ease",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0, flexWrap: "wrap" }}>
         <span style={{ fontSize: 13, fontWeight: 600, color: INK }}>{mod.name}</span>
-        <span
-          style={{
-            fontSize: 9,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: MUTED,
-            border: `1px solid ${BORDER_STRONG}`,
-            padding: "2px 6px",
-            borderRadius: 999,
-          }}
-        >
-          {mod.tier}
-        </span>
+        <CategoryBadge cat={mod.category} />
         <span style={{ fontSize: 11, color: MUTED }}>{mod.price}</span>
-      </div>
-      {installed ? (
         <span
           style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: 5,
+            gap: 4,
             fontSize: 10,
             color: TEAL,
             fontWeight: 600,
@@ -927,50 +1558,508 @@ function ModuleCard({
           <CheckIcon size={11} color={TEAL} />
           Installed
         </span>
-      ) : (
-        <button
-          onClick={() => onInstall(mod.id)}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.background = "rgba(153,225,217,0.12)")
-          }
-          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.12em",
+              color: FAINT,
+              fontWeight: 600,
+            }}
+          >
+            USAGE THIS MONTH
+          </span>
+          <span style={{ fontSize: 10, color: TEAL, fontWeight: 600 }}>{usage}%</span>
+        </div>
+        <div
           style={{
-            appearance: "none",
-            background: "transparent",
-            color: TEAL,
-            border: `1px solid ${TEAL}`,
+            height: 4,
             borderRadius: 999,
-            padding: "5px 12px",
-            fontFamily: SYS,
-            fontSize: 11,
-            fontWeight: 600,
-            cursor: "pointer",
-            transition: "background 200ms ease",
+            background: "rgba(255,255,255,0.05)",
+            overflow: "hidden",
           }}
         >
-          Get Module
-        </button>
-      )}
+          <div
+            style={{
+              width: `${usage}%`,
+              height: "100%",
+              background: TEAL,
+              borderRadius: 999,
+              transition: "width 240ms ease",
+            }}
+          />
+        </div>
+      </div>
+      <button
+        onMouseEnter={(e) => (e.currentTarget.style.color = INK)}
+        onMouseLeave={(e) => (e.currentTarget.style.color = MUTED)}
+        style={{
+          appearance: "none",
+          background: "transparent",
+          border: "none",
+          color: MUTED,
+          fontFamily: SYS,
+          fontSize: 11,
+          fontWeight: 500,
+          cursor: "pointer",
+          padding: 0,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 4,
+          transition: "color 120ms ease",
+        }}
+      >
+        Configure
+        <ArrowRightIcon size={11} />
+      </button>
     </div>
   );
 }
 
-/* ─── Placeholder view ────────────────────────────────────────── */
-function Placeholder({ label }: { label: string }) {
+function AvailableModuleCard({
+  mod,
+  isInstalling,
+  onInstall,
+}: {
+  mod: ModuleRow;
+  isInstalling: boolean;
+  onInstall: (id: string) => void;
+}) {
   return (
     <div
       style={{
-        flex: 1,
+        background: SURFACE,
+        border: `1px solid ${BORDER}`,
+        borderRadius: 8,
+        padding: 14,
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 8,
-        color: MUTED,
+        gap: 10,
+        transition: "background 200ms ease, border-color 200ms ease",
       }}
     >
-      <div style={{ fontSize: 13, fontWeight: 600, color: INK }}>{label}</div>
-      <div style={{ fontSize: 12, color: FAINT }}>Coming soon</div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: INK }}>{mod.name}</span>
+          <CategoryBadge cat={mod.category} />
+        </div>
+        <span style={{ fontSize: 11, color: MUTED, fontWeight: 500 }}>{mod.price}</span>
+      </div>
+      <p style={{ fontSize: 12, color: MUTED, margin: 0, lineHeight: 1.5 }}>{mod.desc}</p>
+      <button
+        disabled={isInstalling}
+        onClick={() => onInstall(mod.id)}
+        onMouseEnter={(e) => {
+          if (!isInstalling) e.currentTarget.style.background = "rgba(153,225,217,0.12)";
+        }}
+        onMouseLeave={(e) => {
+          if (!isInstalling) e.currentTarget.style.background = "transparent";
+        }}
+        style={{
+          appearance: "none",
+          background: "transparent",
+          color: TEAL,
+          border: `1px solid ${TEAL}`,
+          borderRadius: 999,
+          padding: "6px 14px",
+          fontFamily: SYS,
+          fontSize: 11,
+          fontWeight: 600,
+          cursor: isInstalling ? "default" : "pointer",
+          transition: "background 200ms ease",
+          alignSelf: "flex-start",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          opacity: isInstalling ? 0.7 : 1,
+        }}
+      >
+        {isInstalling && (
+          <span
+            style={{
+              width: 10,
+              height: 10,
+              border: "1.5px solid rgba(153,225,217,0.35)",
+              borderTopColor: TEAL,
+              borderRadius: "50%",
+              animation: "demo-spin 0.7s linear infinite",
+              display: "inline-block",
+            }}
+          />
+        )}
+        {isInstalling ? "Installing…" : "Get Module"}
+      </button>
+    </div>
+  );
+}
+
+/* ─── Analytics view ──────────────────────────────────────────── */
+const ANALYTICS_STATS: { label: string; value: string; valueColor: string; sub: string }[] = [
+  { label: "WIN RATE", value: "74%", valueColor: TEAL, sub: "Last 30 trades" },
+  { label: "AVG R/R", value: "2.8x", valueColor: TEAL, sub: "Risk/reward ratio" },
+  { label: "EMOTIONAL TRADES", value: "0", valueColor: GREEN, sub: "Zero bias detected" },
+  { label: "TOTAL P&L", value: "+$1,840", valueColor: GREEN, sub: "Since inception" },
+];
+
+function AnalyticsView() {
+  const [range, setRange] = useState<RangeKey>("1M");
+  const [hoverX, setHoverX] = useState<number | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  const data = ANALYTICS_DATA[range];
+  const pts: [number, number][] = data.map((p) => [p.x, p.y]);
+  const linePath = smoothPath(pts);
+  const fillPath = `${linePath} L600,200 L0,200 Z`;
+  const VIEW_W = 600;
+  const VIEW_H = 200;
+
+  const last = data[data.length - 1];
+  const first = data[0];
+
+  // Display value (interpolated when hovering)
+  const display = hoverX === null ? last : interpolatePoint(hoverX, data);
+  const hoverY = hoverX === null ? null : display.y;
+  const delta = display.value - first.value;
+  const deltaPct = (delta / first.value) * 100;
+
+  function onMouseMove(e: React.MouseEvent<SVGSVGElement>) {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const rect = svg.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+    const x = Math.max(0, Math.min(VIEW_W, ratio * VIEW_W));
+    setHoverX(x);
+  }
+
+  return (
+    <div
+      style={{
+        padding: 22,
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+        flex: 1,
+        minHeight: 0,
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
+        {ANALYTICS_STATS.map((s) => (
+          <BigStatCard key={s.label} {...s} />
+        ))}
+      </div>
+
+      <div
+        style={{
+          background: SURFACE,
+          border: `1px solid ${BORDER}`,
+          borderRadius: 10,
+          padding: 18,
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          minHeight: 0,
+          gap: 10,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            gap: 16,
+          }}
+        >
+          <div>
+            <div
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.14em",
+                color: FAINT,
+                fontWeight: 600,
+                marginBottom: 6,
+              }}
+            >
+              PORTFOLIO VALUE
+            </div>
+            <div
+              style={{
+                fontSize: 28,
+                fontWeight: 600,
+                color: INK,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.05,
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              ${display.value.toLocaleString()}
+            </div>
+            <div
+              style={{
+                fontSize: 12,
+                color: TEAL,
+                fontWeight: 600,
+                marginTop: 4,
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              {delta >= 0 ? "+" : "−"}${Math.abs(delta).toLocaleString()} ·{" "}
+              {delta >= 0 ? "+" : "−"}{Math.abs(deltaPct).toFixed(2)}%
+            </div>
+          </div>
+
+          <div style={{ display: "inline-flex", gap: 4, padding: 3, background: "rgba(255,255,255,0.04)", borderRadius: 999 }}>
+            {(["1W", "1M", "3M", "6M"] as RangeKey[]).map((r) => {
+              const active = r === range;
+              return (
+                <button
+                  key={r}
+                  onClick={() => setRange(r)}
+                  style={{
+                    appearance: "none",
+                    background: active ? "rgba(153,225,217,0.14)" : "transparent",
+                    color: active ? TEAL : MUTED,
+                    border: "none",
+                    borderRadius: 999,
+                    padding: "5px 12px",
+                    fontFamily: SYS,
+                    fontSize: 11,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    transition: "background 150ms ease, color 150ms ease",
+                  }}
+                >
+                  {r}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div style={{ flex: 1, minHeight: 140, position: "relative" }}>
+          <svg
+            ref={svgRef}
+            viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+            preserveAspectRatio="none"
+            width="100%"
+            height="100%"
+            style={{ display: "block", cursor: "crosshair" }}
+            onMouseMove={onMouseMove}
+            onMouseLeave={() => setHoverX(null)}
+          >
+            <defs>
+              <linearGradient id="bzd-analytics-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="rgba(153,225,217,0.36)" />
+                <stop offset="100%" stopColor="rgba(153,225,217,0)" />
+              </linearGradient>
+            </defs>
+
+            {[50, 100, 150].map((y) => (
+              <line
+                key={y}
+                x1="0"
+                x2={VIEW_W}
+                y1={y}
+                y2={y}
+                stroke={GRID_LINE}
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+            ))}
+
+            <path d={fillPath} fill="url(#bzd-analytics-grad)" />
+            <path
+              d={linePath}
+              fill="none"
+              stroke={TEAL}
+              strokeWidth="1.6"
+              vectorEffect="non-scaling-stroke"
+            />
+
+            {hoverX !== null && hoverY !== null && (
+              <>
+                <line
+                  x1={hoverX}
+                  x2={hoverX}
+                  y1={0}
+                  y2={VIEW_H}
+                  stroke="rgba(153,225,217,0.45)"
+                  strokeWidth="1"
+                  strokeDasharray="3 3"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <circle cx={hoverX} cy={hoverY} r={4} fill={TEAL} />
+                <circle
+                  cx={hoverX}
+                  cy={hoverY}
+                  r={8}
+                  fill="rgba(153,225,217,0.18)"
+                />
+              </>
+            )}
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function interpolatePoint(x: number, data: ChartPoint[]): { x: number; y: number; value: number } {
+  if (x <= data[0].x) return data[0];
+  if (x >= data[data.length - 1].x) return data[data.length - 1];
+  for (let i = 0; i < data.length - 1; i++) {
+    const a = data[i];
+    const b = data[i + 1];
+    if (x >= a.x && x <= b.x) {
+      const t = (x - a.x) / (b.x - a.x);
+      return {
+        x,
+        y: a.y + (b.y - a.y) * t,
+        value: Math.round(a.value + (b.value - a.value) * t),
+      };
+    }
+  }
+  return data[data.length - 1];
+}
+
+/* ─── Agent Log view ──────────────────────────────────────────── */
+function AgentLogView() {
+  return (
+    <div
+      style={{
+        padding: 22,
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+        flex: 1,
+        minHeight: 0,
+        overflow: "hidden",
+      }}
+    >
+      <div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: INK, letterSpacing: "-0.005em" }}>
+          Agent Activity Log
+        </div>
+        <div
+          style={{
+            fontSize: 11,
+            color: MUTED,
+            marginTop: 3,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+          }}
+        >
+          26 events today
+          <span style={{ color: FAINT }}>·</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
+            <span
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                background: GREEN,
+                boxShadow: `0 0 6px ${GREEN}`,
+                animation: "demo-pulse-dot 1.6s ease-in-out infinite",
+              }}
+            />
+            Real-time feed
+          </span>
+        </div>
+      </div>
+
+      <div
+        style={{
+          background: SURFACE,
+          border: `1px solid ${BORDER}`,
+          borderRadius: 8,
+          flex: 1,
+          minHeight: 0,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "92px 96px 140px 90px 70px minmax(0, 1fr)",
+            gap: 12,
+            padding: "10px 14px",
+            borderBottom: `1px solid ${BORDER}`,
+            background: "rgba(255,255,255,0.02)",
+            fontSize: 9,
+            letterSpacing: "0.14em",
+            color: FAINT,
+            fontWeight: 600,
+            textTransform: "uppercase",
+          }}
+        >
+          <span>Timestamp</span>
+          <span>Status</span>
+          <span>Action Type</span>
+          <span>Agent</span>
+          <span>Ticker</span>
+          <span>Details</span>
+        </div>
+        <div style={{ flex: 1, overflowY: "auto" }}>
+          {LOG_EVENTS.map((ev, i) => {
+            const dotColor =
+              ev.status === "Success" ? GREEN : ev.status === "Pending" ? YELLOW : RED;
+            return (
+              <div
+                key={i}
+                className="bzd-row"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "92px 96px 140px 90px 70px minmax(0, 1fr)",
+                  gap: 12,
+                  padding: "11px 14px",
+                  borderBottom: i < LOG_EVENTS.length - 1 ? `1px solid ${BORDER}` : "none",
+                  alignItems: "center",
+                  fontSize: 12,
+                  transition: "background 120ms ease",
+                }}
+              >
+                <span
+                  style={{
+                    color: MUTED,
+                    fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+                    fontSize: 11,
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  {ev.time}
+                </span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                  <span
+                    style={{
+                      width: 7,
+                      height: 7,
+                      borderRadius: "50%",
+                      background: dotColor,
+                      boxShadow: `0 0 6px ${dotColor}55`,
+                    }}
+                  />
+                  <span style={{ color: dotColor, fontSize: 11, fontWeight: 600 }}>
+                    {ev.status}
+                  </span>
+                </span>
+                <span style={{ color: INK }}>{ev.action}</span>
+                <span style={{ color: ev.agent === "System" ? MUTED : INK, fontWeight: 500 }}>
+                  {ev.agent}
+                </span>
+                <span style={{ color: ev.ticker === "—" ? FAINT : TEAL, fontWeight: 600 }}>
+                  {ev.ticker}
+                </span>
+                <span style={{ color: MUTED, fontSize: 11.5 }}>{ev.details}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
