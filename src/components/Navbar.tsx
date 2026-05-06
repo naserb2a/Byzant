@@ -43,11 +43,6 @@ const PRODUCT_ITEMS: { name: string; desc: string; href: string }[] = [
     desc: "Mirror top-performing traders automatically",
     href: "/marketplace",
   },
-  {
-    name: "MCP Protocol",
-    desc: "Agent-native infrastructure built on the open standard",
-    href: "/#mcp",
-  },
 ];
 
 function TealPill({ href, children }: { href: string; children: React.ReactNode }) {
@@ -171,14 +166,14 @@ function ProductDropdown() {
             exit={{ opacity: 0, y: 4 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              position: "absolute",
-              top: "calc(100% + 12px)",
-              right: 0,
-              width: 640,
+              position: "fixed",
+              top: 76,
+              right: 32,
+              width: "min(1100px, calc(100vw - 64px))",
               background: SURFACE,
               border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 14,
-              padding: 12,
+              borderRadius: 16,
+              padding: 16,
               boxShadow: "0 24px 60px rgba(0,0,0,0.6)",
               zIndex: 100,
             }}
@@ -186,7 +181,7 @@ function ProductDropdown() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr",
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
                 gap: 4,
               }}
             >
@@ -198,8 +193,8 @@ function ProductDropdown() {
                   onClick={() => setOpen(false)}
                   style={{
                     display: "block",
-                    padding: "12px 14px",
-                    borderRadius: 8,
+                    padding: "18px 20px",
+                    borderRadius: 10,
                     textDecoration: "none",
                     transition: "background 0.15s ease",
                   }}
@@ -207,10 +202,11 @@ function ProductDropdown() {
                   <div
                     style={{
                       fontFamily: DISPLAY,
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: 500,
                       color: INK,
-                      marginBottom: 4,
+                      marginBottom: 6,
+                      letterSpacing: "-0.005em",
                     }}
                   >
                     {item.name}
@@ -218,7 +214,7 @@ function ProductDropdown() {
                   <div
                     style={{
                       fontFamily: DISPLAY,
-                      fontSize: 12,
+                      fontSize: 13,
                       color: MUTED,
                       lineHeight: 1.45,
                     }}
