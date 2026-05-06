@@ -254,20 +254,6 @@ function Hero() {
 }
 
 /* ─── Trust logos ─────────────────────────────────────────────── */
-function GeminiIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="22"
-      height="22"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-    >
-      <path d="M12 0c0 6.627 5.373 12 12 12-6.627 0-12 5.373-12 12 0-6.627-5.373-12-12-12 6.627 0 12-5.373 12-12z" />
-    </svg>
-  );
-}
 
 function TrustItem({
   name,
@@ -363,7 +349,7 @@ function TrustLogos() {
             <TrustItem name="OpenClaw" iconSrc="/icons/openclaw.svg" />
             <TrustItem name="Claude" iconSrc="/icons/claude-wordmark.svg" hideName />
             <TrustItem name="GPT 5.5" iconSrc="/icons/openai_dark.svg" />
-            <TrustItem name="Gemini" Icon={GeminiIcon} />
+            <TrustItem name="Gemini" iconSrc="/icons/gemini.svg" />
             <TrustItem name="Grok" iconSrc="/icons/grok-wordmark-dark.svg" hideName />
             <TrustItem name="LangChain" iconSrc="/icons/langchain.svg" hideName />
             <TrustItem name="Cursor" iconSrc="/icons/cursor_dark.svg" />
