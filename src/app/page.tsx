@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import ByzantLogo from "@/components/ByzantLogo";
 import ByzantInteractiveDemo from "@/components/ByzantInteractiveDemo";
+import Navbar from "@/components/Navbar";
 
 /* ─── Tokens ───────────────────────────────────────────────────── */
 const DISPLAY = "var(--font-inter)";
@@ -91,84 +92,6 @@ function GhostPill({ href, children }: { href: string; children: React.ReactNode
     >
       {children}
     </Link>
-  );
-}
-
-/* ─── Navbar ──────────────────────────────────────────────────── */
-function Navbar() {
-  return (
-    <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
-        background: "rgba(0,0,0,0.8)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-      }}
-    >
-      <div
-        className="nav-row"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "20px 80px",
-          height: 64,
-        }}
-      >
-        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
-          <ByzantLogo size={22} color="#ffffff" />
-        </Link>
-
-        <nav
-          className="nav-desktop"
-          style={{ display: "flex", alignItems: "center", gap: 32 }}
-        >
-          <Link
-            href="#features"
-            style={{
-              fontFamily: DISPLAY,
-              fontSize: 14,
-              fontWeight: 400,
-              color: "rgba(255,255,255,0.85)",
-              textDecoration: "none",
-            }}
-          >
-            Marketplace
-          </Link>
-          <Link
-            href="#how-it-works"
-            style={{
-              fontFamily: DISPLAY,
-              fontSize: 14,
-              fontWeight: 400,
-              color: "rgba(255,255,255,0.85)",
-              textDecoration: "none",
-            }}
-          >
-            How it Works
-          </Link>
-        </nav>
-
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <Link
-            href="/auth/login"
-            className="nav-signin"
-            style={{
-              fontFamily: DISPLAY,
-              fontSize: 14,
-              fontWeight: 400,
-              color: "rgba(255,255,255,0.85)",
-              textDecoration: "none",
-            }}
-          >
-            Sign In
-          </Link>
-          <TealPill href="/signup">Join Waitlist</TealPill>
-        </div>
-      </div>
-    </header>
   );
 }
 
