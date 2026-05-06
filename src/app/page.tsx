@@ -260,11 +260,13 @@ function TrustItem({
   iconSrc,
   Icon,
   hideName = false,
+  wordmarkSrc,
 }: {
   name: string;
   iconSrc?: string;
   Icon?: React.ComponentType;
   hideName?: boolean;
+  wordmarkSrc?: string;
 }) {
   const tint = "rgba(255,255,255,0.7)";
   return (
@@ -301,7 +303,18 @@ function TrustItem({
           <Icon />
         </span>
       ) : null}
-      {!hideName && (
+      {wordmarkSrc ? (
+        <img
+          src={wordmarkSrc}
+          alt={name}
+          style={{
+            height: 22,
+            width: "auto",
+            filter: "brightness(0) invert(1)",
+            opacity: 0.85,
+          }}
+        />
+      ) : !hideName ? (
         <span
           style={{
             fontFamily: DISPLAY,
@@ -313,7 +326,7 @@ function TrustItem({
         >
           {name}
         </span>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -352,7 +365,11 @@ function TrustLogos() {
             <TrustItem name="Gemini" iconSrc="/icons/gemini.svg" />
             <TrustItem name="Grok" iconSrc="/icons/grok-wordmark-dark.svg" hideName />
             <TrustItem name="LangChain" iconSrc="/icons/langchain.svg" hideName />
-            <TrustItem name="Cursor" iconSrc="/icons/cursor_dark.svg" />
+            <TrustItem
+              name="Cursor"
+              iconSrc="/icons/cursor_dark.svg"
+              wordmarkSrc="/icons/cursor_wordmark_dark.svg"
+            />
           </div>
         </Reveal>
       </div>
