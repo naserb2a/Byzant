@@ -308,7 +308,7 @@ function TrustItem({
           src={wordmarkSrc}
           alt={name}
           style={{
-            height: 22,
+            height: 14,
             width: "auto",
             filter: "brightness(0) invert(1)",
             opacity: 0.85,
