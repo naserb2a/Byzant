@@ -173,8 +173,7 @@ function ProductDropdown() {
             style={{
               position: "absolute",
               top: "calc(100% + 12px)",
-              left: "50%",
-              transform: "translateX(-50%)",
+              right: 0,
               width: 640,
               background: SURFACE,
               border: "1px solid rgba(255,255,255,0.08)",
