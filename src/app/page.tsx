@@ -1056,21 +1056,96 @@ const STEPS = [
     body: "Your agent speaks Byzant natively via MCP. Zero configuration, millisecond handshake.",
   },
   {
-    cat: "02 · Signal",
-    head: "NVDA · Bullish +0.82",
-    body: "Sentiment, flow, and pattern inputs aggregate into a single conviction score.",
+    cat: "02 · Signal Detected",
+    head: "Agent surfaces the opportunity",
+    body: "NVDA flagged bullish at +0.82 conviction. Whale flow and technical structure converge.",
   },
   {
-    cat: "03 · Approval",
-    head: "Awaiting your decision",
-    body: "Every trade surfaces a concise brief. Size, risk, horizon. You hold the final click.",
+    cat: "03 · Awaiting Approval",
+    head: "You are the arbiter.",
+    body: "The agent surfaces the decision to you. You hold the final click.",
   },
   {
-    cat: "04 · Execution",
-    head: "+2.34% · Filled at $118.40",
-    body: "Order routed through your broker. P&L and slippage logged automatically.",
+    cat: "04 · Trade Filled",
+    head: "Order executed.",
+    body: "Routed via Alpaca. Position confirmed and logged in real time.",
   },
 ];
+
+function McpBox({
+  label,
+  title,
+  highlighted = false,
+}: {
+  label: string;
+  title: string;
+  highlighted?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        background: SURFACE,
+        border: highlighted
+          ? "1px solid rgba(153,225,217,0.4)"
+          : "1px solid rgba(255,255,255,0.1)",
+        borderRadius: 14,
+        padding: "20px 22px",
+        minWidth: 130,
+        textAlign: "center",
+        boxShadow: highlighted ? "0 0 32px rgba(153,225,217,0.14)" : "none",
+        flexShrink: 0,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: DISPLAY,
+          fontSize: 9,
+          letterSpacing: "0.16em",
+          textTransform: "uppercase",
+          color: highlighted ? TEAL : FAINT,
+          marginBottom: 6,
+          fontWeight: 600,
+        }}
+      >
+        {label}
+      </div>
+      <div style={{ fontFamily: DISPLAY, fontSize: 15, fontWeight: 600, color: INK }}>
+        {title}
+      </div>
+    </div>
+  );
+}
+
+function McpConnector({ delay = 0 }: { delay?: number }) {
+  return (
+    <div
+      aria-hidden
+      style={{
+        flex: 1,
+        minWidth: 36,
+        maxWidth: 96,
+        height: 2,
+        position: "relative",
+        background: "rgba(153,225,217,0.18)",
+        borderRadius: 1,
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          width: "30%",
+          background:
+            "linear-gradient(90deg, rgba(153,225,217,0) 0%, rgba(153,225,217,1) 50%, rgba(153,225,217,0) 100%)",
+          animation: "mcp-pulse 1.8s linear infinite",
+          animationDelay: `${delay}s`,
+        }}
+      />
+    </div>
+  );
+}
 
 function McpVisual() {
   return (
@@ -1080,99 +1155,15 @@ function McpVisual() {
         alignItems: "center",
         justifyContent: "center",
         gap: 0,
-        padding: "60px 40px",
+        padding: "40px 8px",
+        width: "100%",
       }}
     >
-      <div
-        style={{
-          background: SURFACE,
-          border: "1px solid rgba(255,255,255,0.1)",
-          borderRadius: 14,
-          padding: "24px 28px",
-          minWidth: 180,
-          textAlign: "center",
-        }}
-      >
-        <div
-          style={{
-            fontFamily: DISPLAY,
-            fontSize: 9,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            color: FAINT,
-            marginBottom: 8,
-          }}
-        >
-          Source
-        </div>
-        <div style={{ fontFamily: DISPLAY, fontSize: 16, fontWeight: 600, color: INK }}>
-          Your Agent
-        </div>
-      </div>
-
-      <div
-        style={{
-          flex: 1,
-          maxWidth: 240,
-          position: "relative",
-          height: 2,
-          background: "rgba(153,225,217,0.25)",
-          margin: "0 -1px",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(90deg, rgba(153,225,217,0) 0%, rgba(153,225,217,1) 50%, rgba(153,225,217,0) 100%)",
-            animation: "mcp-flow 2.4s linear infinite",
-          }}
-        />
-        <span
-          style={{
-            position: "absolute",
-            top: -22,
-            left: "50%",
-            transform: "translateX(-50%)",
-            fontFamily: DISPLAY,
-            fontSize: 10,
-            fontWeight: 600,
-            color: TEAL,
-            letterSpacing: "0.18em",
-          }}
-        >
-          MCP
-        </span>
-      </div>
-
-      <div
-        style={{
-          background: SURFACE,
-          border: "1px solid rgba(153,225,217,0.3)",
-          borderRadius: 14,
-          padding: "24px 28px",
-          minWidth: 200,
-          textAlign: "center",
-          boxShadow: "0 0 40px rgba(153,225,217,0.12)",
-        }}
-      >
-        <div
-          style={{
-            fontFamily: DISPLAY,
-            fontSize: 9,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            color: TEAL,
-            marginBottom: 8,
-          }}
-        >
-          Marketplace
-        </div>
-        <div style={{ fontFamily: DISPLAY, fontSize: 16, fontWeight: 600, color: INK }}>
-          Byzant
-        </div>
-      </div>
+      <McpBox label="Source" title="Your Agent" />
+      <McpConnector delay={0} />
+      <McpBox label="Protocol" title="MCP" highlighted />
+      <McpConnector delay={0.9} />
+      <McpBox label="Marketplace" title="Byzant" />
     </div>
   );
 }
@@ -1745,13 +1736,69 @@ function FeatureFour() {
                 style={{
                   minHeight: "100vh",
                   display: "flex",
-                  alignItems: "center",
+                  flexDirection: "column",
                   justifyContent: "center",
-                  padding: "40px 0",
+                  padding: "60px 0",
+                  gap: 32,
                 }}
               >
+                <div>
+                  <div
+                    style={{
+                      fontFamily: DISPLAY,
+                      fontSize: 12,
+                      letterSpacing: "0.14em",
+                      color: TEAL,
+                      fontWeight: 600,
+                      marginBottom: 16,
+                    }}
+                  >
+                    {s.cat}
+                  </div>
+                  <h3
+                    style={{
+                      fontFamily: DISPLAY,
+                      fontSize: "clamp(26px, 3vw, 38px)",
+                      fontWeight: 600,
+                      letterSpacing: "-0.025em",
+                      lineHeight: 1.05,
+                      color: INK,
+                      margin: "0 0 14px",
+                      maxWidth: 540,
+                    }}
+                  >
+                    {s.head}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: SYS,
+                      fontSize: 15,
+                      lineHeight: 1.6,
+                      color: MUTED,
+                      margin: 0,
+                      maxWidth: 540,
+                    }}
+                  >
+                    {s.body}
+                  </p>
+                </div>
+
                 <div style={{ width: "100%" }}>
                   <Visual />
+                </div>
+
+                <div style={{ display: "flex", gap: 8 }} aria-hidden>
+                  {STEPS.map((_, j) => (
+                    <span
+                      key={j}
+                      style={{
+                        width: 22,
+                        height: 2,
+                        borderRadius: 999,
+                        background: j <= i ? TEAL : "rgba(255,255,255,0.15)",
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
             );
@@ -2260,12 +2307,12 @@ function GlobalStyles() {
           opacity: 0;
         }
       }
-      @keyframes mcp-flow {
+      @keyframes mcp-pulse {
         0% {
-          transform: translateX(-100%);
+          left: -30%;
         }
         100% {
-          transform: translateX(100%);
+          left: 100%;
         }
       }
 
