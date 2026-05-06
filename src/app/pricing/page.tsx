@@ -91,8 +91,8 @@ function ModuleCard({ module: m }: { module: Module }) {
       style={{
         background: SURFACE,
         border: "1px solid rgba(255,255,255,0.06)",
-        borderRadius: 14,
-        padding: 28,
+        borderRadius: 12,
+        padding: 22,
         display: "flex",
         flexDirection: "column",
         transition: "border-color 0.18s ease",
@@ -101,7 +101,7 @@ function ModuleCard({ module: m }: { module: Module }) {
       <div
         style={{
           fontFamily: DISPLAY,
-          fontSize: 17,
+          fontSize: 15,
           fontWeight: 600,
           color: INK,
           letterSpacing: "-0.01em",
@@ -110,11 +110,11 @@ function ModuleCard({ module: m }: { module: Module }) {
         {m.name}
       </div>
 
-      <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginTop: 14 }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginTop: 12 }}>
         <span
           style={{
             fontFamily: DISPLAY,
-            fontSize: 28,
+            fontSize: 24,
             fontWeight: 600,
             color: INK,
             letterSpacing: "-0.02em",
@@ -122,15 +122,15 @@ function ModuleCard({ module: m }: { module: Module }) {
         >
           ${m.price}
         </span>
-        <span style={{ fontFamily: DISPLAY, fontSize: 14, color: MUTED }}>/mo</span>
+        <span style={{ fontFamily: DISPLAY, fontSize: 12, color: MUTED }}>/mo</span>
       </div>
 
       <div
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: 12,
-          marginTop: 24,
+          gap: 9,
+          marginTop: 18,
         }}
       >
         {m.bullets.map((b) => (
@@ -139,9 +139,9 @@ function ModuleCard({ module: m }: { module: Module }) {
             style={{
               display: "flex",
               alignItems: "flex-start",
-              gap: 10,
+              gap: 9,
               fontFamily: DISPLAY,
-              fontSize: 13,
+              fontSize: 12,
               lineHeight: 1.5,
               color: MUTED,
             }}
@@ -162,24 +162,24 @@ function BundleCard() {
       style={{
         background: SURFACE,
         border: "1px solid rgba(153,225,217,0.25)",
-        borderRadius: 16,
-        padding: "36px 40px",
+        borderRadius: 14,
+        padding: "26px 32px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: 32,
+        gap: 28,
       }}
     >
       <div>
         <div
           style={{
             fontFamily: DISPLAY,
-            fontSize: 11,
+            fontSize: 10,
             fontWeight: 600,
             letterSpacing: "0.16em",
             color: TEAL,
             textTransform: "uppercase",
-            marginBottom: 10,
+            marginBottom: 8,
           }}
         >
           Best Value
@@ -187,11 +187,11 @@ function BundleCard() {
         <div
           style={{
             fontFamily: DISPLAY,
-            fontSize: 22,
+            fontSize: 18,
             fontWeight: 600,
             color: INK,
             letterSpacing: "-0.01em",
-            marginBottom: 6,
+            marginBottom: 4,
           }}
         >
           Full Platform
@@ -199,20 +199,20 @@ function BundleCard() {
         <div
           style={{
             fontFamily: DISPLAY,
-            fontSize: 15,
+            fontSize: 13,
             color: MUTED,
             lineHeight: 1.55,
-            maxWidth: 540,
-            marginBottom: 14,
+            maxWidth: 480,
+            marginBottom: 12,
           }}
         >
           All modules included. Best value for active traders.
         </div>
-        <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 5 }}>
           <span
             style={{
               fontFamily: DISPLAY,
-              fontSize: 36,
+              fontSize: 28,
               fontWeight: 600,
               color: INK,
               letterSpacing: "-0.02em",
@@ -220,7 +220,7 @@ function BundleCard() {
           >
             $149
           </span>
-          <span style={{ fontFamily: DISPLAY, fontSize: 16, color: MUTED }}>/mo</span>
+          <span style={{ fontFamily: DISPLAY, fontSize: 13, color: MUTED }}>/mo</span>
         </div>
       </div>
 
@@ -232,9 +232,9 @@ function BundleCard() {
           background: TEAL,
           color: "#000000",
           fontFamily: DISPLAY,
-          fontSize: 15,
+          fontSize: 14,
           fontWeight: 500,
-          padding: "12px 24px",
+          padding: "10px 20px",
           borderRadius: 999,
           textDecoration: "none",
           letterSpacing: "-0.005em",
@@ -259,13 +259,13 @@ export default function PricingPage() {
         {/* Hero */}
         <section
           className="pricing-hero"
-          style={{ padding: "120px 80px 60px" }}
+          style={{ padding: "100px 80px 40px" }}
         >
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
             <h1
               style={{
                 fontFamily: DISPLAY,
-                fontSize: "clamp(56px, 8vw, 112px)",
+                fontSize: "clamp(48px, 5.5vw, 76px)",
                 fontWeight: 600,
                 letterSpacing: "-0.04em",
                 lineHeight: 1,
@@ -278,10 +278,10 @@ export default function PricingPage() {
             <p
               style={{
                 fontFamily: DISPLAY,
-                fontSize: 18,
+                fontSize: 15,
                 color: MUTED,
-                margin: "24px 0 0",
-                maxWidth: 600,
+                margin: "18px 0 0",
+                maxWidth: 560,
                 lineHeight: 1.55,
               }}
             >
@@ -293,7 +293,7 @@ export default function PricingPage() {
         {/* Module grid */}
         <section
           className="pricing-section"
-          style={{ padding: "40px 80px 0" }}
+          style={{ padding: "24px 80px 0" }}
         >
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
             <div
@@ -301,7 +301,7 @@ export default function PricingPage() {
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-                gap: 16,
+                gap: 12,
               }}
             >
               {MODULES.map((m) => (
@@ -314,14 +314,14 @@ export default function PricingPage() {
         {/* Full Platform Bundle */}
         <section
           className="pricing-section"
-          style={{ padding: "32px 80px 0" }}
+          style={{ padding: "20px 80px 0" }}
         >
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
             <BundleCard />
           </div>
         </section>
 
-        <div style={{ height: 160 }} />
+        <div style={{ height: 120 }} />
       </main>
 
       <style jsx global>{`
@@ -331,7 +331,7 @@ export default function PricingPage() {
 
         @media (max-width: 1024px) {
           .pricing-hero {
-            padding: 96px 32px 48px !important;
+            padding: 80px 32px 32px !important;
           }
           .pricing-section {
             padding-left: 32px !important;
@@ -341,7 +341,7 @@ export default function PricingPage() {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           }
           .pricing-bundle {
-            padding: 28px !important;
+            padding: 24px !important;
           }
         }
 

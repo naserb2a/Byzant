@@ -268,37 +268,37 @@ export default function Navbar() {
           <ByzantLogo size={22} color="#ffffff" />
         </Link>
 
-        <nav
+        <div
           className="nav-desktop"
-          style={{ display: "flex", alignItems: "center", gap: 28 }}
+          style={{ display: "flex", alignItems: "center", gap: 24 }}
         >
-          <ProductDropdown />
-          <Link
-            href="/pricing"
-            style={{
-              fontFamily: DISPLAY,
-              fontSize: 14,
-              fontWeight: 400,
-              color: isPricing ? INK : "rgba(255,255,255,0.85)",
-              textDecoration: "none",
-              padding: "8px 0",
-              transition: "color 0.15s ease",
-            }}
-          >
-            Pricing
-          </Link>
-        </nav>
+          <nav style={{ display: "flex", alignItems: "center", gap: 32 }}>
+            <ProductDropdown />
+            <Link
+              href="/pricing"
+              style={{
+                fontFamily: DISPLAY,
+                fontSize: 14,
+                fontWeight: 400,
+                color: isPricing ? INK : "rgba(255,255,255,0.85)",
+                textDecoration: "none",
+                padding: "8px 0",
+                transition: "color 0.15s ease",
+              }}
+            >
+              Pricing
+            </Link>
+          </nav>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <span
             aria-hidden
             style={{
               width: 1,
               height: 16,
               background: "rgba(255,255,255,0.15)",
-              marginRight: 4,
             }}
           />
+
           <Link
             href="/auth/login"
             className="nav-signin"
@@ -312,6 +312,7 @@ export default function Navbar() {
           >
             Sign In
           </Link>
+
           <TealPill href="/signup">Join Waitlist</TealPill>
         </div>
       </div>
