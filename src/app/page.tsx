@@ -1615,7 +1615,7 @@ function FeatureFour() {
           maxWidth: 1280,
           margin: "0 auto",
           display: "grid",
-          gridTemplateColumns: "minmax(0, 0.4fr) minmax(0, 0.6fr)",
+          gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
           gap: 60,
           position: "relative",
         }}
@@ -1736,69 +1736,13 @@ function FeatureFour() {
                 style={{
                   minHeight: "100vh",
                   display: "flex",
-                  flexDirection: "column",
+                  alignItems: "center",
                   justifyContent: "center",
-                  padding: "60px 0",
-                  gap: 32,
+                  padding: "40px 0",
                 }}
               >
-                <div>
-                  <div
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: 12,
-                      letterSpacing: "0.14em",
-                      color: TEAL,
-                      fontWeight: 600,
-                      marginBottom: 16,
-                    }}
-                  >
-                    {s.cat}
-                  </div>
-                  <h3
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: "clamp(26px, 3vw, 38px)",
-                      fontWeight: 600,
-                      letterSpacing: "-0.025em",
-                      lineHeight: 1.05,
-                      color: INK,
-                      margin: "0 0 14px",
-                      maxWidth: 540,
-                    }}
-                  >
-                    {s.head}
-                  </h3>
-                  <p
-                    style={{
-                      fontFamily: SYS,
-                      fontSize: 15,
-                      lineHeight: 1.6,
-                      color: MUTED,
-                      margin: 0,
-                      maxWidth: 540,
-                    }}
-                  >
-                    {s.body}
-                  </p>
-                </div>
-
                 <div style={{ width: "100%" }}>
                   <Visual />
-                </div>
-
-                <div style={{ display: "flex", gap: 8 }} aria-hidden>
-                  {STEPS.map((_, j) => (
-                    <span
-                      key={j}
-                      style={{
-                        width: 22,
-                        height: 2,
-                        borderRadius: 999,
-                        background: j <= i ? TEAL : "rgba(255,255,255,0.15)",
-                      }}
-                    />
-                  ))}
                 </div>
               </div>
             );
