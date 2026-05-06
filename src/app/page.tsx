@@ -367,7 +367,7 @@ function TrustLogos() {
             }}
           >
             <TrustItem name="OpenClaw" iconSrc="/icons/openclaw.svg" />
-            <TrustItem name="Claude" iconSrc="/icons/anthropic.svg" />
+            <TrustItem name="Claude" iconSrc="/icons/claude-wordmark.svg" hideName />
             <TrustItem name="GPT 5.5" Icon={OpenAIIcon} />
             <TrustItem name="Gemini" Icon={GeminiIcon} />
             <TrustItem name="Grok" iconSrc="/icons/grok-wordmark-dark.svg" hideName />
