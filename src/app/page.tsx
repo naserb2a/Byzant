@@ -1556,26 +1556,8 @@ function ExecutionVisual() {
 const STEP_VISUALS = [McpVisual, SignalVisual, ApprovalVisual, ExecutionVisual];
 
 function FeatureFour() {
-  const [activeStep, setActiveStep] = useState(0);
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
-            const idx = stepRefs.current.findIndex((el) => el === entry.target);
-            if (idx >= 0) setActiveStep(idx);
-          }
-        });
-      },
-      { threshold: [0.4, 0.6, 0.8], rootMargin: "-20% 0px -30% 0px" }
-    );
-    stepRefs.current.forEach((el) => el && obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -1590,8 +1572,6 @@ function FeatureFour() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const active = STEPS[activeStep];
 
   return (
     <section
@@ -1614,13 +1594,10 @@ function FeatureFour() {
         style={{
           maxWidth: 1280,
           margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
-          gap: 60,
           position: "relative",
         }}
       >
-        {/* Vertical progress rail (far left of grid) */}
+        {/* Vertical progress rail (far left edge) */}
         <div
           aria-hidden
           style={{
@@ -1644,97 +1621,89 @@ function FeatureFour() {
           />
         </div>
 
-        {/* LEFT — sticky */}
-        <div className="signal-left" style={{ position: "relative" }}>
-          <div
-            style={{
-              position: "sticky",
-              top: 0,
-              height: "100vh",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active.cat}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
+        {STEPS.map((step, i) => {
+          const Visual = STEP_VISUALS[i];
+          return (
+            <div
+              key={step.cat}
+              className="signal-step"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
+                gap: 60,
+                minHeight: "100vh",
+              }}
+            >
+              {/* LEFT — sticky text context */}
+              <div style={{ position: "relative" }}>
                 <div
                   style={{
-                    fontFamily: DISPLAY,
-                    fontSize: 12,
-                    letterSpacing: "0.14em",
-                    color: TEAL,
-                    fontWeight: 600,
-                    marginBottom: 18,
+                    position: "sticky",
+                    top: 0,
+                    height: "100vh",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
                   }}
                 >
-                  {active.cat}
+                  <div
+                    style={{
+                      fontFamily: DISPLAY,
+                      fontSize: 12,
+                      letterSpacing: "0.14em",
+                      color: TEAL,
+                      fontWeight: 600,
+                      marginBottom: 18,
+                    }}
+                  >
+                    {step.cat}
+                  </div>
+                  <h3
+                    style={{
+                      fontFamily: DISPLAY,
+                      fontSize: "clamp(28px, 3.4vw, 44px)",
+                      fontWeight: 600,
+                      letterSpacing: "-0.025em",
+                      lineHeight: 1.05,
+                      color: INK,
+                      margin: "0 0 20px",
+                      maxWidth: 420,
+                    }}
+                  >
+                    {step.head}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: SYS,
+                      fontSize: 16,
+                      lineHeight: 1.6,
+                      color: MUTED,
+                      margin: 0,
+                      maxWidth: 420,
+                    }}
+                  >
+                    {step.body}
+                  </p>
+
+                  <div style={{ display: "flex", gap: 8, marginTop: 40 }} aria-hidden>
+                    {STEPS.map((_, j) => (
+                      <span
+                        key={j}
+                        style={{
+                          width: 22,
+                          height: 2,
+                          borderRadius: 999,
+                          background: j <= i ? TEAL : "rgba(255,255,255,0.15)",
+                        }}
+                      />
+                    ))}
+                  </div>
                 </div>
-                <h3
-                  style={{
-                    fontFamily: DISPLAY,
-                    fontSize: "clamp(28px, 3.4vw, 44px)",
-                    fontWeight: 600,
-                    letterSpacing: "-0.025em",
-                    lineHeight: 1.05,
-                    color: INK,
-                    margin: "0 0 20px",
-                    maxWidth: 420,
-                  }}
-                >
-                  {active.head}
-                </h3>
-                <p
-                  style={{
-                    fontFamily: SYS,
-                    fontSize: 16,
-                    lineHeight: 1.6,
-                    color: MUTED,
-                    margin: 0,
-                    maxWidth: 420,
-                  }}
-                >
-                  {active.body}
-                </p>
-              </motion.div>
-            </AnimatePresence>
+              </div>
 
-            {/* Step dots */}
-            <div style={{ display: "flex", gap: 8, marginTop: 40 }}>
-              {STEPS.map((s, i) => (
-                <span
-                  key={s.cat}
-                  style={{
-                    width: 22,
-                    height: 2,
-                    borderRadius: 999,
-                    background: i <= activeStep ? TEAL : "rgba(255,255,255,0.15)",
-                    transition: "background 0.3s ease",
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT — scrolling visuals */}
-        <div className="signal-right" style={{ display: "flex", flexDirection: "column" }}>
-          {STEPS.map((s, i) => {
-            const Visual = STEP_VISUALS[i];
-            return (
+              {/* RIGHT — visual card */}
               <div
-                key={s.cat}
-                ref={(el) => {
-                  stepRefs.current[i] = el;
-                }}
                 style={{
-                  minHeight: "100vh",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -1745,9 +1714,9 @@ function FeatureFour() {
                   <Visual />
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
 
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "60px 0 120px" }}>
@@ -2306,14 +2275,15 @@ function GlobalStyles() {
           gap: 24px !important;
           justify-content: center !important;
         }
-        .signal-scroll {
+        .signal-step {
           grid-template-columns: 1fr !important;
           gap: 24px !important;
+          min-height: auto !important;
         }
-        .signal-left > div {
+        .signal-step > div:first-child > div {
           position: relative !important;
           height: auto !important;
-          padding-bottom: 32px !important;
+          padding: 32px 0 !important;
         }
       }
 
