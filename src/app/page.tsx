@@ -258,8 +258,8 @@ function OpenAIIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="20"
-      height="20"
+      width="22"
+      height="22"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
@@ -272,8 +272,8 @@ function GeminiIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="20"
-      height="20"
+      width="22"
+      height="22"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
@@ -310,14 +310,22 @@ function TrustItem({
           src={iconSrc}
           alt={hideName ? name : ""}
           style={{
-            height: 20,
+            height: 22,
             width: "auto",
             filter: "brightness(0) invert(1)",
             opacity: 0.85,
           }}
         />
       ) : Icon ? (
-        <span style={{ display: "inline-flex", color: tint }}>
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            height: 22,
+            filter: "brightness(0) invert(1)",
+            opacity: 0.85,
+          }}
+        >
           <Icon />
         </span>
       ) : null}
