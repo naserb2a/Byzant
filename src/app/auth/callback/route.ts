@@ -29,7 +29,7 @@ export async function GET(request: Request) {
   let onboardingComplete = false;
   try {
     const { data } = await supabase
-      .from("profiles")
+      .from("users")
       .select("onboarding_complete")
       .eq("id", user.id)
       .maybeSingle();

@@ -8,7 +8,7 @@ export async function resolvePostAuthRedirect(
 
   try {
     const { data } = await supabase
-      .from("profiles")
+      .from("users")
       .select("onboarding_complete")
       .eq("id", user.id)
       .maybeSingle();

@@ -17,7 +17,8 @@ const INK = "#F5F5F5";
 const INK_MUTED = "#666666";
 const SURFACE = "#111111";
 
-type AgentType = "claude" | "gpt-4" | "gemini" | "grok" | "openclaw" | "other";
+type AgentType = "claude" | "gpt4" | "gemini" | "grok" | "openclaw" | "other";
+type UserType = "hosted" | "byo";
 type SubStep = "fork" | "hosted" | "byo";
 
 const DISCLAIMER = `DISCLAIMER — NOT FINANCIAL ADVICE
@@ -49,7 +50,7 @@ const AGENT_OPTIONS: {
     desc: "Native MCP support. Fully compatible with all Byzant modules.",
   },
   {
-    key: "gpt-4",
+    key: "gpt4",
     name: "GPT-4 (OpenAI)",
     desc: "Fully compatible via MCP-enabled agent frameworks.",
   },
@@ -216,32 +217,26 @@ export default function OnboardingPage() {
     };
   }, [subStep, mcpUserId]);
 
-  async function handleFinish(agentTypeOverride: string | null = null) {
+  async function handleFinish(userType: UserType, selectedModel: AgentType) {
     setSubmitting(true);
     setError(null);
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
 
-    if (!user) {
-      setError("Session expired. Please sign in again.");
-      setSubmitting(false);
-      return;
-    }
-
-    const { error: upsertError } = await supabase.from("profiles").upsert(
-      {
-        id: user.id,
-        agent_type: agentTypeOverride ?? agent,
-        onboarding_complete: true,
-        updated_at: new Date().toISOString(),
+    const response = await fetch("/api/onboarding/complete", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
       },
-      { onConflict: "id" }
-    );
+      body: JSON.stringify({
+        userType,
+        selectedModel,
+      }),
+    });
 
-    if (upsertError) {
-      setError(upsertError.message);
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+      setError(data?.error ?? "Failed to complete onboarding.");
       setSubmitting(false);
       return;
     }
@@ -789,7 +784,9 @@ export default function OnboardingPage() {
                         <PrimaryButton
                           disabled={!canFinish}
                           loading={submitting}
-                          onClick={() => handleFinish()}
+                          onClick={() => {
+                            if (agent) handleFinish("hosted", agent);
+                          }}
                         >
                           Enter Byzant →
                         </PrimaryButton>
@@ -859,7 +856,7 @@ export default function OnboardingPage() {
                         <BackButton onClick={() => setSubStep("fork")} />
                         <PrimaryButton
                           loading={submitting}
-                          onClick={() => handleFinish("custom-mcp")}
+                          onClick={() => handleFinish("byo", "other")}
                         >
                           I&apos;ve connected my agent →
                         </PrimaryButton>
