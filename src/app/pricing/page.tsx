@@ -37,14 +37,9 @@ const MODULES: Module[] = [
     bullets: ["Cash-secured puts", "Covered calls", "Auto-rolling positions"],
   },
   {
-    name: "Copy Trading Bot",
-    price: 29,
-    bullets: ["Mirror top traders", "Auto-rebalance", "Custom filters"],
-  },
-  {
     name: "Congressional Tracker",
     price: 29,
-    bullets: ["Live filing alerts", "Performance tracking", "Bipartisan view"],
+    bullets: ["Live filing alerts", "Disclosure monitoring", "Bipartisan view"],
   },
   {
     name: "AI Research Brief",

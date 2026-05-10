@@ -29,7 +29,7 @@ const MODULES: Module[] = [
   },
   {
     id: "congressional-tracker", name: "Congressional Tracker", category: "Data Feeds", tier: "Pro",
-    desc: "Real-time congressional trade disclosures. Follow the smart money in Washington.",
+    desc: "Real-time congressional trade disclosures. Monitor lawmaker filings as they post.",
     price: "$29/mo", installed: true, usage: 54,
     iconPath: "M3 21h18 M5 21V10l7-5 7 5v11 M9 21v-6h6v6",
     iconColor: "#B2EBE5",
@@ -54,13 +54,6 @@ const MODULES: Module[] = [
     price: "$29/mo", installed: false,
     iconPath: "M12 2a10 10 0 1 0 10 10 M12 2v10l7 7",
     iconColor: "#99E1D9",
-  },
-  {
-    id: "copy-trading-bot", name: "Copy Trading Bot", category: "Execution", tier: "Pro",
-    desc: "Mirror the trades of top-performing politicians and institutional whales automatically.",
-    price: "$29/mo", installed: false,
-    iconPath: "M8 3h11v11 M19 3L8 14 M5 21h11v-7 M16 21L5 10",
-    iconColor: "#B2EBE5",
   },
   {
     id: "ai-research-brief", name: "AI Research Brief", category: "Analytics", tier: "Pro Add-on",

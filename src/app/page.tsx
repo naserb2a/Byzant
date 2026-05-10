@@ -991,7 +991,7 @@ const STEPS = [
   {
     cat: "04 · Trade Filled",
     head: "Order executed.",
-    body: "Routed via Alpaca. Position confirmed and logged in real time.",
+    body: "Routed via your connected broker. Position confirmed and logged in real time.",
   },
 ];
 
@@ -1441,7 +1441,7 @@ function ExecutionVisual() {
         {[
           ["P&L", "+$138.50 (+2.34%)", GREEN],
           ["SHARES", "50", INK],
-          ["BROKER", "Alpaca", INK],
+          ["BROKER", "Connected", INK],
           ["ORDER ID", "#A-7142", INK],
           ["TIMESTAMP", "2026-05-04 14:42:08 UTC", INK],
         ].map(([k, v, c]) => (

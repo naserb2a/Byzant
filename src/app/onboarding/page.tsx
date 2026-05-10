@@ -185,6 +185,7 @@ export default function OnboardingPage() {
 
   // Step 1
   const [brokerMessage, setBrokerMessage] = useState<string | null>(null);
+  const [disclosureAccepted, setDisclosureAccepted] = useState(false);
 
   // Step 2
   const [agent, setAgent] = useState<AgentType | null>(null);
@@ -406,14 +407,97 @@ export default function OnboardingPage() {
                 />
 
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                  <div style={{ width: "100%", maxWidth: 480 }}>
+                  <div
+                    style={{
+                      width: "100%",
+                      maxWidth: 480,
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 16,
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: SURFACE,
+                        border: "1px solid " + BORDER,
+                        borderRadius: 10,
+                        padding: 18,
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontFamily: SORA,
+                          fontSize: 14,
+                          fontWeight: 600,
+                          color: INK,
+                          marginBottom: 8,
+                        }}
+                      >
+                        Authorize Byzant
+                      </div>
+                      <p
+                        style={{
+                          fontFamily: SORA,
+                          fontSize: 12,
+                          color: INK_MUTED,
+                          margin: 0,
+                          lineHeight: 1.55,
+                        }}
+                      >
+                        By allowing Byzant to access your Alpaca account, you are
+                        granting Byzant access to your account information and
+                        authorization to place transactions at your direction.
+                        Alpaca does not warrant or guarantee that Byzant will work
+                        as advertised or expected. Before authorizing, learn more
+                        about Byzant at{" "}
+                        <a
+                          href="https://byzant.ai"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: TEAL, textDecoration: "none" }}
+                        >
+                          byzant.ai
+                        </a>
+                        .
+                      </p>
+                      <label
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          gap: 10,
+                          marginTop: 14,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={disclosureAccepted}
+                          onChange={(e) =>
+                            setDisclosureAccepted(e.target.checked)
+                          }
+                          style={{ marginTop: 3, accentColor: TEAL }}
+                        />
+                        <span
+                          style={{
+                            fontFamily: SORA,
+                            fontSize: 12,
+                            color: INK,
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          I understand and authorize Byzant to access my brokerage account
+                        </span>
+                      </label>
+                    </div>
+
                     <BrokerCard
                       name="Alpaca"
                       desc="Commission-free API trading"
                       available
+                      connectDisabled={!disclosureAccepted}
                       onConnect={() =>
                         setBrokerMessage(
-                          "Coming soon — Alpaca connection will be available at launch."
+                          "Coming soon — broker connection will be available at launch."
                         )
                       }
                     />
@@ -846,12 +930,15 @@ function BrokerCard({
   desc,
   available,
   onConnect,
+  connectDisabled = false,
 }: {
   name: string;
   desc: string;
   available: boolean;
   onConnect?: () => void;
+  connectDisabled?: boolean;
 }) {
+  const buttonEnabled = available && !connectDisabled;
   return (
     <div
       style={{
@@ -917,26 +1004,27 @@ function BrokerCard({
 
       <button
         type="button"
-        disabled={!available}
+        disabled={!buttonEnabled}
         onClick={onConnect}
         style={{
           width: "100%",
           height: 38,
           borderRadius: 999,
-          border: "1px solid " + (available ? TEAL : BORDER),
-          background: available ? TEAL : "transparent",
-          color: available ? "#0a0a0a" : INK_MUTED,
+          border: "1px solid " + (buttonEnabled ? TEAL : BORDER),
+          background: buttonEnabled ? TEAL : "transparent",
+          color: buttonEnabled ? "#0a0a0a" : INK_MUTED,
           fontFamily: SORA,
           fontSize: 13,
           fontWeight: 500,
-          cursor: available ? "pointer" : "not-allowed",
+          cursor: buttonEnabled ? "pointer" : "not-allowed",
           transition: "background 0.15s",
+          opacity: !available || buttonEnabled ? 1 : 0.6,
         }}
         onMouseEnter={(e) => {
-          if (available) e.currentTarget.style.background = "#B2EBE5";
+          if (buttonEnabled) e.currentTarget.style.background = "#B2EBE5";
         }}
         onMouseLeave={(e) => {
-          if (available) e.currentTarget.style.background = TEAL;
+          if (buttonEnabled) e.currentTarget.style.background = TEAL;
         }}
       >
         {available ? "Connect" : "Unavailable"}

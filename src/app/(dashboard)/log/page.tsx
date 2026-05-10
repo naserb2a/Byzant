@@ -19,7 +19,7 @@ interface LogRow {
 }
 
 const ROWS: LogRow[] = [
-  { id: "evt-0042", ts: "2026-04-05 09:31:04", status: "success",  type: "Trade Executed",   agent: "Alpha-1", ticker: "NVDA",  detail: "Long 50sh @ $118.40 · Filled",          sessionId: "sess-2026-04-05-01", notes: "Routed via Alpaca · slippage 0.02%." },
+  { id: "evt-0042", ts: "2026-04-05 09:31:04", status: "success",  type: "Trade Executed",   agent: "Alpha-1", ticker: "NVDA",  detail: "Long 50sh @ $118.40 · Filled",          sessionId: "sess-2026-04-05-01", notes: "Routed via your connected broker · slippage 0.02%." },
   { id: "evt-0041", ts: "2026-04-05 09:30:18", status: "pending",  type: "Approval Request", agent: "Gamma-3", ticker: "XLK",   detail: "Long 30sh @ $214.60 · Awaiting",        sessionId: "sess-2026-04-05-01", notes: "Sector rotation thesis · risk score 64." },
   { id: "evt-0040", ts: "2026-04-05 09:28:55", status: "success",  type: "Module Activated", agent: "Beta-2",  ticker: "—",     detail: "Risk Management Suite v2.1",            sessionId: "sess-2026-04-05-01" },
   { id: "evt-0039", ts: "2026-04-05 09:22:40", status: "declined", type: "Trade Declined",   agent: "Beta-2",  ticker: "QQQ",   detail: "Put spread rejected by user",           sessionId: "sess-2026-04-05-01", notes: "User declined · low conviction signal." },

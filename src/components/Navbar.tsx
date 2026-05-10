@@ -25,7 +25,7 @@ const PRODUCT_ITEMS: { name: string; desc: string; href: string }[] = [
   },
   {
     name: "Congressional Tracker",
-    desc: "Follow the politicians who outperform the market",
+    desc: "Monitor congressional trading disclosures in real time",
     href: "/marketplace",
   },
   {
@@ -36,11 +36,6 @@ const PRODUCT_ITEMS: { name: string; desc: string; href: string }[] = [
   {
     name: "Wheel Strategy Bot",
     desc: "Run the wheel options strategy automatically",
-    href: "/marketplace",
-  },
-  {
-    name: "Copy Trading Bot",
-    desc: "Mirror top-performing traders automatically",
     href: "/marketplace",
   },
 ];

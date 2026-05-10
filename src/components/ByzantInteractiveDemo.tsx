@@ -329,14 +329,6 @@ const MODULES: ModuleRow[] = [
     installedByDefault: false,
   },
   {
-    id: "copy",
-    name: "Copy Trading Bot",
-    category: "EXECUTION",
-    price: "$29/mo",
-    desc: "Mirror top trader moves.",
-    installedByDefault: false,
-  },
-  {
     id: "research",
     name: "AI Research Brief",
     category: "ANALYTICS",
