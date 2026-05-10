@@ -186,6 +186,7 @@ export default function OnboardingPage() {
   // Step 1
   const [brokerMessage, setBrokerMessage] = useState<string | null>(null);
   const [disclosureAccepted, setDisclosureAccepted] = useState(false);
+  const [connectingBroker, setConnectingBroker] = useState(false);
 
   // Step 2
   const [agent, setAgent] = useState<AgentType | null>(null);
@@ -495,11 +496,12 @@ export default function OnboardingPage() {
                       desc="Commission-free API trading"
                       available
                       connectDisabled={!disclosureAccepted}
-                      onConnect={() =>
-                        setBrokerMessage(
-                          "Coming soon — broker connection will be available at launch."
-                        )
-                      }
+                      connecting={connectingBroker}
+                      onConnect={() => {
+                        setBrokerMessage(null);
+                        setConnectingBroker(true);
+                        window.location.href = "/api/broker/alpaca/connect";
+                      }}
                     />
                   </div>
                 </div>
@@ -931,14 +933,16 @@ function BrokerCard({
   available,
   onConnect,
   connectDisabled = false,
+  connecting = false,
 }: {
   name: string;
   desc: string;
   available: boolean;
   onConnect?: () => void;
   connectDisabled?: boolean;
+  connecting?: boolean;
 }) {
-  const buttonEnabled = available && !connectDisabled;
+  const buttonEnabled = available && !connectDisabled && !connecting;
   return (
     <div
       style={{
@@ -1027,7 +1031,7 @@ function BrokerCard({
           if (buttonEnabled) e.currentTarget.style.background = TEAL;
         }}
       >
-        {available ? "Connect" : "Unavailable"}
+        {!available ? "Unavailable" : connecting ? "Connecting…" : "Connect"}
       </button>
     </div>
   );

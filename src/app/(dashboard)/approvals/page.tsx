@@ -1,9 +1,25 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import StatCard from "@/components/dashboard/StatCard";
 import ApprovalCard from "@/components/dashboard/ApprovalCard";
 import TradingViewWidget from "@/components/dashboard/TradingViewWidget";
 import InsightBubble from "@/components/dashboard/InsightBubble";
+
+type PriceState =
+  | { state: "loading" }
+  | { state: "ok"; price: number }
+  | { state: "error" };
+
+function formatPriceDisplay(state: PriceState | undefined, fallback: string) {
+  if (!state) return fallback;
+  if (state.state === "loading") return "…";
+  if (state.state === "error") return "—";
+  return `$${state.price.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+}
 
 const MONO = "inherit";
 const SANS = "inherit";
@@ -55,6 +71,7 @@ function isTradeable(ticker: string): boolean {
 }
 
 export default function ApprovalsPage() {
+  const router = useRouter();
   const [chatMsg, setChatMsg] = useState("");
 
   const tradeableIndexes = useMemo(
@@ -71,6 +88,85 @@ export default function ApprovalsPage() {
     setLiveSymbol(null);
     setLivePrice(null);
   }, [selectedIdx]);
+
+  const entryPriceTickers = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          APPROVALS.filter(
+            (a) => isTradeable(a.ticker) && a.meta[0]?.label === "Entry"
+          ).map((a) => a.ticker)
+        )
+      ),
+    []
+  );
+
+  const [entryPrices, setEntryPrices] = useState<Record<string, PriceState>>(
+    () =>
+      Object.fromEntries(
+        entryPriceTickers.map((t) => [t, { state: "loading" } as PriceState])
+      )
+  );
+
+  useEffect(() => {
+    if (entryPriceTickers.length === 0) return;
+    let cancelled = false;
+    entryPriceTickers.forEach(async (ticker) => {
+      try {
+        const res = await fetch(
+          `/api/broker/alpaca/price?ticker=${encodeURIComponent(ticker)}`,
+          { credentials: "same-origin" }
+        );
+        if (cancelled) return;
+        if (res.status === 401) {
+          router.replace("/auth");
+          return;
+        }
+        if (!res.ok) {
+          setEntryPrices((prev) => ({ ...prev, [ticker]: { state: "error" } }));
+          return;
+        }
+        const data = (await res.json()) as { price?: number };
+        if (cancelled) return;
+        if (typeof data.price === "number") {
+          setEntryPrices((prev) => ({
+            ...prev,
+            [ticker]: { state: "ok", price: data.price as number },
+          }));
+        } else {
+          setEntryPrices((prev) => ({ ...prev, [ticker]: { state: "error" } }));
+        }
+      } catch {
+        if (cancelled) return;
+        setEntryPrices((prev) => ({ ...prev, [ticker]: { state: "error" } }));
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [entryPriceTickers, router]);
+
+  const renderApprovals = useMemo(
+    () =>
+      APPROVALS.map((a) => {
+        if (
+          !isTradeable(a.ticker) ||
+          a.meta[0]?.label !== "Entry"
+        ) {
+          return a;
+        }
+        const live = entryPrices[a.ticker];
+        const display = formatPriceDisplay(live, a.price);
+        return {
+          ...a,
+          price: display,
+          meta: a.meta.map((m, i) =>
+            i === 0 ? { ...m, value: display } : m
+          ),
+        };
+      }),
+    [entryPrices]
+  );
 
   const displaySymbol = liveSymbol;
   const displayPrice =
@@ -97,7 +193,7 @@ export default function ApprovalsPage() {
 
       {/* Approval cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14 }}>
-        {APPROVALS.map((a, i) => {
+        {renderApprovals.map((a, i) => {
           const tradeable = isTradeable(a.ticker);
           return (
             <ApprovalCard
