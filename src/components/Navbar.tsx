@@ -290,7 +290,7 @@ export default function Navbar() {
           />
 
           <Link
-            href="/auth/login"
+            href="/auth"
             className="nav-signin"
             style={{
               fontFamily: DISPLAY,
