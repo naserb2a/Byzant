@@ -1,9 +1,48 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import StatCard from "@/components/dashboard/StatCard";
 import AgentCard from "@/components/dashboard/AgentCard";
 import LineChart from "@/components/dashboard/LineChart";
 import InsightBubble from "@/components/dashboard/InsightBubble";
+
+type LivePosition = {
+  ticker: string;
+  quantity: number | null;
+  side: string;
+  marketValue: number | null;
+  unrealizedProfitLoss: number | null;
+  unrealizedProfitLossPercent: number | null;
+  currentPrice: number | null;
+  averageEntryPrice: number | null;
+};
+
+type PositionsState =
+  | { state: "loading" }
+  | { state: "empty" }
+  | { state: "ok"; positions: LivePosition[] }
+  | { state: "error"; message: string };
+
+function formatCurrency(value: number | null): string {
+  if (value === null) return "—";
+  return `$${value.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
+function formatPercent(value: number | null): string {
+  if (value === null) return "—";
+  const pct = value * 100;
+  const sign = pct >= 0 ? "+" : "";
+  return `${sign}${pct.toFixed(2)}%`;
+}
+
+function formatQty(value: number | null): string {
+  if (value === null) return "—";
+  return value.toLocaleString("en-US", { maximumFractionDigits: 4 });
+}
 
 const MONO = "inherit";
 const SANS = "inherit";
@@ -127,9 +166,53 @@ function Widget({ id, onRemove, children }: { id: string; onRemove: (id: string)
 }
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [visible, setVisible] = useState<string[]>(DEFAULT_VISIBLE);
+  const [positions, setPositions] = useState<PositionsState>({ state: "loading" });
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/broker/alpaca/positions", {
+          credentials: "same-origin",
+        });
+        if (cancelled) return;
+        if (res.status === 401) {
+          router.replace("/auth");
+          return;
+        }
+        if (!res.ok) {
+          let message = "Couldn't load positions.";
+          try {
+            const err = (await res.json()) as { error?: string };
+            if (err.error?.toLowerCase().includes("not connected")) {
+              setPositions({ state: "empty" });
+              return;
+            }
+            if (err.error) message = err.error;
+          } catch {}
+          setPositions({ state: "error", message });
+          return;
+        }
+        const data = (await res.json()) as { positions: LivePosition[] };
+        if (cancelled) return;
+        if (!data.positions || data.positions.length === 0) {
+          setPositions({ state: "empty" });
+        } else {
+          setPositions({ state: "ok", positions: data.positions });
+        }
+      } catch {
+        if (cancelled) return;
+        setPositions({ state: "error", message: "Couldn't load positions." });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
 
   // New Agent modal state
   const [customAgents, setCustomAgents] = useState<AgentRow[]>([]);
@@ -298,6 +381,10 @@ export default function DashboardPage() {
           </div>
         </Widget>
       )}
+
+      {/* Live Positions */}
+      <PositionsSection state={positions} />
+
 
       {/* Bottom 2-col */}
       {(show("portfolio-performance") || show("agent-insights")) && (
@@ -679,6 +766,177 @@ function NewAgentModal({
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function PositionsSection({ state }: { state: PositionsState }) {
+  return (
+    <div
+      style={{
+        background: "var(--db-bg2)",
+        border: "0.5px solid var(--db-border)",
+        borderRadius: 6,
+        padding: 20,
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div>
+          <div style={{ fontSize: 15, fontWeight: 500, color: "var(--db-ink)", fontFamily: SANS }}>
+            Live Positions
+          </div>
+          <div style={{ fontSize: 11, color: "var(--db-ink-muted)", fontFamily: MONO, marginTop: 2 }}>
+            From your connected broker
+          </div>
+        </div>
+      </div>
+
+      {state.state === "loading" && <PositionsSkeleton />}
+      {state.state === "empty" && <PositionsEmpty />}
+      {state.state === "error" && <PositionsError message={state.message} />}
+      {state.state === "ok" && <PositionsTable positions={state.positions} />}
+    </div>
+  );
+}
+
+function PositionsSkeleton() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      {[0, 1, 2].map((i) => (
+        <div
+          key={i}
+          style={{
+            height: 40,
+            background: "var(--db-bg3)",
+            border: "0.5px solid var(--db-border)",
+            borderRadius: 6,
+            opacity: 0.6,
+            animation: "db-pulse 1.4s infinite",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function PositionsEmpty() {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 12,
+        padding: "32px 16px",
+        textAlign: "center",
+      }}
+    >
+      <div style={{ fontSize: 13, color: "var(--db-ink-muted)", fontFamily: SANS, lineHeight: 1.5 }}>
+        No open positions. Connect your broker to get started.
+      </div>
+      <Link
+        href="/onboarding"
+        style={{
+          background: "var(--db-blue)",
+          color: "#0a0a0a",
+          border: "none",
+          borderRadius: 8,
+          padding: "8px 18px",
+          fontSize: 12,
+          fontWeight: 600,
+          fontFamily: SANS,
+          textDecoration: "none",
+          transition: "opacity 0.15s",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+        onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+      >
+        Connect broker
+      </Link>
+    </div>
+  );
+}
+
+function PositionsError({ message }: { message: string }) {
+  return (
+    <div
+      style={{
+        padding: "20px 16px",
+        textAlign: "center",
+        fontSize: 13,
+        color: "var(--db-red)",
+        fontFamily: SANS,
+        lineHeight: 1.5,
+      }}
+    >
+      {message}
+    </div>
+  );
+}
+
+function PositionsTable({ positions }: { positions: LivePosition[] }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1.2fr 0.8fr 0.6fr 1fr 1fr 1fr",
+          gap: 12,
+          padding: "8px 12px",
+          fontSize: 10,
+          fontWeight: 500,
+          letterSpacing: "0.08em",
+          color: "var(--db-ink-muted)",
+          textTransform: "uppercase",
+          fontFamily: MONO,
+          borderBottom: "0.5px solid var(--db-border)",
+        }}
+      >
+        <span>Ticker</span>
+        <span>Qty</span>
+        <span>Side</span>
+        <span>Avg Entry</span>
+        <span>Market Value</span>
+        <span>P/L</span>
+      </div>
+      {positions.map((p) => {
+        const pl = p.unrealizedProfitLoss ?? 0;
+        const plColor = pl >= 0 ? "var(--db-green)" : "var(--db-red)";
+        return (
+          <div
+            key={p.ticker}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1.2fr 0.8fr 0.6fr 1fr 1fr 1fr",
+              gap: 12,
+              padding: "10px 12px",
+              fontSize: 12,
+              fontFamily: MONO,
+              color: "var(--db-ink)",
+              borderBottom: "0.5px solid var(--db-border)",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ fontWeight: 500 }}>{p.ticker}</span>
+            <span>{formatQty(p.quantity)}</span>
+            <span style={{ color: "var(--db-ink-muted)", textTransform: "uppercase", fontSize: 11 }}>
+              {p.side || "—"}
+            </span>
+            <span>{formatCurrency(p.averageEntryPrice)}</span>
+            <span>{formatCurrency(p.marketValue)}</span>
+            <span style={{ color: plColor }}>
+              {formatCurrency(p.unrealizedProfitLoss)}{" "}
+              <span style={{ fontSize: 10, opacity: 0.85 }}>
+                ({formatPercent(p.unrealizedProfitLossPercent)})
+              </span>
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }
