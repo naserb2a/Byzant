@@ -2077,11 +2077,11 @@ function Footer() {
           </p>
           <p style={{ fontFamily: SYS, fontSize: 12, color: FAINT, margin: 0 }}>
             <Link href="/privacy" style={{ color: FAINT, textDecoration: "none" }}>
-              Privacy
+              Privacy Policy
             </Link>
             {" · "}
             <Link href="/terms" style={{ color: FAINT, textDecoration: "none" }}>
-              Terms
+              Terms of Service
             </Link>
           </p>
         </div>
