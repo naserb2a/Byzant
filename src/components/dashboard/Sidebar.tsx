@@ -9,6 +9,7 @@ import {
   Store,
   LineChart,
   FileText,
+  Waves,
   Settings as SettingsIcon,
   type LucideIcon,
 } from "lucide-react";
@@ -23,6 +24,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", Icon: LayoutDashboard },
   { label: "Approvals", href: "/approvals", Icon: CheckCircle2, badge: PENDING_APPROVALS },
   { label: "Marketplace", href: "/marketplace", Icon: Store },
+  { label: "Whale Tracker", href: "/whale-tracker", Icon: Waves },
   { label: "Analytics", href: "/analytics", Icon: LineChart },
   { label: "Agent Log", href: "/log", Icon: FileText },
 ];
