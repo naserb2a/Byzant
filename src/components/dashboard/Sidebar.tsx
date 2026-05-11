@@ -9,6 +9,7 @@ import {
   Store,
   LineChart,
   FileText,
+  Landmark,
   Waves,
   Settings as SettingsIcon,
   type LucideIcon,
@@ -25,6 +26,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Approvals", href: "/approvals", Icon: CheckCircle2, badge: PENDING_APPROVALS },
   { label: "Marketplace", href: "/marketplace", Icon: Store },
   { label: "Whale Tracker", href: "/whale-tracker", Icon: Waves },
+  { label: "Congressional Tracker", href: "/congressional-tracker", Icon: Landmark },
   { label: "Analytics", href: "/analytics", Icon: LineChart },
   { label: "Agent Log", href: "/log", Icon: FileText },
 ];

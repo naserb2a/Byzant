@@ -11,6 +11,7 @@ const PAGE_TITLES: { prefix: string; label: string }[] = [
   { prefix: "/marketplace", label: "Marketplace" },
   { prefix: "/analytics", label: "Analytics" },
   { prefix: "/whale-tracker", label: "Whale Tracker" },
+  { prefix: "/congressional-tracker", label: "Congressional Tracker" },
   { prefix: "/log", label: "Agent Log" },
   { prefix: "/roadmap", label: "Roadmap" },
   { prefix: "/settings", label: "Settings" },
