@@ -726,6 +726,21 @@ function FeatureTwo() {
 
 /* ─── Feature 3 — Whale Tracker JSON ──────────────────────────── */
 function WhaleJSON() {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const scanlineRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const content = contentRef.current;
+    const scanline = scanlineRef.current;
+    if (!content || !scanline) return;
+    const height = content.scrollHeight;
+    const anim = scanline.animate(
+      [{ transform: "translateY(0)" }, { transform: `translateY(${height}px)` }],
+      { duration: 22000, iterations: Infinity, easing: "linear" }
+    );
+    return () => anim.cancel();
+  }, []);
+
   const records = [
     {
       ticker: "NVDA",
@@ -927,13 +942,14 @@ function WhaleJSON() {
           overflowX: "hidden",
         }}
       >
-        <div style={{ position: "relative" }}>
+        <div ref={contentRef} style={{ position: "relative" }}>
           <div style={{ color: "#888888" }}>[</div>
           <div style={{ paddingLeft: 16 }}>{records.map(renderRecord)}</div>
           <div style={{ color: "#888888" }}>]</div>
 
           {/* Scanline */}
           <div
+            ref={scanlineRef}
             aria-hidden
             style={{
               position: "absolute",
@@ -944,7 +960,6 @@ function WhaleJSON() {
               background:
                 "linear-gradient(180deg, rgba(153,225,217,0) 0%, rgba(153,225,217,0.18) 50%, rgba(153,225,217,0) 100%)",
               pointerEvents: "none",
-              animation: "scanline 22s linear infinite",
             }}
           />
         </div>
@@ -2106,14 +2121,6 @@ function GlobalStyles() {
         50% {
           opacity: 0.5;
           transform: scale(0.85);
-        }
-      }
-      @keyframes scanline {
-        0% {
-          transform: translateY(0);
-        }
-        100% {
-          transform: translateY(2617px);
         }
       }
       .whale-scroll::-webkit-scrollbar {
