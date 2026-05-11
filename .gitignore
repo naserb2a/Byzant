@@ -37,4 +37,12 @@ next-env.d.ts
 
 # secrets / credentials
 client_secret_*.json
-Byzant_API_Keys.txt.pages
+Byzant_API_Keys*.*
+*.pages
+
+# non-project files at repo root
+*.dmg
+*.docx
+CLAUDE 2.md
+Byzant_Blueprint_*
+/*.svg
