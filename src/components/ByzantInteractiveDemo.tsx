@@ -110,9 +110,38 @@ function ArrowRightIcon({ size = 11, color = "currentColor" }: IconProps) {
     </svg>
   );
 }
+function WavesIcon({ size = 14, color = "currentColor" }: IconProps) {
+  return (
+    <svg {...baseSvg(size, color)}>
+      <path d="M2 6c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2" />
+      <path d="M2 12c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2" />
+      <path d="M2 18c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2" />
+    </svg>
+  );
+}
+function LandmarkIcon({ size = 14, color = "currentColor" }: IconProps) {
+  return (
+    <svg {...baseSvg(size, color)}>
+      <line x1="3" y1="22" x2="21" y2="22" />
+      <line x1="3" y1="11" x2="21" y2="11" />
+      <polyline points="3 11 12 4 21 11" />
+      <line x1="6" y1="11" x2="6" y2="22" />
+      <line x1="10" y1="11" x2="10" y2="22" />
+      <line x1="14" y1="11" x2="14" y2="22" />
+      <line x1="18" y1="11" x2="18" y2="22" />
+    </svg>
+  );
+}
 
 /* ─── Types ───────────────────────────────────────────────────── */
-type ViewKey = "approvals" | "dashboard" | "marketplace" | "analytics" | "log";
+type ViewKey =
+  | "approvals"
+  | "dashboard"
+  | "marketplace"
+  | "analytics"
+  | "log"
+  | "whale"
+  | "congress";
 type AgentKey = "alpha" | "gamma" | "beta";
 type ApprovalStatus = "pending" | "approved" | "declined";
 
@@ -154,6 +183,8 @@ const NAV: { key: ViewKey; label: string; Icon: React.ComponentType<IconProps>; 
   { key: "dashboard", label: "Dashboard", Icon: GridIcon },
   { key: "approvals", label: "Approvals", Icon: CheckIcon, badge: 3 },
   { key: "marketplace", label: "Marketplace", Icon: StoreIcon },
+  { key: "whale", label: "Whale Tracker", Icon: WavesIcon },
+  { key: "congress", label: "Congressional Tracker", Icon: LandmarkIcon },
   { key: "analytics", label: "Analytics", Icon: ChartIcon },
   { key: "log", label: "Agent Log", Icon: ListIcon },
 ];
@@ -492,6 +523,59 @@ const LOG_EVENTS: LogEvent[] = [
   },
 ];
 
+/* ─── Whale Tracker mock data ─────────────────────────────────── */
+type WhaleFlow = {
+  ticker: string;
+  type: "CALL" | "PUT";
+  strike: string;
+  expiry: string;
+  dte: number;
+  premium: string;
+  openInterest: string;
+  sentiment: "BULLISH" | "BEARISH";
+  iv: string;
+};
+
+const WHALE_FLOWS: WhaleFlow[] = [
+  { ticker: "NVDA", type: "CALL", strike: "$145", expiry: "May 16, '26", dte: 5, premium: "$24.8M", openInterest: "18,420", sentiment: "BULLISH", iv: "62.4%" },
+  { ticker: "TSLA", type: "PUT", strike: "$180", expiry: "Jun 20, '26", dte: 40, premium: "$18.2M", openInterest: "9,840", sentiment: "BEARISH", iv: "71.2%" },
+  { ticker: "SPY", type: "CALL", strike: "$560", expiry: "May 30, '26", dte: 19, premium: "$15.6M", openInterest: "42,180", sentiment: "BULLISH", iv: "14.8%" },
+  { ticker: "AAPL", type: "CALL", strike: "$220", expiry: "Jul 18, '26", dte: 68, premium: "$12.4M", openInterest: "24,560", sentiment: "BULLISH", iv: "28.6%" },
+  { ticker: "QQQ", type: "PUT", strike: "$480", expiry: "May 16, '26", dte: 5, premium: "$11.9M", openInterest: "31,240", sentiment: "BEARISH", iv: "22.4%" },
+  { ticker: "AMD", type: "CALL", strike: "$185", expiry: "Jun 20, '26", dte: 40, premium: "$8.7M", openInterest: "14,820", sentiment: "BULLISH", iv: "48.2%" },
+  { ticker: "META", type: "PUT", strike: "$580", expiry: "Jun 6, '26", dte: 26, premium: "$7.1M", openInterest: "8,640", sentiment: "BEARISH", iv: "38.9%" },
+  { ticker: "MSFT", type: "CALL", strike: "$480", expiry: "Aug 15, '26", dte: 96, premium: "$6.4M", openInterest: "12,180", sentiment: "BULLISH", iv: "24.8%" },
+  { ticker: "NVDA", type: "CALL", strike: "$160", expiry: "May 30, '26", dte: 19, premium: "$5.2M", openInterest: "21,840", sentiment: "BULLISH", iv: "64.8%" },
+];
+
+const WHALE_FILTERS = ["ALL", "CALLS", "PUTS", "BULLISH", "BEARISH"] as const;
+type WhaleFilter = (typeof WHALE_FILTERS)[number];
+
+/* ─── Congressional Tracker mock data ─────────────────────────── */
+type CongressTrade = {
+  politician: string;
+  party: "Democrat" | "Republican";
+  ticker: string;
+  type: "BUY" | "SELL";
+  amount: string;
+  date: string;
+};
+
+const CONGRESS_TRADES: CongressTrade[] = [
+  { politician: "Nancy Pelosi", party: "Democrat", ticker: "NVDA", type: "BUY", amount: "$1,000,001 - $5,000,000", date: "May 6, '26" },
+  { politician: "Dan Crenshaw", party: "Republican", ticker: "LMT", type: "BUY", amount: "$50,001 - $100,000", date: "May 5, '26" },
+  { politician: "Alexandria Ocasio-Cortez", party: "Democrat", ticker: "TSLA", type: "SELL", amount: "$15,001 - $50,000", date: "May 4, '26" },
+  { politician: "Mitch McConnell", party: "Republican", ticker: "XOM", type: "BUY", amount: "$250,001 - $500,000", date: "May 2, '26" },
+  { politician: "Michael McCaul", party: "Republican", ticker: "RTX", type: "BUY", amount: "$100,001 - $250,000", date: "Apr 30, '26" },
+  { politician: "Ted Cruz", party: "Republican", ticker: "META", type: "SELL", amount: "$50,001 - $100,000", date: "Apr 29, '26" },
+  { politician: "Nancy Pelosi", party: "Democrat", ticker: "GOOGL", type: "BUY", amount: "$500,001 - $1,000,000", date: "Apr 27, '26" },
+  { politician: "Alexandria Ocasio-Cortez", party: "Democrat", ticker: "AAPL", type: "BUY", amount: "$1,001 - $15,000", date: "Apr 24, '26" },
+  { politician: "Dan Crenshaw", party: "Republican", ticker: "BA", type: "SELL", amount: "$15,001 - $50,000", date: "Apr 22, '26" },
+];
+
+const CONGRESS_FILTERS = ["ALL", "DEMOCRAT", "REPUBLICAN"] as const;
+type CongressFilter = (typeof CONGRESS_FILTERS)[number];
+
 /* ─── Component-scoped keyframes ──────────────────────────────── */
 const SCOPED_STYLES = `
   @keyframes demo-fade-in {
@@ -606,6 +690,8 @@ export default function ByzantInteractiveDemo() {
                 onInstall={handleInstall}
               />
             )}
+            {view === "whale" && <WhaleTrackerView />}
+            {view === "congress" && <CongressionalTrackerView />}
             {view === "analytics" && <AnalyticsView />}
             {view === "log" && <AgentLogView />}
           </div>
@@ -2075,6 +2161,393 @@ function interpolatePoint(x: number, data: ChartPoint[]): { x: number; y: number
 }
 
 /* ─── Agent Log view ──────────────────────────────────────────── */
+/* ─── Shared pill (CALL/PUT, BUY/SELL, BULLISH/BEARISH, party) ─ */
+function Pill({
+  tone,
+  children,
+}: {
+  tone: "teal" | "red";
+  children: React.ReactNode;
+}) {
+  const palette =
+    tone === "teal"
+      ? { color: TEAL, bg: "rgba(153,225,217,0.10)" }
+      : { color: RED, bg: "rgba(248,113,113,0.10)" };
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        padding: "2px 7px",
+        borderRadius: 4,
+        background: palette.bg,
+        color: palette.color,
+        fontSize: 9,
+        fontWeight: 700,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+/* ─── Live badge (used by Whale + Congress headers) ───────────── */
+function LiveBadge({ label }: { label: string }) {
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        fontSize: 10,
+        color: FAINT,
+        letterSpacing: "0.1em",
+        textTransform: "uppercase",
+        fontWeight: 600,
+      }}
+    >
+      <span
+        style={{
+          width: 6,
+          height: 6,
+          borderRadius: "50%",
+          background: TEAL,
+          boxShadow: `0 0 8px ${TEAL}`,
+          animation: "demo-pulse-dot 1.6s ease-in-out infinite",
+        }}
+      />
+      {label}
+    </div>
+  );
+}
+
+/* ─── Filter pill row (decorative — visual toggle only) ───────── */
+function FilterPills<T extends string>({
+  options,
+  active,
+  onSelect,
+}: {
+  options: readonly T[];
+  active: T;
+  onSelect: (v: T) => void;
+}) {
+  return (
+    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+      {options.map((opt) => {
+        const isActive = opt === active;
+        return (
+          <button
+            key={opt}
+            type="button"
+            onClick={() => onSelect(opt)}
+            onMouseEnter={(e) => {
+              if (!isActive) {
+                e.currentTarget.style.color = INK;
+                e.currentTarget.style.borderColor = BORDER_STRONG;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isActive) {
+                e.currentTarget.style.color = MUTED;
+                e.currentTarget.style.borderColor = BORDER;
+              }
+            }}
+            style={{
+              appearance: "none",
+              padding: "5px 12px",
+              borderRadius: 999,
+              border: `1px solid ${isActive ? "rgba(153,225,217,0.25)" : BORDER}`,
+              background: isActive ? "rgba(153,225,217,0.1)" : SURFACE,
+              color: isActive ? TEAL : MUTED,
+              fontFamily: SYS,
+              fontSize: 10,
+              fontWeight: isActive ? 600 : 500,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+              transition: "background 120ms ease, color 120ms ease, border-color 120ms ease",
+            }}
+          >
+            {opt}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ─── Whale Tracker view ──────────────────────────────────────── */
+function WhaleTrackerView() {
+  const [filter, setFilter] = useState<WhaleFilter>("ALL");
+  const cols = "60px 52px 64px 84px 44px 76px 70px 86px minmax(0, 56px)";
+
+  return (
+    <div
+      style={{
+        padding: 22,
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+        flex: 1,
+        minHeight: 0,
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          gap: 16,
+        }}
+      >
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 600, color: INK, letterSpacing: "-0.005em" }}>
+            Whale Tracker
+          </div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 3 }}>
+            Unusual options flow &amp; dark pool activity
+          </div>
+        </div>
+        <LiveBadge label="Live · Barchart Unusual Activity" />
+      </div>
+
+      <FilterPills options={WHALE_FILTERS} active={filter} onSelect={setFilter} />
+
+      <div
+        style={{
+          background: SURFACE,
+          border: `1px solid ${BORDER}`,
+          borderRadius: 8,
+          flex: 1,
+          minHeight: 0,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: cols,
+            gap: 10,
+            padding: "10px 14px",
+            borderBottom: `1px solid ${BORDER}`,
+            background: "rgba(255,255,255,0.02)",
+            fontSize: 9,
+            letterSpacing: "0.14em",
+            color: FAINT,
+            fontWeight: 600,
+            textTransform: "uppercase",
+          }}
+        >
+          <span>Ticker</span>
+          <span>Type</span>
+          <span style={{ textAlign: "right" }}>Strike</span>
+          <span>Expiry</span>
+          <span style={{ textAlign: "right" }}>DTE</span>
+          <span style={{ textAlign: "right" }}>Premium</span>
+          <span style={{ textAlign: "right" }}>OI</span>
+          <span>Sentiment</span>
+          <span style={{ textAlign: "right" }}>IV</span>
+        </div>
+        <div style={{ flex: 1, overflowY: "auto" }}>
+          {WHALE_FLOWS.map((r, i) => (
+            <div
+              key={i}
+              className="bzd-row"
+              style={{
+                display: "grid",
+                gridTemplateColumns: cols,
+                gap: 10,
+                padding: "11px 14px",
+                borderBottom: i < WHALE_FLOWS.length - 1 ? `1px solid ${BORDER}` : "none",
+                alignItems: "center",
+                fontSize: 12,
+                transition: "background 120ms ease",
+              }}
+            >
+              <span style={{ color: TEAL, fontWeight: 700, fontSize: 13, letterSpacing: "0.04em" }}>
+                {r.ticker}
+              </span>
+              <Pill tone={r.type === "CALL" ? "teal" : "red"}>{r.type}</Pill>
+              <span style={{ textAlign: "right", color: INK, fontVariantNumeric: "tabular-nums" }}>
+                {r.strike}
+              </span>
+              <span style={{ color: MUTED, fontSize: 11.5 }}>{r.expiry}</span>
+              <span
+                style={{
+                  textAlign: "right",
+                  color: r.dte <= 7 ? AMBER : MUTED,
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                {r.dte}d
+              </span>
+              <span
+                style={{
+                  textAlign: "right",
+                  color: INK,
+                  fontWeight: 600,
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                {r.premium}
+              </span>
+              <span
+                style={{
+                  textAlign: "right",
+                  color: MUTED,
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                {r.openInterest}
+              </span>
+              <Pill tone={r.sentiment === "BULLISH" ? "teal" : "red"}>{r.sentiment}</Pill>
+              <span
+                style={{
+                  textAlign: "right",
+                  color: MUTED,
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                {r.iv}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Congressional Tracker view ──────────────────────────────── */
+function CongressionalTrackerView() {
+  const [filter, setFilter] = useState<CongressFilter>("ALL");
+  const cols = "minmax(0, 1.4fr) 96px 64px 52px minmax(0, 1.4fr) 80px";
+
+  return (
+    <div
+      style={{
+        padding: 22,
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+        flex: 1,
+        minHeight: 0,
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          gap: 16,
+        }}
+      >
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 600, color: INK, letterSpacing: "-0.005em" }}>
+            Congressional Tracker
+          </div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 3 }}>
+            Real-time congressional trade disclosures
+          </div>
+        </div>
+        <LiveBadge label="Live · Capitol Trades" />
+      </div>
+
+      <FilterPills options={CONGRESS_FILTERS} active={filter} onSelect={setFilter} />
+
+      <div
+        style={{
+          background: SURFACE,
+          border: `1px solid ${BORDER}`,
+          borderRadius: 8,
+          flex: 1,
+          minHeight: 0,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: cols,
+            gap: 10,
+            padding: "10px 14px",
+            borderBottom: `1px solid ${BORDER}`,
+            background: "rgba(255,255,255,0.02)",
+            fontSize: 9,
+            letterSpacing: "0.14em",
+            color: FAINT,
+            fontWeight: 600,
+            textTransform: "uppercase",
+          }}
+        >
+          <span>Politician</span>
+          <span>Party</span>
+          <span>Ticker</span>
+          <span>Type</span>
+          <span>Amount</span>
+          <span>Date</span>
+        </div>
+        <div style={{ flex: 1, overflowY: "auto" }}>
+          {CONGRESS_TRADES.map((r, i) => (
+            <div
+              key={i}
+              className="bzd-row"
+              style={{
+                display: "grid",
+                gridTemplateColumns: cols,
+                gap: 10,
+                padding: "11px 14px",
+                borderBottom: i < CONGRESS_TRADES.length - 1 ? `1px solid ${BORDER}` : "none",
+                alignItems: "center",
+                fontSize: 12,
+                transition: "background 120ms ease",
+              }}
+            >
+              <span
+                style={{
+                  color: INK,
+                  fontWeight: 500,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {r.politician}
+              </span>
+              <Pill tone={r.party === "Democrat" ? "teal" : "red"}>{r.party}</Pill>
+              <span style={{ color: TEAL, fontWeight: 700, fontSize: 13, letterSpacing: "0.04em" }}>
+                {r.ticker}
+              </span>
+              <Pill tone={r.type === "BUY" ? "teal" : "red"}>{r.type}</Pill>
+              <span
+                style={{
+                  color: MUTED,
+                  fontSize: 11.5,
+                  fontVariantNumeric: "tabular-nums",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {r.amount}
+              </span>
+              <span style={{ color: MUTED, fontSize: 11.5 }}>{r.date}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function AgentLogView() {
   return (
     <div
