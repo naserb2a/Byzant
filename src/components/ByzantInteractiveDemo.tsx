@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /* ─── Tokens ──────────────────────────────────────────────────── */
 const SYS =
@@ -606,6 +606,15 @@ export default function ByzantInteractiveDemo() {
     () => new Set(MODULES.filter((m) => m.installedByDefault).map((m) => m.id))
   );
   const [installing, setInstalling] = useState<Set<string>>(() => new Set());
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<ViewKey>).detail;
+      if (detail) setView(detail);
+    };
+    window.addEventListener("byzant:demo-set-view", handler);
+    return () => window.removeEventListener("byzant:demo-set-view", handler);
+  }, []);
 
   const handleInstall = (id: string) => {
     setInstalling((prev) => {

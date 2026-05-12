@@ -165,9 +165,11 @@ function Hero() {
         </motion.div>
 
         <motion.div
+          id="byzant-demo"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          style={{ scrollMarginTop: 80 }}
         >
           <ByzantInteractiveDemo />
         </motion.div>
@@ -354,7 +356,42 @@ function FeatureHeader({
   );
 }
 
-function ReferenceLabel({ children, invert = false }: { children: React.ReactNode; invert?: boolean }) {
+type DemoViewKey =
+  | "approvals"
+  | "dashboard"
+  | "marketplace"
+  | "analytics"
+  | "log"
+  | "whale"
+  | "congress";
+
+function ReferenceLabel({
+  children,
+  invert = false,
+  target,
+}: {
+  children: React.ReactNode;
+  invert?: boolean;
+  target?: DemoViewKey;
+}) {
+  const color = invert ? "#666666" : FAINT;
+  const labelStyle: React.CSSProperties = {
+    fontFamily: DISPLAY,
+    fontSize: 11,
+    letterSpacing: "0.08em",
+    color,
+  };
+
+  const handleClick = () => {
+    if (!target) return;
+    window.dispatchEvent(
+      new CustomEvent<DemoViewKey>("byzant:demo-set-view", { detail: target })
+    );
+    document
+      .getElementById("byzant-demo")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <div
       style={{
@@ -363,16 +400,26 @@ function ReferenceLabel({ children, invert = false }: { children: React.ReactNod
         marginTop: 60,
       }}
     >
-      <span
-        style={{
-          fontFamily: DISPLAY,
-          fontSize: 11,
-          letterSpacing: "0.08em",
-          color: invert ? "#666666" : FAINT,
-        }}
-      >
-        {children}
-      </span>
+      {target ? (
+        <button
+          type="button"
+          onClick={handleClick}
+          style={{
+            ...labelStyle,
+            background: "transparent",
+            border: "none",
+            padding: 0,
+            margin: 0,
+            cursor: "pointer",
+            font: "inherit",
+            fontFamily: DISPLAY,
+          }}
+        >
+          {children}
+        </button>
+      ) : (
+        <span style={labelStyle}>{children}</span>
+      )}
     </div>
   );
 }
@@ -490,7 +537,7 @@ function FeatureOne() {
           ))}
         </div>
 
-        <ReferenceLabel>01 · Marketplace →</ReferenceLabel>
+        <ReferenceLabel target="marketplace">01 · Marketplace →</ReferenceLabel>
       </div>
     </section>
   );
@@ -718,7 +765,7 @@ function FeatureTwo() {
           <ApprovalCard />
         </Reveal>
 
-        <ReferenceLabel>02 · Approvals →</ReferenceLabel>
+        <ReferenceLabel target="approvals">02 · Approvals →</ReferenceLabel>
       </div>
     </section>
   );
@@ -980,7 +1027,7 @@ function FeatureThree() {
         <Reveal>
           <WhaleJSON />
         </Reveal>
-        <ReferenceLabel invert>03 · Whale Tracker →</ReferenceLabel>
+        <ReferenceLabel invert target="whale">03 · Whale Tracker →</ReferenceLabel>
       </div>
     </section>
   );
@@ -1658,7 +1705,7 @@ function FeatureFour() {
       </div>
 
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "60px 0 120px" }}>
-        <ReferenceLabel>04 · Signal to Execution →</ReferenceLabel>
+        <ReferenceLabel target="log">04 · Signal to Execution →</ReferenceLabel>
       </div>
     </section>
   );
