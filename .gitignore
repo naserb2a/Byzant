@@ -49,3 +49,4 @@ Byzant_Blueprint_*
 
 # claude code working files (session handoffs, plans, etc.)
 .claude/
+.gstack/
