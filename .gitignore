@@ -46,3 +46,6 @@ Byzant_API_Keys*.*
 CLAUDE 2.md
 Byzant_Blueprint_*
 /*.svg
+
+# claude code working files (session handoffs, plans, etc.)
+.claude/
