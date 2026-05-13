@@ -229,16 +229,29 @@ function ProductDropdown() {
 export default function Navbar() {
   const pathname = usePathname();
   const isPricing = pathname === "/pricing";
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <header
       style={{
-        position: "sticky",
+        position: "fixed",
         top: 0,
+        left: 0,
+        right: 0,
         zIndex: 50,
-        background: "rgba(0,0,0,0.8)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
+        background: scrolled ? "rgba(0,0,0,0.85)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
+        borderBottom: `1px solid ${scrolled ? "rgba(255,255,255,0.08)" : "transparent"}`,
+        transition:
+          "background 150ms ease, border-color 150ms ease, backdrop-filter 150ms ease, -webkit-backdrop-filter 150ms ease",
       }}
     >
       <div
