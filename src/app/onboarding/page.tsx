@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { createClient } from "@/lib/supabase/client";
 
 const SORA = "var(--font-sora)";
 const BG = "#0a0a0a";
@@ -192,7 +191,9 @@ export default function OnboardingPage() {
   // Step 2
   const [agent, setAgent] = useState<AgentType | null>(null);
   const [subStep, setSubStep] = useState<SubStep>("fork");
-  const [mcpUserId, setMcpUserId] = useState<string | null>(null);
+  const [mcpApiKey, setMcpApiKey] = useState<string | null>(null);
+  const [apiKeyLoading, setApiKeyLoading] = useState(false);
+  const [apiKeyError, setApiKeyError] = useState<string | null>(null);
   const [keyCopied, setKeyCopied] = useState(false);
   const [urlCopied, setUrlCopied] = useState(false);
 
@@ -203,19 +204,54 @@ export default function OnboardingPage() {
   const canFinish = agent !== null;
 
   useEffect(() => {
-    if (subStep !== "byo" || mcpUserId) return;
+    if (subStep !== "byo" || mcpApiKey) return;
     let cancelled = false;
     (async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!cancelled && user) setMcpUserId(user.id);
-    })();
+      setApiKeyLoading(true);
+      setApiKeyError(null);
+
+      const response = await fetch("/api/keys/generate", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+        throw new Error(data?.error ?? "Failed to generate API key.");
+      }
+
+      const data = (await response.json()) as {
+        apiKey?: string;
+      };
+
+      if (!data.apiKey) {
+        throw new Error("Failed to generate API key.");
+      }
+
+      if (!cancelled) {
+        setMcpApiKey(data.apiKey);
+      }
+    })()
+      .catch((error) => {
+        if (!cancelled) {
+          setApiKeyError(
+            error instanceof Error
+              ? error.message
+              : "Failed to generate API key."
+          );
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setApiKeyLoading(false);
+        }
+      });
+
     return () => {
       cancelled = true;
     };
-  }, [subStep, mcpUserId]);
+  }, [subStep, mcpApiKey]);
 
   async function handleFinish(userType: UserType, selectedModel: AgentType) {
     setSubmitting(true);
@@ -810,7 +846,9 @@ export default function OnboardingPage() {
                       />
 
                       <MCPCredentialsCard
-                        userId={mcpUserId}
+                        apiKey={mcpApiKey}
+                        loading={apiKeyLoading}
+                        error={apiKeyError}
                         keyCopied={keyCopied}
                         urlCopied={urlCopied}
                         onCopyKey={(value) => {
@@ -855,6 +893,7 @@ export default function OnboardingPage() {
                       >
                         <BackButton onClick={() => setSubStep("fork")} />
                         <PrimaryButton
+                          disabled={!mcpApiKey || !!apiKeyError}
                           loading={submitting}
                           onClick={() => handleFinish("byo", "other")}
                         >
@@ -1135,21 +1174,25 @@ function ForkCard({
 }
 
 function MCPCredentialsCard({
-  userId,
+  apiKey,
+  loading,
+  error,
   keyCopied,
   urlCopied,
   onCopyKey,
   onCopyUrl,
 }: {
-  userId: string | null;
+  apiKey: string | null;
+  loading: boolean;
+  error: string | null;
   keyCopied: boolean;
   urlCopied: boolean;
   onCopyKey: (value: string) => void;
   onCopyUrl: (value: string) => void;
 }) {
-  const apiKey = userId ? `byzant_sk_${userId.slice(0, 24)}` : "…";
-  const endpoint = userId ? `mcp://connect.byzant.ai/${userId}` : "…";
-  const ready = !!userId;
+  const endpoint = "https://byzant.ai/api/mcp";
+  const apiKeyValue = loading ? "Generating…" : apiKey ?? "Unable to generate key";
+  const ready = !!apiKey && !loading && !error;
 
   return (
     <div
@@ -1178,18 +1221,33 @@ function MCPCredentialsCard({
 
       <CredentialRow
         label="API Key"
-        value={apiKey}
+        value={apiKeyValue}
         copied={keyCopied}
         ready={ready}
-        onCopy={() => onCopyKey(apiKey)}
+        onCopy={() => {
+          if (apiKey) onCopyKey(apiKey);
+        }}
       />
       <CredentialRow
         label="MCP Endpoint"
         value={endpoint}
         copied={urlCopied}
-        ready={ready}
+        ready
         onCopy={() => onCopyUrl(endpoint)}
       />
+
+      {error && (
+        <div
+          style={{
+            fontFamily: SORA,
+            fontSize: 12,
+            color: "#f87171",
+            lineHeight: 1.5,
+          }}
+        >
+          {error}
+        </div>
+      )}
 
       <div
         style={{
@@ -1201,6 +1259,7 @@ function MCPCredentialsCard({
           borderTop: "1px solid " + BORDER,
         }}
       >
+        This key is shown once. Store it somewhere safe before continuing.{" "}
         Need help wiring up MCP?{" "}
         <Link
           href="/docs/mcp"

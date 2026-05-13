@@ -39,6 +39,7 @@
  */
 
 import { NextResponse } from "next/server";
+import { validateByzantApiKey } from "@/lib/api-keys/byzant-api-keys";
 import { getCongressionalTrades } from "@/lib/mcp/tools/congressional-trades";
 import { getWhaleFlow } from "@/lib/mcp/tools/whale-flow";
 
@@ -63,6 +64,8 @@ const CORS_HEADERS = {
 };
 
 const JSON_RPC_VERSION = "2.0";
+const UNAUTHORIZED_CODE = -32001;
+const UNAUTHORIZED_MESSAGE = "Unauthorized — valid Byzant API key required";
 
 const TOOLS = [
   {
@@ -165,6 +168,16 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
+function extractBearerToken(request: Request): string | null {
+  const authorization = request.headers.get("authorization");
+  if (!authorization) {
+    return null;
+  }
+
+  const match = authorization.match(/^Bearer\s+(.+)$/i);
+  return match?.[1]?.trim() ?? null;
+}
+
 function getToolCallParams(params: unknown): ToolCallParams | null {
   if (!isObject(params)) {
     return null;
@@ -251,7 +264,6 @@ export async function OPTIONS() {
 }
 
 export async function POST(request: Request) {
-  // TODO: validate byzant_sk_ API key against Supabase keys table — Phase 2 auth layer
   let body: McpRequest;
 
   try {
@@ -266,6 +278,11 @@ export async function POST(request: Request) {
 
   if (body.jsonrpc !== JSON_RPC_VERSION || typeof body.method !== "string") {
     return jsonRpcError(body.id, -32600, "Invalid request");
+  }
+
+  const apiKey = extractBearerToken(request);
+  if (!apiKey || !(await validateByzantApiKey(apiKey))) {
+    return jsonRpcError(body.id, UNAUTHORIZED_CODE, UNAUTHORIZED_MESSAGE);
   }
 
   if (body.method === "tools/list") {
