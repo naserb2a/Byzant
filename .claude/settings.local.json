@@ -35,7 +35,19 @@
       "Bash(git push:*)",
       "Skill(update-config)",
       "Bash(chmod +x *)",
-      "Read(//Users/naserb2a/**)"
+      "Read(//Users/naserb2a/**)",
+      "Bash(git check-ignore *)",
+      "Skill(gstack)",
+      "Bash(./setup)",
+      "Bash(export BUN_INSTALL=\"$HOME/.bun\")",
+      "Bash(export PATH=\"$BUN_INSTALL/bin:$PATH\")",
+      "Bash(node ./node_modules/typescript/bin/tsc --noEmit)",
+      "Bash(lsof -ti:3000)",
+      "Bash(echo \"started, pid=$!\")",
+      "Bash(grep -i -E \"position.{0,5}fixed|backdrop|byzant\")",
+      "Bash(grep -oE 'position:fixed[^\"]{0,200}')",
+      "Bash(grep -oE 'backdrop-filter[^\"]{0,80}')",
+      "Bash(kill 13894)"
     ]
   },
   "model": "claude-opus-4-7"
