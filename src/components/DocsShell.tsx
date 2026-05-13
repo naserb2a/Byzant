@@ -70,47 +70,21 @@ export default function DocsShell({
       <div
         className="docs-shell-container"
         style={{
-          maxWidth: 1100,
-          margin: 0,
-          padding: `${CONTENT_TOP_PAD}px 40px 120px 40px`,
+          maxWidth: 760,
+          margin: "0 auto",
+          padding: `${CONTENT_TOP_PAD}px 24px 120px 24px`,
         }}
       >
-        <div
-          className="docs-shell-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 680px) 200px",
-            gap: 80,
-            alignItems: "start",
-          }}
-        >
-          <main style={{ maxWidth: 680, minWidth: 0 }}>{children}</main>
-          <aside
-            className="docs-shell-toc"
-            style={{
-              width: 200,
-              position: "sticky",
-              top: CONTENT_TOP_PAD,
-              alignSelf: "start",
-            }}
-          >
-            {toc}
-          </aside>
-        </div>
+        {children}
       </div>
+
+      {toc}
 
       <style jsx global>{`
         @media (max-width: 960px) {
-          .docs-shell-grid {
-            grid-template-columns: minmax(0, 1fr) !important;
-            gap: 0 !important;
-          }
-          .docs-shell-toc {
-            display: none !important;
-          }
           .docs-shell-container {
-            padding-left: 24px !important;
-            padding-right: 24px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
           }
         }
       `}</style>

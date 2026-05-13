@@ -544,40 +544,51 @@ function TabsStrip({
   );
 }
 
+const TOC_BAR_INACTIVE = "rgba(255,255,255,0.15)";
+
 function TableOfContents() {
   const [activeId, setActiveId] = useState<string>(TOC_ITEMS[0].id);
   const lastActiveRef = useRef<string>(TOC_ITEMS[0].id);
 
   useEffect(() => {
-    const elements = TOC_ITEMS.map((item) => document.getElementById(item.id)).filter(
-      (el): el is HTMLElement => el !== null
-    );
-    if (elements.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const intersecting = entries.filter((e) => e.isIntersecting);
-        if (intersecting.length > 0) {
-          intersecting.sort(
-            (a, b) =>
-              (a.target as HTMLElement).getBoundingClientRect().top -
-              (b.target as HTMLElement).getBoundingClientRect().top
-          );
-          const next = intersecting[0].target.id;
-          if (next && next !== lastActiveRef.current) {
-            lastActiveRef.current = next;
-            setActiveId(next);
-          }
+    const compute = () => {
+      const doc = document.documentElement;
+      const atBottom =
+        window.scrollY + window.innerHeight >= doc.scrollHeight - 4;
+      if (atBottom) {
+        const lastId = TOC_ITEMS[TOC_ITEMS.length - 1].id;
+        if (lastActiveRef.current !== lastId) {
+          lastActiveRef.current = lastId;
+          setActiveId(lastId);
         }
-      },
-      {
-        rootMargin: `-${SECTION_SCROLL_MARGIN}px 0px -60% 0px`,
-        threshold: 0,
+        return;
       }
-    );
 
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+      const triggerY = SECTION_SCROLL_MARGIN + window.innerHeight * 0.3;
+      let current = TOC_ITEMS[0].id;
+      for (const item of TOC_ITEMS) {
+        const el = document.getElementById(item.id);
+        if (!el) continue;
+        const top = el.getBoundingClientRect().top;
+        if (top <= triggerY) {
+          current = item.id;
+        } else {
+          break;
+        }
+      }
+      if (current !== lastActiveRef.current) {
+        lastActiveRef.current = current;
+        setActiveId(current);
+      }
+    };
+
+    compute();
+    window.addEventListener("scroll", compute, { passive: true });
+    window.addEventListener("resize", compute, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", compute);
+      window.removeEventListener("resize", compute);
+    };
   }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
@@ -591,54 +602,89 @@ function TableOfContents() {
   };
 
   return (
-    <nav aria-label="On this page">
-      <div
+    <>
+      <nav
+        aria-label="On this page"
+        className="docs-toc-overlay"
         style={{
-          fontFamily: INTER,
-          fontSize: 11,
-          fontWeight: 500,
-          color: MUTED,
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          marginBottom: 12,
+          position: "fixed",
+          right: 32,
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 40,
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        On this page
-      </div>
-      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
         {TOC_ITEMS.map((item) => {
           const isActive = item.id === activeId;
           return (
-            <li key={item.id} style={{ margin: 0 }}>
-              <a
-                href={`#${item.id}`}
-                onClick={(e) => handleClick(e, item.id)}
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              onClick={(e) => handleClick(e, item.id)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                padding: "10px 0",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive) {
+                  const label = e.currentTarget.querySelector(
+                    "[data-toc-label]"
+                  ) as HTMLElement | null;
+                  if (label) label.style.color = INK;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) {
+                  const label = e.currentTarget.querySelector(
+                    "[data-toc-label]"
+                  ) as HTMLElement | null;
+                  if (label) label.style.color = MUTED;
+                }
+              }}
+            >
+              <span
+                data-toc-label
                 style={{
-                  display: "block",
-                  padding: "6px 0 6px 14px",
-                  borderLeft: `2px solid ${isActive ? TEAL : "transparent"}`,
-                  color: isActive ? TEAL : MUTED,
+                  flex: 1,
+                  textAlign: "right",
+                  whiteSpace: "nowrap",
                   fontFamily: INTER,
-                  fontSize: 13,
+                  fontSize: 12,
                   fontWeight: isActive ? 500 : 400,
-                  lineHeight: 1.5,
-                  textDecoration: "none",
-                  transition: "color 0.15s ease, border-color 0.15s ease",
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) e.currentTarget.style.color = INK;
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) e.currentTarget.style.color = MUTED;
+                  letterSpacing: "-0.005em",
+                  color: isActive ? INK : MUTED,
+                  transition: "color 150ms ease",
                 }}
               >
                 {item.label}
-              </a>
-            </li>
+              </span>
+              <span
+                aria-hidden
+                style={{
+                  width: 2,
+                  alignSelf: "stretch",
+                  background: isActive ? TEAL : TOC_BAR_INACTIVE,
+                  borderRadius: 1,
+                  transition: "background 150ms ease",
+                }}
+              />
+            </a>
           );
         })}
-      </ul>
-    </nav>
+      </nav>
+      <style jsx global>{`
+        @media (max-width: 960px) {
+          .docs-toc-overlay {
+            display: none !important;
+          }
+        }
+      `}</style>
+    </>
   );
 }
 
