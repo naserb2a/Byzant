@@ -1262,7 +1262,7 @@ function MCPCredentialsCard({
         This key is shown once. Store it somewhere safe before continuing.{" "}
         Need help wiring up MCP?{" "}
         <Link
-          href="/docs/mcp"
+          href="/docs/integration"
           style={{
             color: TEAL,
             textDecoration: "none",
