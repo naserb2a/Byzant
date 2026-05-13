@@ -1,19 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import LegalShell, {
-  H1,
-  MailLink,
-  INK,
-  MUTED,
-  TEAL,
-  SYS,
-  DISPLAY,
-} from "@/components/LegalShell";
+import { useEffect, useRef, useState } from "react";
+import DocsShell, { DOCS_CONTENT_TOP_PAD } from "@/components/DocsShell";
 
+const INTER = "var(--font-inter)";
 const TERMINAL_MONO =
   "ui-monospace, SFMono-Regular, Menlo, Monaco, 'Courier New', monospace";
+
+const INK = "#ffffff";
+const MUTED = "#94a3b8";
+const TEAL = "#99E1D9";
 
 const RAW_BG = "#0A0A0A";
 const RAW_HEADER_BG = "#080808";
@@ -25,6 +22,7 @@ const CODE_BODY = "#e6edf3";
 const KEY_HIGHLIGHT_BG = "rgba(153,225,217,0.10)";
 
 const ENDPOINT = "https://byzant.ai/api/mcp";
+const SECTION_SCROLL_MARGIN = DOCS_CONTENT_TOP_PAD;
 
 const SNIPPETS = {
   claudeCode: {
@@ -63,6 +61,14 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: "claudeCode", label: "Claude Code" },
   { key: "claudeDesktop", label: "Claude Desktop" },
   { key: "custom", label: "Custom Agent" },
+];
+
+const TOC_ITEMS = [
+  { id: "how-it-works", label: "How it works" },
+  { id: "available-tools", label: "Available tools" },
+  { id: "connect-your-agent", label: "Connect your agent" },
+  { id: "your-api-key", label: "Your API key" },
+  { id: "need-help", label: "Need help" },
 ];
 
 function CopyIcon() {
@@ -110,8 +116,9 @@ function CopyButton({ value, id }: { value: string; id: string }) {
         margin: 0,
         cursor: "pointer",
         color: TEAL,
-        fontFamily: TERMINAL_MONO,
+        fontFamily: INTER,
         fontSize: 11,
+        fontWeight: 500,
         letterSpacing: "0.08em",
         textTransform: "uppercase",
         opacity: 0.85,
@@ -205,16 +212,43 @@ function CodeBlock({ label, code }: { label: string; code: string }) {
   );
 }
 
-function SectionHeading({ children }: { children: React.ReactNode }) {
+function H1({ children }: { children: React.ReactNode }) {
+  return (
+    <h1
+      style={{
+        fontFamily: INTER,
+        fontSize: 36,
+        fontWeight: 700,
+        letterSpacing: "-0.02em",
+        color: INK,
+        margin: 0,
+        lineHeight: 1.15,
+        textAlign: "left",
+      }}
+    >
+      {children}
+    </h1>
+  );
+}
+
+function SectionHeading({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) {
   return (
     <h2
+      id={id}
       style={{
-        fontFamily: DISPLAY,
-        fontSize: 18,
+        fontFamily: INTER,
+        fontSize: 20,
         fontWeight: 600,
         letterSpacing: "-0.01em",
         color: TEAL,
         margin: "56px 0 12px",
+        scrollMarginTop: SECTION_SCROLL_MARGIN,
       }}
     >
       {children}
@@ -226,15 +260,27 @@ function Paragraph({ children }: { children: React.ReactNode }) {
   return (
     <p
       style={{
-        fontFamily: SYS,
+        fontFamily: INTER,
         fontSize: 15,
-        lineHeight: 1.7,
+        fontWeight: 400,
+        lineHeight: 1.65,
         color: INK,
         margin: "0 0 12px",
       }}
     >
       {children}
     </p>
+  );
+}
+
+function MailLink({ email }: { email: string }) {
+  return (
+    <a
+      href={`mailto:${email}`}
+      style={{ color: TEAL, textDecoration: "none" }}
+    >
+      {email}
+    </a>
   );
 }
 
@@ -317,8 +363,9 @@ function ToolCard({ tool }: { tool: ToolSpec }) {
       </div>
       <div
         style={{
-          fontFamily: SYS,
+          fontFamily: INTER,
           fontSize: 14,
+          fontWeight: 400,
           color: INK,
           margin: "6px 0 16px",
           lineHeight: 1.55,
@@ -328,8 +375,9 @@ function ToolCard({ tool }: { tool: ToolSpec }) {
       </div>
       <div
         style={{
-          fontFamily: TERMINAL_MONO,
+          fontFamily: INTER,
           fontSize: 10,
+          fontWeight: 500,
           color: MUTED,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
@@ -349,8 +397,9 @@ function ToolCard({ tool }: { tool: ToolSpec }) {
               flexWrap: "wrap",
               alignItems: "baseline",
               gap: 8,
-              fontFamily: SYS,
+              fontFamily: INTER,
               fontSize: 14,
+              fontWeight: 400,
               color: INK,
               lineHeight: 1.5,
             }}
@@ -374,7 +423,15 @@ function ToolCard({ tool }: { tool: ToolSpec }) {
             >
               {p.meta}
             </span>
-            <span style={{ flexBasis: "100%", color: MUTED, fontSize: 13 }}>
+            <span
+              style={{
+                flexBasis: "100%",
+                color: MUTED,
+                fontSize: 13,
+                fontFamily: INTER,
+                fontWeight: 400,
+              }}
+            >
               {p.description}
             </span>
           </li>
@@ -401,8 +458,9 @@ function EndpointPill() {
     >
       <span
         style={{
-          fontFamily: TERMINAL_MONO,
+          fontFamily: INTER,
           fontSize: 11,
+          fontWeight: 500,
           color: MUTED,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
@@ -464,8 +522,9 @@ function TabsStrip({
               padding: "6px 14px",
               borderRadius: 999,
               cursor: "pointer",
-              fontFamily: TERMINAL_MONO,
+              fontFamily: INTER,
               fontSize: 11,
+              fontWeight: 500,
               letterSpacing: "0.08em",
               textTransform: "uppercase",
               transition: "background 0.15s ease, color 0.15s ease",
@@ -485,17 +544,116 @@ function TabsStrip({
   );
 }
 
+function TableOfContents() {
+  const [activeId, setActiveId] = useState<string>(TOC_ITEMS[0].id);
+  const lastActiveRef = useRef<string>(TOC_ITEMS[0].id);
+
+  useEffect(() => {
+    const elements = TOC_ITEMS.map((item) => document.getElementById(item.id)).filter(
+      (el): el is HTMLElement => el !== null
+    );
+    if (elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const intersecting = entries.filter((e) => e.isIntersecting);
+        if (intersecting.length > 0) {
+          intersecting.sort(
+            (a, b) =>
+              (a.target as HTMLElement).getBoundingClientRect().top -
+              (b.target as HTMLElement).getBoundingClientRect().top
+          );
+          const next = intersecting[0].target.id;
+          if (next && next !== lastActiveRef.current) {
+            lastActiveRef.current = next;
+            setActiveId(next);
+          }
+        }
+      },
+      {
+        rootMargin: `-${SECTION_SCROLL_MARGIN}px 0px -60% 0px`,
+        threshold: 0,
+      }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    setActiveId(id);
+    lastActiveRef.current = id;
+    history.replaceState(null, "", `#${id}`);
+  };
+
+  return (
+    <nav aria-label="On this page">
+      <div
+        style={{
+          fontFamily: INTER,
+          fontSize: 11,
+          fontWeight: 500,
+          color: MUTED,
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          marginBottom: 12,
+        }}
+      >
+        On this page
+      </div>
+      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        {TOC_ITEMS.map((item) => {
+          const isActive = item.id === activeId;
+          return (
+            <li key={item.id} style={{ margin: 0 }}>
+              <a
+                href={`#${item.id}`}
+                onClick={(e) => handleClick(e, item.id)}
+                style={{
+                  display: "block",
+                  padding: "6px 0 6px 14px",
+                  borderLeft: `2px solid ${isActive ? TEAL : "transparent"}`,
+                  color: isActive ? TEAL : MUTED,
+                  fontFamily: INTER,
+                  fontSize: 13,
+                  fontWeight: isActive ? 500 : 400,
+                  lineHeight: 1.5,
+                  textDecoration: "none",
+                  transition: "color 0.15s ease, border-color 0.15s ease",
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) e.currentTarget.style.color = INK;
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) e.currentTarget.style.color = MUTED;
+                }}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+}
+
 export default function IntegrationGuide() {
   const [tab, setTab] = useState<TabKey>("claudeCode");
   const snippet = SNIPPETS[tab];
 
   return (
-    <LegalShell>
+    <DocsShell toc={<TableOfContents />}>
       <H1>Integration Guide</H1>
       <p
         style={{
-          fontFamily: SYS,
+          fontFamily: INTER,
           fontSize: 15,
+          fontWeight: 400,
           color: MUTED,
           lineHeight: 1.6,
           margin: "12px 0 0",
@@ -506,7 +664,7 @@ export default function IntegrationGuide() {
 
       <EndpointPill />
 
-      <SectionHeading>How it works</SectionHeading>
+      <SectionHeading id="how-it-works">How it works</SectionHeading>
       <Paragraph>
         Byzant exposes institutional-grade data modules as MCP tools your agent
         can call directly — whale options flow, congressional trade disclosures,
@@ -518,17 +676,18 @@ export default function IntegrationGuide() {
         never executes a trade on its own.
       </Paragraph>
 
-      <SectionHeading>Available tools</SectionHeading>
+      <SectionHeading id="available-tools">Available tools</SectionHeading>
       {TOOLS.map((t) => (
         <ToolCard key={t.name} tool={t} />
       ))}
 
-      <SectionHeading>Connect your agent</SectionHeading>
+      <SectionHeading id="connect-your-agent">Connect your agent</SectionHeading>
       <TabsStrip active={tab} onChange={setTab} />
       <p
         style={{
-          fontFamily: SYS,
+          fontFamily: INTER,
           fontSize: 13,
+          fontWeight: 400,
           color: MUTED,
           lineHeight: 1.6,
           margin: "16px 0 0",
@@ -538,7 +697,7 @@ export default function IntegrationGuide() {
       </p>
       <CodeBlock label={snippet.label} code={snippet.code} />
 
-      <SectionHeading>Your API key</SectionHeading>
+      <SectionHeading id="your-api-key">Your API key</SectionHeading>
       <div
         style={{
           background: "rgba(255,255,255,0.025)",
@@ -549,8 +708,9 @@ export default function IntegrationGuide() {
       >
         <p
           style={{
-            fontFamily: SYS,
+            fontFamily: INTER,
             fontSize: 14,
+            fontWeight: 400,
             color: INK,
             lineHeight: 1.65,
             margin: 0,
@@ -568,10 +728,10 @@ export default function IntegrationGuide() {
         </p>
       </div>
 
-      <SectionHeading>Need help</SectionHeading>
+      <SectionHeading id="need-help">Need help</SectionHeading>
       <Paragraph>
         Questions? Email us at <MailLink email="support@byzant.ai" />.
       </Paragraph>
-    </LegalShell>
+    </DocsShell>
   );
 }
