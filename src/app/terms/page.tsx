@@ -23,7 +23,7 @@ export default function TermsPage() {
       <Section number={1} title="Acceptance of Terms" needsReview>
         <P>
           These Terms of Service (the &ldquo;Terms&rdquo;) govern your access to
-          and use of Byzant (the &ldquo;Service&rdquo;), operated by Byzant Inc.
+          and use of Byzant (the &ldquo;Service&rdquo;), operated by Byzant LLC.
           (&ldquo;Byzant,&rdquo; &ldquo;we,&rdquo; &ldquo;our,&rdquo; or
           &ldquo;us&rdquo;). By accessing, browsing, or using the Service, you
           agree to be bound by these Terms. If you do not agree, you must not

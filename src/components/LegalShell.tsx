@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import ByzantLogo from "@/components/ByzantLogo";
 
 export const BG = "#000000";
@@ -6,28 +9,54 @@ export const INK = "#ffffff";
 export const MUTED = "#94a3b8";
 export const TEAL = "#99E1D9";
 export const BORDER = "rgba(255,255,255,0.06)";
-export const SYS =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
-export const DISPLAY = "var(--font-sora)";
+export const INTER = "var(--font-inter)";
+
+const NAV_HEIGHT = 64;
+const CONTENT_TOP_PAD = 88;
 
 export default function LegalShell({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 0);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <div
       style={{
         background: BG,
         color: INK,
         minHeight: "100vh",
-        fontFamily: SYS,
+        fontFamily: INTER,
       }}
     >
       <header
         style={{
-          padding: "24px 40px",
-          borderBottom: `1px solid ${BORDER}`,
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 50,
+          padding: "20px 40px",
+          height: NAV_HEIGHT,
+          boxSizing: "border-box",
+          display: "flex",
+          alignItems: "center",
+          background: scrolled ? "rgba(0,0,0,0.85)" : "transparent",
+          backdropFilter: scrolled ? "blur(12px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
+          borderBottom: `1px solid ${
+            scrolled ? "rgba(255,255,255,0.08)" : "transparent"
+          }`,
+          transition:
+            "background 150ms ease, border-color 150ms ease, backdrop-filter 150ms ease, -webkit-backdrop-filter 150ms ease",
         }}
       >
         <Link
@@ -42,7 +71,7 @@ export default function LegalShell({
         style={{
           maxWidth: 800,
           margin: "0 auto",
-          padding: "80px 24px 120px",
+          padding: `${CONTENT_TOP_PAD}px 24px 120px`,
         }}
       >
         {children}
@@ -52,7 +81,7 @@ export default function LegalShell({
 }
 
 const sectionHeadingStyle: React.CSSProperties = {
-  fontFamily: DISPLAY,
+  fontFamily: INTER,
   fontSize: 22,
   fontWeight: 600,
   letterSpacing: "-0.01em",
@@ -61,16 +90,18 @@ const sectionHeadingStyle: React.CSSProperties = {
 };
 
 const paragraphStyle: React.CSSProperties = {
-  fontFamily: SYS,
+  fontFamily: INTER,
   fontSize: 15,
+  fontWeight: 400,
   lineHeight: 1.7,
   color: INK,
   margin: "0 0 14px",
 };
 
 const listStyle: React.CSSProperties = {
-  fontFamily: SYS,
+  fontFamily: INTER,
   fontSize: 15,
+  fontWeight: 400,
   lineHeight: 1.7,
   color: MUTED,
   paddingLeft: 20,
@@ -79,7 +110,7 @@ const listStyle: React.CSSProperties = {
 
 const reviewPillStyle: React.CSSProperties = {
   display: "inline-block",
-  fontFamily: SYS,
+  fontFamily: INTER,
   fontSize: 11,
   fontWeight: 600,
   color: "var(--db-amber)",
@@ -96,9 +127,9 @@ export function H1({ children }: { children: React.ReactNode }) {
   return (
     <h1
       style={{
-        fontFamily: DISPLAY,
+        fontFamily: INTER,
         fontSize: 40,
-        fontWeight: 600,
+        fontWeight: 700,
         letterSpacing: "-0.02em",
         color: INK,
         margin: 0,
@@ -114,8 +145,9 @@ export function LastUpdated({ date }: { date: string }) {
   return (
     <p
       style={{
-        fontFamily: SYS,
+        fontFamily: INTER,
         fontSize: 13,
+        fontWeight: 400,
         color: MUTED,
         margin: "8px 0 0",
       }}
@@ -166,6 +198,7 @@ export function MailLink({ email }: { email: string }) {
     <a
       href={`mailto:${email}`}
       style={{
+        fontFamily: INTER,
         color: TEAL,
         textDecoration: "none",
       }}
