@@ -175,21 +175,13 @@ function Hero() {
             aria-hidden
             style={{
               position: "absolute",
-              inset: "-160px -10% -120px -10%",
+              left: "-10%",
+              right: "-10%",
+              bottom: "-180px",
+              height: "420px",
               background:
-                "radial-gradient(ellipse 75% 60% at 50% 55%, rgba(153,225,217,0.08), rgba(153,225,217,0.03) 45%, transparent 80%)",
-              filter: "blur(60px)",
-              pointerEvents: "none",
-              zIndex: 0,
-            }}
-          />
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              inset: "-80px -80px -60px -80px",
-              background:
-                "linear-gradient(to bottom, transparent 0%, rgba(153,225,217,0.05) 65%, transparent 100%)",
+                "radial-gradient(ellipse 60% 100% at 50% 50%, rgba(255,255,255,0.07), rgba(255,255,255,0.025) 40%, transparent 75%)",
+              filter: "blur(50px)",
               pointerEvents: "none",
               zIndex: 0,
             }}
