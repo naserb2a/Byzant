@@ -2130,6 +2130,15 @@ function Footer() {
             <Link href="/terms" style={{ color: FAINT, textDecoration: "none" }}>
               Terms of Service
             </Link>
+            {" · "}
+            <Link
+              href="/docs/integration"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: FAINT, textDecoration: "none" }}
+            >
+              Integration Guide
+            </Link>
           </p>
         </div>
       </div>

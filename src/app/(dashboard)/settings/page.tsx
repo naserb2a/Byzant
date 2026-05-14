@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { useTheme } from "@/components/dashboard/ThemeProvider";
 
 const CARD: React.CSSProperties = {
@@ -342,6 +343,38 @@ export default function SettingsPage() {
           </div>
           <button style={SAVE_BTN}>Save Risk Settings</button>
         </div>
+      </div>
+
+      <div style={{ ...CARD }}>
+        <div style={SECTION_TITLE}>API &amp; Integrations</div>
+        <p
+          style={{
+            fontSize: 13,
+            color: "var(--db-ink-muted)",
+            lineHeight: 1.55,
+            margin: 0,
+          }}
+        >
+          Your API key was issued during onboarding. Regeneration will be
+          available here in a future update.
+        </p>
+        <Link
+          href="/docs/integration"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: "#99E1D9",
+            fontSize: 13,
+            fontWeight: 500,
+            textDecoration: "none",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            marginTop: 12,
+          }}
+        >
+          View Integration Guide →
+        </Link>
       </div>
 
       <div style={{ ...CARD, marginBottom: 0, border: "0.5px solid rgba(255,90,90,0.15)" }}>
