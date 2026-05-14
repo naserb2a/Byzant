@@ -719,7 +719,7 @@ export default function IntegrationGuide() {
       <Paragraph>
         Your agent retrieves the data, forms a thesis, and surfaces trade
         decisions for your approval. You are always the final arbiter. Byzant
-        never executes a trade on its own.
+        has no ability to execute trades — only you can.
       </Paragraph>
 
       <SectionHeading id="available-tools">Available tools</SectionHeading>
