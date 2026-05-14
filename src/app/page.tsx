@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import ByzantLogo from "@/components/ByzantLogo";
 import ByzantInteractiveDemo from "@/components/ByzantInteractiveDemo";
 import Navbar from "@/components/Navbar";
 import ByzantFooter from "@/components/ByzantFooter";
