@@ -130,7 +130,7 @@ function Hero() {
   return (
     <section
       style={{
-        background: BG,
+        background: "linear-gradient(180deg, #000000 0%, #000000 35%, #1a1a1a 75%, #2a2a2a 100%)",
         padding: "140px 80px 100px",
         position: "relative",
         overflow: "hidden",
@@ -169,26 +169,9 @@ function Hero() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          style={{ scrollMarginTop: 80, position: "relative" }}
+          style={{ scrollMarginTop: 80 }}
         >
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              left: "-10%",
-              right: "-10%",
-              bottom: "-180px",
-              height: "420px",
-              background:
-                "radial-gradient(ellipse 60% 100% at 50% 50%, rgba(255,255,255,0.07), rgba(255,255,255,0.025) 40%, transparent 75%)",
-              filter: "blur(50px)",
-              pointerEvents: "none",
-              zIndex: 0,
-            }}
-          />
-          <div style={{ position: "relative", zIndex: 1 }}>
-            <ByzantInteractiveDemo />
-          </div>
+          <ByzantInteractiveDemo />
         </motion.div>
       </div>
     </section>
