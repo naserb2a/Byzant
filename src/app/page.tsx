@@ -102,7 +102,7 @@ function HeroHeadline() {
     <h1
       style={{
         fontFamily: DISPLAY,
-        fontSize: "clamp(38px, 5vw, 68px)",
+        fontSize: "clamp(40px, 4.2vw, 60px)",
         fontWeight: 600,
         letterSpacing: "-0.03em",
         lineHeight: 1.05,
@@ -131,7 +131,7 @@ function Hero() {
     <section
       style={{
         background: BG,
-        padding: "80px 80px 120px",
+        padding: "140px 80px 100px",
         position: "relative",
         overflow: "hidden",
       }}
@@ -145,7 +145,7 @@ function Hero() {
           transition={{ duration: 0.7, delay: 0.7 }}
           style={{
             fontFamily: SYS,
-            fontSize: "clamp(16px, 1.4vw, 19px)",
+            fontSize: "clamp(15px, 1.25vw, 18px)",
             color: FAINT,
             margin: "32px 0 40px",
             maxWidth: 540,
@@ -169,9 +169,23 @@ function Hero() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          style={{ scrollMarginTop: 80 }}
+          style={{ scrollMarginTop: 80, position: "relative" }}
         >
-          <ByzantInteractiveDemo />
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: "-80px -80px -60px -80px",
+              background:
+                "radial-gradient(ellipse 70% 55% at 50% 55%, rgba(153,225,217,0.06), rgba(153,225,217,0.02) 40%, transparent 75%)",
+              filter: "blur(40px)",
+              pointerEvents: "none",
+              zIndex: 0,
+            }}
+          />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <ByzantInteractiveDemo />
+          </div>
         </motion.div>
       </div>
     </section>
