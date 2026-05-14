@@ -574,7 +574,13 @@ function ApprovalCard() {
         padding: 28,
         maxWidth: 640,
         margin: "0 auto",
-        boxShadow: "0 40px 100px rgba(0,0,0,0.5), 0 0 60px rgba(153,225,217,0.05)",
+        boxShadow: "0 30px 60px -20px rgba(0,0,0,0.5)",
+        willChange: "transform",
+        backfaceVisibility: "hidden",
+        transform: "translateZ(0)",
+        WebkitFontSmoothing: "antialiased",
+        MozOsxFontSmoothing: "grayscale",
+        textRendering: "optimizeLegibility",
       }}
     >
       <div
