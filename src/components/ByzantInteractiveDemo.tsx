@@ -648,14 +648,19 @@ export default function ByzantInteractiveDemo() {
         overflow: "hidden",
         height: DEMO_HEIGHT,
         background: SHELL,
-        border: `1px solid ${BORDER_STRONG}`,
+        border: "1px solid rgba(255,255,255,0.08)",
         borderRadius: 12,
-        boxShadow:
-          "0 40px 120px rgba(153,225,217,0.06), 0 4px 30px rgba(0,0,0,0.6)",
+        boxShadow: "0 30px 60px -20px rgba(0,0,0,0.5)",
         fontFamily: SYS,
         color: INK,
         display: "flex",
         flexDirection: "column",
+        willChange: "transform",
+        backfaceVisibility: "hidden",
+        transform: "translateZ(0)",
+        WebkitFontSmoothing: "antialiased",
+        MozOsxFontSmoothing: "grayscale",
+        textRendering: "optimizeLegibility",
       }}
     >
       <style>{SCOPED_STYLES}</style>
