@@ -2296,6 +2296,14 @@ function FilterPills<T extends string>({
 function WhaleTrackerView() {
   const [filter, setFilter] = useState<WhaleFilter>("ALL");
   const cols = "60px 52px 64px 84px 44px 76px 70px 86px minmax(0, 56px)";
+  const filteredFlows = WHALE_FLOWS.filter((r) => {
+    if (filter === "ALL") return true;
+    if (filter === "CALLS") return r.type === "CALL";
+    if (filter === "PUTS") return r.type === "PUT";
+    if (filter === "BULLISH") return r.sentiment === "BULLISH";
+    if (filter === "BEARISH") return r.sentiment === "BEARISH";
+    return true;
+  });
 
   return (
     <div
@@ -2368,7 +2376,7 @@ function WhaleTrackerView() {
           <span style={{ textAlign: "right" }}>IV</span>
         </div>
         <div style={{ flex: 1, overflowY: "auto" }}>
-          {WHALE_FLOWS.map((r, i) => (
+          {filteredFlows.map((r, i) => (
             <div
               key={i}
               className="bzd-row"
@@ -2377,7 +2385,7 @@ function WhaleTrackerView() {
                 gridTemplateColumns: cols,
                 gap: 10,
                 padding: "11px 14px",
-                borderBottom: i < WHALE_FLOWS.length - 1 ? `1px solid ${BORDER}` : "none",
+                borderBottom: i < filteredFlows.length - 1 ? `1px solid ${BORDER}` : "none",
                 alignItems: "center",
                 fontSize: 12,
                 transition: "background 120ms ease",
@@ -2441,6 +2449,12 @@ function WhaleTrackerView() {
 function CongressionalTrackerView() {
   const [filter, setFilter] = useState<CongressFilter>("ALL");
   const cols = "minmax(0, 1.4fr) 96px 64px 52px minmax(0, 1.4fr) 80px";
+  const filteredTrades = CONGRESS_TRADES.filter((r) => {
+    if (filter === "ALL") return true;
+    if (filter === "DEMOCRAT") return r.party === "Democrat";
+    if (filter === "REPUBLICAN") return r.party === "Republican";
+    return true;
+  });
 
   return (
     <div
@@ -2510,7 +2524,7 @@ function CongressionalTrackerView() {
           <span>Date</span>
         </div>
         <div style={{ flex: 1, overflowY: "auto" }}>
-          {CONGRESS_TRADES.map((r, i) => (
+          {filteredTrades.map((r, i) => (
             <div
               key={i}
               className="bzd-row"
@@ -2519,7 +2533,7 @@ function CongressionalTrackerView() {
                 gridTemplateColumns: cols,
                 gap: 10,
                 padding: "11px 14px",
-                borderBottom: i < CONGRESS_TRADES.length - 1 ? `1px solid ${BORDER}` : "none",
+                borderBottom: i < filteredTrades.length - 1 ? `1px solid ${BORDER}` : "none",
                 alignItems: "center",
                 fontSize: 12,
                 transition: "background 120ms ease",
