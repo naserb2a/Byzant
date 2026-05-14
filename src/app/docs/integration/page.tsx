@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import IntegrationGuide from "./IntegrationGuide";
+import ByzantFooter from "@/components/ByzantFooter";
 
 export const metadata: Metadata = {
   title: "Integration Guide — Byzant",
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function IntegrationDocsPage() {
-  return <IntegrationGuide />;
+  return (
+    <>
+      <IntegrationGuide />
+      <ByzantFooter />
+    </>
+  );
 }

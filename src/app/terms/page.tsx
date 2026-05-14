@@ -7,6 +7,7 @@ import LegalShell, {
   Section,
   UL,
 } from "@/components/LegalShell";
+import ByzantFooter from "@/components/ByzantFooter";
 
 export const metadata: Metadata = {
   title: "Terms of Service — Byzant",
@@ -16,8 +17,9 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <LegalShell>
-      <H1>Terms of Service</H1>
+    <>
+      <LegalShell>
+        <H1>Terms of Service</H1>
       <LastUpdated date="May 11, 2026" />
 
       <Section number={1} title="Acceptance of Terms" needsReview>
@@ -184,6 +186,8 @@ export default function TermsPage() {
           <MailLink email="legal@byzant.ai" />.
         </P>
       </Section>
-    </LegalShell>
+      </LegalShell>
+      <ByzantFooter />
+    </>
   );
 }

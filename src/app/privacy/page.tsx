@@ -7,6 +7,7 @@ import LegalShell, {
   Section,
   UL,
 } from "@/components/LegalShell";
+import ByzantFooter from "@/components/ByzantFooter";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — Byzant",
@@ -16,8 +17,9 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <LegalShell>
-      <H1>Privacy Policy</H1>
+    <>
+      <LegalShell>
+        <H1>Privacy Policy</H1>
       <LastUpdated date="May 11, 2026" />
 
       <Section number={1} title="Information We Collect">
@@ -204,6 +206,8 @@ export default function PrivacyPage() {
           <MailLink email="legal@byzant.ai" />.
         </P>
       </Section>
-    </LegalShell>
+      </LegalShell>
+      <ByzantFooter />
+    </>
   );
 }
