@@ -1990,7 +1990,7 @@ function ClosingCTA() {
             }}
           >
             <WaitlistCapture />
-            <GhostPill href="/auth/login">Sign In</GhostPill>
+            <GhostPill href="/auth">Sign In</GhostPill>
           </div>
         </Reveal>
       </div>
