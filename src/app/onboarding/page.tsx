@@ -366,7 +366,6 @@ export default function OnboardingPage() {
                   }}
                 >
                   <span
-                    onClick={() => setAgreed((v) => !v)}
                     style={{
                       width: 18,
                       height: 18,
