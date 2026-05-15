@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import ByzantFooter from "@/components/ByzantFooter";
 
 const DISPLAY = "var(--font-inter)";
 const TEAL = "#99E1D9";
@@ -318,6 +319,8 @@ export default function PricingPage() {
 
         <div style={{ height: 120 }} />
       </main>
+
+      <ByzantFooter />
 
       <style jsx global>{`
         .pricing-card:hover {
