@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isEmailWaitlisted } from "@/lib/waitlist-gate";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -29,7 +30,7 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const protectedRoutes = ["/dashboard"];
+  const protectedRoutes = ["/dashboard", "/onboarding"];
   const isProtected = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route)
   );
@@ -38,6 +39,33 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth";
     return NextResponse.redirect(url);
+  }
+
+  if (user && isProtected) {
+    const allowed = await isEmailWaitlisted(user.email);
+    if (!allowed) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/not-invited";
+      const redirect = NextResponse.redirect(url);
+      const signOutClient = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+          cookies: {
+            getAll() {
+              return request.cookies.getAll();
+            },
+            setAll(cookiesToSet) {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                redirect.cookies.set(name, value, options)
+              );
+            },
+          },
+        }
+      );
+      await signOutClient.auth.signOut();
+      return redirect;
+    }
   }
 
   return supabaseResponse;

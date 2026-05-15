@@ -45,6 +45,17 @@ export default function AuthEmailPage() {
       return;
     }
 
+    const checkRes = await fetch("/api/waitlist/check");
+    const { allowed } = await checkRes
+      .json()
+      .catch(() => ({ allowed: false }));
+    if (!allowed) {
+      await supabase.auth.signOut();
+      router.push("/not-invited");
+      router.refresh();
+      return;
+    }
+
     const redirect = await resolvePostAuthRedirect(supabase);
     router.push(redirect);
     router.refresh();

@@ -50,6 +50,16 @@ export default function SignupEmailPage() {
     }
 
     if (data.session) {
+      const checkRes = await fetch("/api/waitlist/check");
+      const { allowed } = await checkRes
+        .json()
+        .catch(() => ({ allowed: false }));
+      if (!allowed) {
+        await supabase.auth.signOut();
+        router.push("/not-invited");
+        router.refresh();
+        return;
+      }
       router.push("/onboarding");
       router.refresh();
       return;
