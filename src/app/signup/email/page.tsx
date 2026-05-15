@@ -9,7 +9,7 @@ import AuthShell, {
   ErrorPill,
 } from "@/components/auth/AuthShell";
 
-const SORA = "var(--font-sora)";
+const INTER = "var(--font-inter)";
 
 export default function SignupEmailPage() {
   const router = useRouter();
@@ -74,7 +74,7 @@ export default function SignupEmailPage() {
       <AuthShell title="Check your inbox" titleSize={28}>
         <p
           style={{
-            fontFamily: SORA,
+            fontFamily: INTER,
             fontSize: 14,
             color: "#666666",
             lineHeight: 1.6,
@@ -103,7 +103,7 @@ export default function SignupEmailPage() {
             border: "none",
             padding: 0,
             color: "#F5F5F5",
-            fontFamily: SORA,
+            fontFamily: INTER,
             fontSize: 13,
             fontWeight: 500,
             cursor: "pointer",

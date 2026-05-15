@@ -11,7 +11,7 @@ import AuthShell, {
 } from "@/components/auth/AuthShell";
 import { resolvePostAuthRedirect } from "@/lib/supabase/post-auth";
 
-const SORA = "var(--font-sora)";
+const INTER = "var(--font-inter)";
 
 export default function AuthEmailPage() {
   const router = useRouter();
@@ -89,7 +89,7 @@ export default function AuthEmailPage() {
               border: "none",
               padding: 0,
               color: "#F5F5F5",
-              fontFamily: SORA,
+              fontFamily: INTER,
               fontSize: 13,
               fontWeight: 500,
               cursor: "pointer",

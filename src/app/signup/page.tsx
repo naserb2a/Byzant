@@ -11,7 +11,7 @@ import AuthShell, {
   ErrorPill,
 } from "@/components/auth/AuthShell";
 
-const SORA = "var(--font-sora)";
+const INTER = "var(--font-inter)";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -93,7 +93,7 @@ export default function SignupPage() {
       <p
         style={{
           marginTop: 20,
-          fontFamily: SORA,
+          fontFamily: INTER,
           fontSize: 12,
           color: "#666666",
           lineHeight: 1.5,

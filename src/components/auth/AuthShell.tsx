@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 
 const SORA = "var(--font-sora)";
+const INTER = "var(--font-inter)";
 
 export default function AuthShell({
   title,
@@ -56,7 +57,7 @@ export default function AuthShell({
         {tagline && (
           <p
             style={{
-              fontFamily: SORA,
+              fontFamily: INTER,
               fontSize: 14,
               color: "#666666",
               margin: "0 0 8px",
@@ -69,7 +70,7 @@ export default function AuthShell({
 
         <h1
           style={{
-            fontFamily: SORA,
+            fontFamily: INTER,
             fontSize: titleSize,
             fontWeight: 400,
             color: "#ffffff",
@@ -87,7 +88,7 @@ export default function AuthShell({
           <div
             style={{
               marginTop: 28,
-              fontFamily: SORA,
+              fontFamily: INTER,
               fontSize: 13,
               color: "#666666",
             }}
@@ -104,7 +105,7 @@ export const authButtonBase: React.CSSProperties = {
   width: "100%",
   height: 52,
   borderRadius: 999,
-  fontFamily: SORA,
+  fontFamily: INTER,
   fontSize: 15,
   fontWeight: 500,
   cursor: "pointer",
@@ -137,7 +138,7 @@ export const authInput: React.CSSProperties = {
   border: "1px solid rgba(255,255,255,0.08)",
   borderRadius: 12,
   color: "#F5F5F5",
-  fontFamily: SORA,
+  fontFamily: INTER,
   fontSize: 14,
   outline: "none",
   transition: "border-color 0.15s ease",
@@ -177,7 +178,7 @@ export function ErrorPill({ message }: { message: string }) {
         border: "1px solid rgba(239,68,68,0.2)",
         color: "#f87171",
         fontSize: 12,
-        fontFamily: SORA,
+        fontFamily: INTER,
         textAlign: "left",
       }}
     >
