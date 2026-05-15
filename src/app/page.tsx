@@ -180,6 +180,7 @@ function TrustItem({
       }}
     >
       {iconSrc ? (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={iconSrc}
           alt={hideName ? name : ""}
@@ -204,6 +205,7 @@ function TrustItem({
         </span>
       ) : null}
       {wordmarkSrc ? (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={wordmarkSrc}
           alt={name}

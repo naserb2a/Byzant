@@ -8,7 +8,6 @@ import ByzantLogo from "@/components/ByzantLogo";
 import WaitlistCapture from "@/components/WaitlistCapture";
 
 const DISPLAY = "var(--font-inter)";
-const TEAL = "#99E1D9";
 const SURFACE = "#0a0a0a";
 const INK = "#ffffff";
 const MUTED = "#94a3b8";
