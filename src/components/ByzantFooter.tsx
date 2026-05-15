@@ -68,7 +68,16 @@ export default function ByzantFooter() {
             }}
           >
             <div>
+              <Link
+              href="/"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                textDecoration: "none",
+              }}
+            >
               <ByzantLogo size={22} color="#ffffff" />
+            </Link>
               <p
                 style={{
                   fontFamily: SYS,
