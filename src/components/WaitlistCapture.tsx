@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 const TEAL = "#99E1D9";
 const INK = "#ffffff";
@@ -190,7 +190,7 @@ export default function WaitlistCapture() {
               }}
             />
           ) : (
-            <ArrowRight size={18} strokeWidth={2.5} color="#000000" />
+            <ChevronRight size={18} strokeWidth={2.5} color="#000000" />
           )}
         </button>
       </div>
