@@ -6,6 +6,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import ByzantInteractiveDemo from "@/components/ByzantInteractiveDemo";
 import Navbar from "@/components/Navbar";
 import ByzantFooter from "@/components/ByzantFooter";
+import WaitlistCapture from "@/components/WaitlistCapture";
 
 /* ─── Tokens ───────────────────────────────────────────────────── */
 const DISPLAY = "var(--font-inter)";
@@ -43,32 +44,6 @@ function Reveal({
 }
 
 /* ─── Pill buttons ─────────────────────────────────────────────── */
-function TealPill({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        background: TEAL,
-        color: "#000000",
-        fontFamily: DISPLAY,
-        fontSize: 14,
-        fontWeight: 500,
-        padding: "10px 18px",
-        borderRadius: 999,
-        textDecoration: "none",
-        letterSpacing: "-0.005em",
-        transition: "transform 0.15s ease, opacity 0.15s ease",
-      }}
-      onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
-      onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-    >
-      {children}
-    </Link>
-  );
-}
-
 function GhostPill({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <Link
@@ -161,7 +136,7 @@ function Hero() {
           transition={{ duration: 0.6, delay: 0.85 }}
           style={{ marginBottom: 80 }}
         >
-          <TealPill href="/signup">Join Waitlist</TealPill>
+          <WaitlistCapture />
         </motion.div>
 
         <motion.div
@@ -2012,7 +1987,7 @@ function ClosingCTA() {
               flexWrap: "wrap",
             }}
           >
-            <TealPill href="/signup">Join Waitlist</TealPill>
+            <WaitlistCapture />
             <GhostPill href="/auth/login">Sign In</GhostPill>
           </div>
         </Reveal>

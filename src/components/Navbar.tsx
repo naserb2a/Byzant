@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ByzantLogo from "@/components/ByzantLogo";
+import WaitlistCapture from "@/components/WaitlistCapture";
 
 const DISPLAY = "var(--font-inter)";
 const TEAL = "#99E1D9";
@@ -39,32 +40,6 @@ const PRODUCT_ITEMS: { name: string; desc: string; href: string }[] = [
     href: "/marketplace",
   },
 ];
-
-function TealPill({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        background: TEAL,
-        color: "#000000",
-        fontFamily: DISPLAY,
-        fontSize: 14,
-        fontWeight: 500,
-        padding: "10px 18px",
-        borderRadius: 999,
-        textDecoration: "none",
-        letterSpacing: "-0.005em",
-        transition: "opacity 0.15s ease",
-      }}
-      onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
-      onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-    >
-      {children}
-    </Link>
-  );
-}
 
 function ProductDropdown() {
   const [open, setOpen] = useState(false);
@@ -316,7 +291,7 @@ export default function Navbar() {
             Sign In
           </Link>
 
-          <TealPill href="/signup">Join Waitlist</TealPill>
+          <WaitlistCapture />
         </div>
       </div>
 
