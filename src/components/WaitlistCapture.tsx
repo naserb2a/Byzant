@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { ArrowRight } from "lucide-react";
 
 const TEAL = "#99E1D9";
 const INK = "#ffffff";
@@ -119,6 +120,7 @@ export default function WaitlistCapture() {
           value={email}
           disabled={isLoading}
           placeholder="you@email.com"
+          className="waitlist-input"
           onChange={(e) => {
             setEmail(e.target.value);
             if (showError) {
@@ -188,7 +190,7 @@ export default function WaitlistCapture() {
               }}
             />
           ) : (
-            "→"
+            <ArrowRight size={18} strokeWidth={2.5} color="#000000" />
           )}
         </button>
       </div>

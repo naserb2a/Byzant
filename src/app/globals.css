@@ -281,3 +281,14 @@ body {
   max-width: 100% !important;
   display: block;
 }
+
+/* ── Waitlist input: defeat browser autofill background ──────── */
+input.waitlist-input:-webkit-autofill,
+input.waitlist-input:-webkit-autofill:hover,
+input.waitlist-input:-webkit-autofill:focus,
+input.waitlist-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #000000 inset !important;
+  -webkit-text-fill-color: #e5e7eb !important;
+  caret-color: #ffffff !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
