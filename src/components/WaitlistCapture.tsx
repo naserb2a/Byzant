@@ -102,7 +102,11 @@ export default function WaitlistCapture() {
 
   return (
     <div style={{ display: "inline-flex", flexDirection: "column", gap: 6 }}>
-      <div
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          submit();
+        }}
         style={{
           display: "inline-flex",
           alignItems: "center",
@@ -112,6 +116,7 @@ export default function WaitlistCapture() {
           padding: "4px 4px 4px 14px",
           minWidth: 280,
           transition: "all 0.15s ease",
+          margin: 0,
         }}
       >
         <input
@@ -129,10 +134,7 @@ export default function WaitlistCapture() {
             }
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              submit();
-            } else if (e.key === "Escape" && email.length === 0) {
+            if (e.key === "Escape" && email.length === 0) {
               setStatus("idle");
             }
           }}
@@ -151,8 +153,7 @@ export default function WaitlistCapture() {
           }}
         />
         <button
-          type="button"
-          onClick={submit}
+          type="submit"
           disabled={isLoading}
           aria-label="Submit email"
           style={{
@@ -193,7 +194,7 @@ export default function WaitlistCapture() {
             <ChevronRight size={18} strokeWidth={2.5} color="#000000" />
           )}
         </button>
-      </div>
+      </form>
       {showError && (
         <span
           style={{
